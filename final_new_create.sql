@@ -195,11 +195,11 @@ constraint chk_cost_dates check (shippingCost>=0 and deliveryDate>=orderDate)
 );
 
 create table OrderBillMappings(
-orderId int;
-billId int;
-foreign key (orderId) references Orders(orderId) on delete cascade on update cascade;
-foreign key (billId) references Bills(billId) on delete cascade on update cascade;
-)
+orderId int,
+billId int,
+foreign key (orderId) references Orders(orderId) on delete cascade on update cascade,
+foreign key (billId) references Bills(billId) on delete cascade on update cascade
+);
 
 create table OrderContains(
 orderItemId int,
