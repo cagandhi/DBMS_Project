@@ -42,6 +42,11 @@ cmId int primary key,
 foreign key (cmId) references ContentManagers(cmId) on delete cascade on update cascade
 );
 
+create table Journalists(
+cmId int primary key,
+foreign key (cmId) references ContentManagers(cmId) on delete cascade on update cascade
+);
+
 create table Payrolls(
 payId int primary key auto_increment,
 cmId int,
@@ -148,7 +153,7 @@ orderItemId int,
 pubId int,
 cmId int,
 primary key (title, orderItemId, pubId, cmId),
-foreign key (cmId) references Authors(cmId) on delete cascade on update cascade,
+foreign key (cmId) references Journalists(cmId) on delete cascade on update cascade,
 foreign key (title, orderItemId, pubId) references Articles(title, orderItemId, pubId) on delete cascade on update cascade
 );
 
