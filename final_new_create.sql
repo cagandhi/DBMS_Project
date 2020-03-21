@@ -191,6 +191,10 @@ orderId int primary key auto_increment,
 shippingCost float not null,
 orderDate date not null,
 deliveryDate date not null,
+locId int,
+distId int,
+foreign key (locId) references Locations(locId) on delete cascade on update cascade,
+foreign key (distId) references Distributors(distId) on delete cascade on update cascade,
 constraint chk_cost_dates check (shippingCost>=0 and deliveryDate>=orderDate)
 );
 
@@ -210,14 +214,4 @@ primary key(orderId, orderItemId, pubId),
 foreign key (orderId) references Orders(orderId) on delete cascade on update cascade,
 foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade,
 constraint chk_qty check (quantity>0)
-);
-
-create table OrderPlacedBy(
-orderId int,
-locId int,
-distId int,
-primary key (orderId, locId, distId),
-foreign key (orderId) references Orders(orderId) on delete cascade on update cascade,
-foreign key (locId) references Locations(locId) on delete cascade on update cascade,
-foreign key (distId) references Distributors(distId) on delete cascade on update cascade
 );
