@@ -1,6 +1,6 @@
 use DBMS_new;
 
-drop table OrderPlacedBy,OrderContains,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Topics,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Authors,Editors,ContentManagers,PeriodicPublications,Periodicity,Books,Publications;
+drop table OrderPlacedBy,OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Topics,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Authors,Editors,ContentManagers,PeriodicPublications,Periodicity,Books,Publications;
 
 create table Publications(
 pubId int primary key auto_increment,
@@ -186,10 +186,15 @@ orderId int primary key auto_increment,
 shippingCost float not null,
 orderDate date not null,
 deliveryDate date not null,
-billid int,
-foreign key (billId) references Bills(billId) on delete set null on update cascade,
 constraint chk_cost_dates check (shippingCost>=0 and deliveryDate>=orderDate)
 );
+
+create table OrderBillMappings(
+orderId int;
+billId int;
+foreign key (orderId) references Orders(orderId) on delete cascade on update cascade;
+foreign key (billId) references Bills(billId) on delete cascade on update cascade;
+)
 
 create table OrderContains(
 orderItemId int,
