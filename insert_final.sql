@@ -390,10 +390,10 @@ insert into ArticleWrittenBy(title,orderItemId,pubId,cmId) values ('Article 3',1
 insert into ArticleWrittenBy(title,orderItemId,pubId,cmId) values ('Article 4',1,13,13);
 
 delete from Distributors;
-insert into Distributors(distName,distType,balance,primaryContact) values('Distirbutor 1','wholesale distributor',0,'+19191234567');
-insert into Distributors(distName,distType,balance,primaryContact) values('Distirbutor 2','library',0,'+19123456789');
-insert into Distributors(distName,distType,balance,primaryContact) values('Distirbutor 3','bookstore',0,'+19151234567');
-insert into Distributors(distName,distType,balance,primaryContact) values('Distirbutor 4','bookstore',0,'+19161234567');
+insert into Distributors(distName,distType,balance,primaryContact) values('Distributor 1','wholesale distributor',0,'+19191234567');
+insert into Distributors(distName,distType,balance,primaryContact) values('Distributor 2','library',0,'+19123456789');
+insert into Distributors(distName,distType,balance,primaryContact) values('Distributor 3','bookstore',0,'+19151234567');
+insert into Distributors(distName,distType,balance,primaryContact) values('Distributor 4','bookstore',0,'+19161234567');
 
 delete from Locations;
 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Steve','+19191234567','Address of Location 1 of Distributor 1','Garner',1);
