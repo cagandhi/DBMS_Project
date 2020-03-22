@@ -6,6 +6,6 @@ Instructions \
 -> ssh nshah25@remote.eos.ncsu.edu \
 -> add mysql \
 -> mysql -u jmodi3 -p -h classdb2.csc.ncsu.edu \
--> Password = 2003 \
+-> Password = 200315--- \
 -> mysql -u jmodi3 -p -h classdb2.csc.ncsu.edu \
 -> use jmodi3 \
