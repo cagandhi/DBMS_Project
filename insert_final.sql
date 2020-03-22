@@ -455,4 +455,8 @@ update ChapterTopicMappings set topicName='Travel' where pubId=1 and orderItemId
 update ChapterTopicMappings set topicName='Travel' where pubId=2 and orderItemId=1 and topicName='Mystery';
 update ChapterTopicMappings set topicName='Travel' where pubId=2 and orderItemId=2 and topicName='Mystery';
 
-update OrderItems set pubDate='2020-02-23' where pubId=7 and orderItemId=3;
+insert into Payrolls(cmId,amount,paymentDate,claimDate) values (12,500,'2019-09-15','2019-09-16');
+insert into Payrolls(cmId,amount,paymentDate,claimDate) values (13,1500,'2020-03-10',NULL);
+
+update Payrolls set paymentDate='2019-07-15' where payId=13;
+update Payrolls set claimDate='2019-07-25' where payId=13;
