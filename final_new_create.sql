@@ -192,9 +192,7 @@ shippingCost float not null,
 orderDate date not null,
 deliveryDate date not null,
 locId int,
-distId int,
 foreign key (locId) references Locations(locId) on delete cascade on update cascade,
-foreign key (distId) references Distributors(distId) on delete cascade on update cascade,
 constraint chk_cost_dates check (shippingCost>=0 and deliveryDate>=orderDate)
 );
 

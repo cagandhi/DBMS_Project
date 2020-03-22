@@ -397,18 +397,69 @@ insert into Distributors(distName,distType,balance,primaryContact) values('Disti
 
 delete from Locations;
 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Steve','+19191234567','Address of Location 1 of Distributor 1','Garner',1);
-insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Scott','+19191234568','Address of Location 2 of Distributor 1','Raleigh',1);
-insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Matthews','+19191234569','Address of Location 3 of Distributor 1','Greensboro',1);
-insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Bill','+19123456789','Address of Location 1 of Distributor 2','Garner',2);
-insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chaman','+19151234567','Address of Location 1 of Distributor 3','Durham',3);
-insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chagan','+19161234567','Address of Location 1 of Distributor 4','Garner',4);
+2 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Scott','+19191234568','Address of Location 2 of Distributor 1','Raleigh',1);
+1 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Matthews','+19191234569','Address of Location 3 of Distributor 1','Greensboro',1);
+2 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Bill','+19123456789','Address of Location 1 of Distributor 2','Garner',2);
+1 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chaman','+19151234567','Address of Location 1 of Distributor 3','Durham',3);
+1 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chagan','+19161234567','Address of Location 1 of Distributor 4','Garner',4);
 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Magan','+19161234568','Address of Location 2 of Distributor 4','Raleigh',4);
 
 delete from Bills;
 
 delete from Orders;
+insert into Orders(shippingCost,orderDate,deliveryDate) values(9.99,'2019-07-19','2019-07-21');
+insert into Orders(shippingCost,orderDate,deliveryDate) values(9.99,'2019-09-15','2019-09-17');
+insert into Orders(shippingCost,orderDate,deliveryDate) values(14.99,'2020-01-04','2020-01-09');
+insert into Orders(shippingCost,orderDate,deliveryDate) values(12.99,'2020-02-25','2020-02-28');
+insert into Orders(shippingCost,orderDate,deliveryDate) values(12.99,'2020-03-10','2020-03-13');
+insert into Orders(shippingCost,orderDate,deliveryDate) values(12.99,'2020-03-16','2020-03-19');
+insert into Orders(shippingCost,orderDate,deliveryDate) values(9.99,'2020-03-20','2020-03-22');
+
+delete from OrderBillMappings;
 
 delete from OrderContains;
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,5,1)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,4,1)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(2,2,2)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,2,3)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(2,9,3)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,5,4)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,6,4)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(3,8,4)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,9,4)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,5,5)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(4,9,5)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,10,6)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,9,7)
+insert into OrderContains(orderItemId,pubId,orderId,quantity) values(3,11,7)
+
+insert into OrderItems values (1,1,10,'2019-11-10');
+insert into OrderItems values (1,2,50,'2019-07-01');
+insert into OrderItems values (2,2,75,'2019-09-01');
+insert into OrderItems values (1,3,20,'2019-09-15');
+insert into OrderItems values (1,4,35,'2019-06-01');
+insert into OrderItems values (1,5,25,'2019-07-10');
+insert into OrderItems values (1,6,150,'2019-10-20');
+insert into OrderItems values (1,7,30,'2019-08-10');
+insert into OrderItems values (2,7,65,'2019-11-11');
+insert into OrderItems values (3,7,70,'2020-02-05');
+insert into OrderItems values (1,8,3,'2020-02-03');
+insert into OrderItems values (2,8,3,'2020-02-10');
+insert into OrderItems values (3,8,3,'2020-02-17');
+insert into OrderItems values (1,9,10,'2019-12-01');
+insert into OrderItems values (2,9,10,'2020-01-01');
+insert into OrderItems values (3,9,10,'2020-02-01');
+insert into OrderItems values (4,9,10,'2020-03-01');
+insert into OrderItems values (1,10,5,'2020-03-01');
+insert into OrderItems values (2,10,5,'2020-03-08');
+insert into OrderItems values (3,10,5,'2020-03-15');
+insert into OrderItems values (1,11,15,'2020-01-15');
+insert into OrderItems values (2,11,15,'2020-02-15');
+insert into OrderItems values (3,11,15,'2020-03-15');
+insert into OrderItems values (1,12,1,'2020-03-07');
+insert into OrderItems values (2,12,1,'2020-03-14');
+insert into OrderItems values (1,13,7,'2020-03-05');
+
 
 delete from OrderPlacedBy;
 
