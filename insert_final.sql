@@ -397,11 +397,11 @@ insert into Distributors(distName,distType,balance,primaryContact) values('Disti
 
 delete from Locations;
 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Steve','+19191234567','Address of Location 1 of Distributor 1','Garner',1);
-2 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Scott','+19191234568','Address of Location 2 of Distributor 1','Raleigh',1);
-1 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Matthews','+19191234569','Address of Location 3 of Distributor 1','Greensboro',1);
-2 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Bill','+19123456789','Address of Location 1 of Distributor 2','Garner',2);
-1 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chaman','+19151234567','Address of Location 1 of Distributor 3','Durham',3);
-1 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chagan','+19161234567','Address of Location 1 of Distributor 4','Garner',4);
+insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Scott','+19191234568','Address of Location 2 of Distributor 1','Raleigh',1);
+insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Matthews','+19191234569','Address of Location 3 of Distributor 1','Greensboro',1);
+insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Bill','+19123456789','Address of Location 1 of Distributor 2','Garner',2);
+insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chaman','+19151234567','Address of Location 1 of Distributor 3','Durham',3);
+insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Chagan','+19161234567','Address of Location 1 of Distributor 4','Garner',4);
 insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('Magan','+19161234568','Address of Location 2 of Distributor 4','Raleigh',4);
 
 delete from Bills;
