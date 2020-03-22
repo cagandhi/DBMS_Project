@@ -449,3 +449,8 @@ insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,9,7,1);
 insert into OrderContains(orderItemId,pubId,orderId,quantity) values(3,11,7,7);
 
 delete from Topics where topicName in ('Autobiography','Drama','Health','Math','Encyclopedia','Romance','Self help', 'True crime','Science');
+
+update ChapterTopicMappings set topicName='Travel' where pubId=6 and orderItemId=1 and topicName='Mystery';
+update ChapterTopicMappings set topicName='Travel' where pubId=1 and orderItemId=1 and topicName='Mystery';
+update ChapterTopicMappings set topicName='Travel' where pubId=2 and orderItemId=1 and topicName='Mystery';
+update ChapterTopicMappings set topicName='Travel' where pubId=2 and orderItemId=2 and topicName='Mystery';
