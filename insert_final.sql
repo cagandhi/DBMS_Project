@@ -454,3 +454,5 @@ update ChapterTopicMappings set topicName='Travel' where pubId=6 and orderItemId
 update ChapterTopicMappings set topicName='Travel' where pubId=1 and orderItemId=1 and topicName='Mystery';
 update ChapterTopicMappings set topicName='Travel' where pubId=2 and orderItemId=1 and topicName='Mystery';
 update ChapterTopicMappings set topicName='Travel' where pubId=2 and orderItemId=2 and topicName='Mystery';
+
+update OrderItems set pubDate='2020-02-23' where pubId=7 and orderItemId=3;
