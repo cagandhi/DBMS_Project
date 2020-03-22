@@ -1,4 +1,4 @@
-use jmodi3;
+-- use jmodi3;
 
 
 
@@ -447,3 +447,5 @@ insert into OrderContains(orderItemId,pubId,orderId,quantity) values(2,9,5,11);
 insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,10,6,1);
 insert into OrderContains(orderItemId,pubId,orderId,quantity) values(1,9,7,1);
 insert into OrderContains(orderItemId,pubId,orderId,quantity) values(3,11,7,7);
+
+delete from Topics where topicName in ('Autobiography','Drama','Health','Math','Encyclopedia','Romance','Self help', 'True crime','Science');
