@@ -104,7 +104,7 @@ pubId int,
 chapterText varchar(200),
 creationDate date not null,
 primary key (title, orderItemId, pubId),
-foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade
+foreign key (orderItemId, pubId) references Editions(orderItemId, pubId) on delete cascade on update cascade
 );
 
 create table ChapterTopicMappings(
@@ -134,7 +134,7 @@ pubId int,
 articleText varchar(200),
 creationDate date not null,
 primary key (title, orderItemId, pubId),
-foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade
+foreign key (orderItemId, pubId) references Issues(orderItemId, pubId) on delete cascade on update cascade
 );
 
 create table ArticleTopicMappings(
