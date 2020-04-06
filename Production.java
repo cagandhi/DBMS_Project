@@ -3,7 +3,7 @@ import java.sql.*;
 public class Production
 {
 	private Statement statement = null;
-	private ResultSet result = null;
+	private ResultSet rs = null;
 
 	public Production(Connection connection)
 	{
@@ -20,6 +20,7 @@ public class Production
 		System.out.println("Hello - "+name);
 		try
 		{
+			statement.executeUpdate("drop table Test");
 			statement.executeUpdate("create table Test(pid int primary key, nm varchar(45) not null)");
 		} catch(SQLException e) { }
 
@@ -31,10 +32,18 @@ public class Production
 			statement.executeUpdate("delete from Test where pid=3");
 			statement.executeUpdate("update Test set nm='Joy Mudi' where pid=2");
 			statement.executeUpdate("insert into Test values (4,'st')");
+			
+			rs = statement.executeQuery("select * from Test");
+
+			while(rs.next())
+			{
+				System.out.println(rs.getInt("pid") + " - " + rs.getString("nm")); 
+			}
 
 			System.out.println("table created successfully"); 
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
+
 }
