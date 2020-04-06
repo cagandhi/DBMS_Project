@@ -45,6 +45,13 @@ public class Project {
 					break;
 
 				case 2: System.out.println("In case 2"); // production section
+					
+					// pass connection so the class can work on SQL queries
+					Production prod = new Production(connection);
+
+					// call instance methods of class
+					prod.getName("chintan");
+					
 					break;
 
 				case 3: System.out.println("In case 3"); // distribution section
