@@ -456,3 +456,12 @@ insert into Payrolls(cmId,amount,paymentDate,claimDate) values (13,1500,'2020-03
 
 update Payrolls set paymentDate='2019-07-15' where payId=13;
 update Payrolls set claimDate='2019-07-25' where payId=13;
+
+insert into Publications values (1001,'introduction to database');
+insert into Books values (1001,1);
+insert into Publications values (1002,"Healthy Diet");
+insert into PeriodicPublications values (1002,'magazine');
+insert into OrderItems values (2,1001,100,'2018-10-10');
+insert into Editions values (2,1001,'12345');
+insert into OrderItems values (10,1002,10,'2020-02-24');
+insert into Issues values (10,1002,10);

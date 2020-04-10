@@ -36,8 +36,11 @@ public class Project {
 			System.out.println("0. Exit");
 			System.out.println("Enter your choice: ");
 
-			Scanner scanner = new Scanner(System.in);
-			int main_choice = scanner.nextInt();
+			Scanner intScanner = new Scanner(System.in);
+			Scanner floatScanner = new Scanner(System.in);
+			Scanner lineScanner = new Scanner(System.in);
+
+			int main_choice = intScanner.nextInt();
 
 			switch(main_choice)
 			{
@@ -49,8 +52,251 @@ public class Project {
 					// pass connection so the class can work on SQL queries
 					Production prod = new Production(connection);
 
+					System.out.println("\nTASK 2: Production");
+					System.out.println("1. Enter a new book edition or new issue of a publication"); 
+					System.out.println("2. Update, delete a book edition or publication issue");
+					System.out.println("3. Enter/update an article or chapter: title, author's name, topic, and date");
+					System.out.println("4. Enter/update text of an article");
+					System.out.println("5. Find books and articles by topic, date, author's name");
+					System.out.println("6. Enter payment for author or editor, and keep track of when each payment was claimed by its addressee");
+					System.out.println("0. Exit this menu");
+					System.out.println("Enter your choice: ");
+					
+					int task2_choice = intScanner.nextInt();
+
+					switch(task2_choice)
+					{
+						case 1: //operation 1
+							int pubId, orderItemId, val;
+							String pubDate;
+							float price;
+
+							boolean isEdition;
+							System.out.println("Enter 0 for edition and 1 for a periodic issue: ");
+							val = intScanner.nextInt();
+
+							if(val == 0)
+								isEdition = true;
+							else
+								isEdition = false;
+
+							System.out.println("Enter publication ID: ");
+							pubId = intScanner.nextInt();
+
+							if(isEdition)
+							{
+								System.out.println("Enter edition no: ");
+								orderItemId = intScanner.nextInt();
+							}
+							else
+							{
+								System.out.println("Enter issue no: ");
+								orderItemId = intScanner.nextInt();
+							}
+							
+							System.out.println("Enter price: ");
+							price = floatScanner.nextFloat();
+
+							System.out.println("Enter publication date: ");
+							pubDate = lineScanner.nextLine();
+
+							if(isEdition)
+							{
+								System.out.println("Enter ISBN: ");
+								String isbn = lineScanner.nextLine();
+
+								try
+								{
+									prod.op1_edition(orderItemId, pubId, price, pubDate, isbn);
+									System.out.println("New Book Edition inserted successfully!");
+								} catch(SQLException e)
+								{
+									e.printStackTrace();
+									// System.out.println("Operation Failed. Try Again!");
+								}
+							}
+							else
+							{
+								try
+								{
+									prod.op1_issue(orderItemId, pubId, price, pubDate, orderItemId);
+									System.out.println("New Periodic Issue inserted successfully!");
+								} catch(SQLException e)
+								{
+									e.printStackTrace();
+									// System.out.println("Operation Failed. Try Again!");
+								}
+							}
+
+							break;
+
+						case 2: //operation 2
+
+							// boolean isEdition;
+							System.out.println("Enter 0 for edition and 1 for a periodic issue: ");
+							val = intScanner.nextInt();
+
+							if(val == 0)
+								isEdition = true;
+							else
+								isEdition = false;
+
+							System.out.println("\nSUB-MENU");
+							System.out.println("1. Update price");
+							System.out.println("2. Update publication date");
+							
+							if(isEdition)
+							{
+								System.out.println("3. Update ISBN");
+								System.out.println("4. Delete Book Edition");
+							}
+							else
+							{
+								System.out.println("3. Delete Issue");
+							}
+
+							System.out.println("0. Exit this menu");
+
+							System.out.println("Enter choice:");
+							val = intScanner.nextInt();
+
+							switch(val)
+							{
+								case 1: 
+
+									System.out.println("Enter edition no./issue no. for which update is to be done: ");
+									orderItemId = intScanner.nextInt();
+
+									System.out.println("Enter publication id for which update is to be done: ");
+									pubId = intScanner.nextInt();
+
+									System.out.println("Enter new price: ");
+									price = floatScanner.nextFloat();
+									
+									try
+									{
+										prod.op2_update_price(price, orderItemId, pubId);
+										System.out.println("Price updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 2: 
+									System.out.println("Enter publication date: ");
+									pubDate = lineScanner.nextLine();
+
+									System.out.println("Enter edition no./issue no. for which update is to be done: ");
+									orderItemId = intScanner.nextInt();
+
+									System.out.println("Enter publication id for which update is to be done: ");
+									pubId = intScanner.nextInt();
+									
+									try
+									{
+										prod.op2_update_pubDate(pubDate, orderItemId, pubId);
+										System.out.println("Publication Date updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 3: 
+									if(isEdition)
+									{
+										System.out.println("Enter edition no./issue no. for which update is to be done: ");
+										orderItemId = intScanner.nextInt();
+
+										System.out.println("Enter publication id for which update is to be done: ");
+										pubId = intScanner.nextInt();
+
+										System.out.println("Enter ISBN: ");
+										String isbn = lineScanner.nextLine();
+										
+										try
+										{
+											prod.op2_update_isbn(isbn, orderItemId, pubId);
+											System.out.println("ISBN updated!");
+										} catch(SQLException e)
+										{
+											e.printStackTrace();
+											// System.out.println("Operation Failed. Try Again!");
+										}
+									}
+									else
+									{
+										System.out.println("Enter issue no. to be deleted: ");
+										orderItemId = intScanner.nextInt();
+
+										System.out.println("Enter publication id whose issue is to be deleted: ");
+										pubId = intScanner.nextInt();
+
+										try
+										{
+											prod.op2_delete_edition_issue(orderItemId, pubId);
+											System.out.println("Issue deleted successfully!");
+										} catch(SQLException e)
+										{
+											e.printStackTrace();
+											// System.out.println("Operation Failed. Try Again!");
+										}
+									}
+
+									break;
+
+								case 4: 
+									System.out.println("Enter edition no. to be deleted: ");
+									orderItemId = intScanner.nextInt();
+
+									System.out.println("Enter publication id whose edition is to be deleted: ");
+									pubId = intScanner.nextInt();
+
+									try
+									{
+										prod.op2_delete_edition_issue(orderItemId, pubId);
+										System.out.println("Book Edition deleted successfully!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+									break;
+
+								case 0: break;
+
+								default:
+									System.out.println("Invalid choice! Please enter correct choice");
+							}
+							
+							break;
+
+						case 3: //operation 3
+							break;
+
+						case 4: //operation 4
+							break;
+
+						case 5: //operation 5
+							break;
+
+						case 6: //operation 6
+							break;
+
+						case 0: 
+							break;
+
+						default: 
+							System.out.println("Invalid choice! Please enter correct choice");
+					}
+
 					// call instance methods of class
-					prod.getName("chintan");
+					// prod.getName("chintan");
 					
 					break;
 
@@ -121,6 +367,13 @@ public class Project {
 	}
 
 	public static void resetDatabase() {
+		try {
+			// statement.executeUpdate("DROP TABLE Students");
+			// statement.executeUpdate("DROP TABLE Schools");
+			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Topics,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,Periodicity,Books,Publications");
+		} 
+		catch (SQLException e) { }
+
 		createTables();
 		populateTables();
 	}
@@ -186,13 +439,6 @@ public class Project {
 
 		connection = DriverManager.getConnection(jdbcURL, user, password);
 		statement = connection.createStatement();
-
-		try {
-			// statement.executeUpdate("DROP TABLE Students");
-			// statement.executeUpdate("DROP TABLE Schools");
-			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Topics,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,Periodicity,Books,Publications");
-		} catch (SQLException e) {
-		}
 	}
 
 	private static void close() {
