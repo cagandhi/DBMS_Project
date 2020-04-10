@@ -280,9 +280,93 @@ public class Project {
 							break;
 
 						case 4: //operation 4
+							System.out.println("Enter issue no. in which article was published: ");
+							orderItemId = intScanner.nextInt();
+
+							System.out.println("Enter publication id for the issue: ");
+							pubId = intScanner.nextInt();
+
+							System.out.println("Enter title of the article: ");
+							String title = lineScanner.nextLine();
+
+							System.out.println("Enter new text for the article: ");
+							String articleText = lineScanner.nextLine();
+
+							try
+							{
+								prod.op4_update_text_article(title, orderItemId, pubId, articleText);
+								System.out.println("Article's text updated!");
+							} catch(SQLException e)
+							{
+								e.printStackTrace();
+								// System.out.println("Operation Failed. Try Again!");
+							}	
+
 							break;
 
 						case 5: //operation 5
+							System.out.println("\nSUB-MENU");
+							System.out.println("1. Find books and articles by topic");
+							System.out.println("2. Find books and articles by date");
+							System.out.println("3. Find books and articles by author's name");
+							System.out.println("0. Exit this menu");
+							System.out.println("Enter your choice: ");
+
+							int op5_choice = intScanner.nextInt();
+
+							switch(op5_choice)
+							{
+								case 1: 
+									System.out.println("Enter topic name: ");
+									String topicName = lineScanner.nextLine();
+
+									try
+									{
+										prod.op5_find_topic(topicName);
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 2:
+									System.out.println("Enter publication date: ");
+									pubDate = lineScanner.nextLine();
+
+									try
+									{
+										prod.op5_find_pubDate(pubDate);
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 3:
+									System.out.println("Enter author's name: ");
+									String authorName = lineScanner.nextLine();
+
+									try
+									{
+										prod.op5_find_authorName(authorName);
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+									break;
+
+								case 0:
+									break;
+
+								default:
+									System.out.println("Invalid choice! Please enter correct choice");
+								
+							}
 							break;
 
 						case 6: //operation 6
