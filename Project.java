@@ -370,6 +370,69 @@ public class Project {
 							break;
 
 						case 6: //operation 6
+							System.out.println("\nSUB-MENU");
+							System.out.println("1. Enter payment record for a employee");
+							System.out.println("2. Claim payment");
+							System.out.println("0. Exit this menu");
+							System.out.println("Enter your choice: ");
+					
+							val = intScanner.nextInt();
+
+							switch(val)
+							{
+								case 1:
+									System.out.println("Enter payment id: ");
+									int payId = intScanner.nextInt();
+
+									System.out.println("Enter employee id for which payment record is to be entered: ");
+									int cmId = intScanner.nextInt();
+
+									System.out.println("Enter amount: ");
+									float amount = floatScanner.nextFloat();
+
+									System.out.println("Enter payment date: ");
+									String payDate = lineScanner.nextLine();
+
+									try
+									{
+										prod.op6_insert_payment(payId, cmId, amount, payDate);
+										System.out.println("Payment record entered!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 2: 
+									// System.out.println("Enter employee id who is claiming the payment: ");
+									// cmId = intScanner.nextInt();
+
+									System.out.println("Enter payment record id which is to be claimed: ");
+									payId = intScanner.nextInt();
+
+									System.out.println("Enter claim date: ");
+									String claimDate = lineScanner.nextLine();
+
+									try
+									{
+										prod.op6_claim_payment(payId, claimDate);
+										System.out.println("Payment record updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 0:
+									break;
+
+								default:
+									System.out.println("Invalid choice! Please enter correct choice");
+							}
 							break;
 
 						case 0: 

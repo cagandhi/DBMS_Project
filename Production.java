@@ -135,6 +135,20 @@ public class Production
 	}
 
 	// ----------------------------------------------------------------- //
+	// OPERATION 6
+	public void op6_insert_payment(int payId, int cmId, float amount, String payDate) throws SQLException
+	{
+		String query = "insert into Payrolls(payId,cmId,amount,paymentDate,claimDate) values ("+payId+","+cmId+","+amount+",'"+payDate+"',NULL)";
+		statement.executeUpdate(query);
+	}
+
+	public void op6_claim_payment(int payId, String claimDate) throws SQLException
+	{
+		String query = "update Payrolls set claimDate='"+claimDate+"' where payId="+payId;
+		statement.executeUpdate(query);
+	}
+
+	// ----------------------------------------------------------------- //
 	// ----------------------------------------------------------------- //
 
 	public void getName(String name)
