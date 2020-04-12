@@ -451,6 +451,37 @@ public class Project {
 					break;
 
 				case 4: System.out.println("In case 4"); // reports section
+					// pass connection so the class can work on SQL queries
+					Reports report = new Reports(connection);
+
+					System.out.println("\nTASK 4: Reports");
+					System.out.println("1. Generate monthly reports.");
+					System.out.println("2. Calculate the total current number of distributors.");
+					System.out.println("3. calculate total revenue (since inception) per city, per distributor, and per location.");
+					System.out.println("4. Calculate total payments to the editors and authors, per time period and per work type (book authorship, article authorship, or editorial work)."); 
+					System.out.println("0. Exit this menu");
+					System.out.println("Enter your choice: ");
+					
+					int task4_choice = intScanner.nextInt();
+
+					switch(task4_choice)
+					{
+						case 1: // task 4 choice 1
+							break;
+						case 2: // task 4 choice 2
+							break;
+						case 3: // task 4 choice 3
+							break;
+						case 4: // task 4 choice 4
+							break;
+						case 0: 
+							break;
+
+						default: 
+							System.out.println("Invalid choice! Please enter correct choice");
+					}
+
+					
 					break;
 
 				case 0: // exit program
