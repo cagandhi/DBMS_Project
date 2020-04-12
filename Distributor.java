@@ -7,6 +7,7 @@ public class Distributor
 {
 	private Statement statement = null;
 	private ResultSet rs = null;
+	private Scanner intScanner = null;
 
 
 	// CONSTRUCTOR
@@ -15,6 +16,7 @@ public class Distributor
 		try
 		{
 			statement = connection.createStatement();
+			intScanner = new Scanner(System.in);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -30,10 +32,10 @@ public class Distributor
 	public void op1_insert_distributor(int distId, String distName, String distType, float balance, String contactName, String contactPhone, String addr, String city) throws SQLException
 	{
 		//assumption: distId will always be provided.
-		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+contactPhone+"');";
+		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+contactPhone+"')";
 		statement.executeUpdate(query);
 
-		query = "insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('"+contactName+"','"+contactPhone+"','"+addr+"','"++city"',"+distId+")";
+		query = "insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('"+contactName+"','"+contactPhone+"','"+addr+"','"+city+"',"+distId+")";
 		statement.executeUpdate(query);
 	}
 
@@ -41,7 +43,82 @@ public class Distributor
 	// OPERATION 2
 	//Update Operations
 
-	// need to make update with more options. There are a lot of things in distributor in demo data
+	public void op2_update_distributor(int distId) throws SQLException
+	{
+		
+		String query = "select * from Distributors where distId="+distId;
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()){
+			System.out.println("Sorry, distributor with this ID does not exist.");
+			return;
+		}
+
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+		headersList.add("Distributor ID");
+		headersList.add("Distributor Name");
+		headersList.add("Distributor Type");
+		headersList.add("Balance");
+		headersList.add("Primary Contact Number");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
+		List<String> row = new ArrayList<>(); 
+		row.add(String.valueOf(rs.getInt("distId")));
+		row.add(rs.getString("distName"));
+		row.add(rs.getString("distType"));
+		row.add(String.valueOf(rs.getFloat("balance")));
+		row.add(rs.getString("primaryContact"));
+
+		rowsList.add(row);
+
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		
+		int locationCnt=0;
+		query = "select * from Locations where distId="+distId;
+		rs = statement.executeQuery(query);
+
+
+		tableGenerator = new TableGenerator();
+		headersList = new ArrayList<>(); 
+		headersList.add("Location ID");
+		headersList.add("Contact Person");
+		headersList.add("Phone Number");
+		headersList.add("Address");
+		headersList.add("City");
+
+		rowsList = new ArrayList<>();
+		while(rs.next()){
+			locationCnt++;
+			row = new ArrayList<>(); 
+			row.add(String.valueOf(rs.getInt("locId")));
+			row.add(rs.getString("contactPerson"));
+			row.add(rs.getString("phoneNumber"));
+			row.add(rs.getString("addr"));
+			row.add(rs.getString("city"));
+
+			rowsList.add(row);
+		}
+
+		if(locationCnt>0){
+			System.out.println("Following is the list of warehouse locations of current distributor");
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+		
+		System.out.println("Edit-menu:");
+		System.out.println("1. Update Distributor Name");
+		System.out.println("2. Update Distributor Type");
+		System.out.println("3. Update Balance");
+		System.out.println("4. Update Primary Contact Number");
+		if(locationCnt>0){
+			System.out.println("5. Update warehouse (location) details");
+		}
+
+
+
+	}
+
 	public void op2_update_distType(String distName, String distType) throws SQLException
 	{
 		String query = "update Distributors set distType='"+distType+"' where distName='"+distName+"';";
@@ -64,7 +141,7 @@ public class Distributor
 	// ----------------------------------------------------------------- //
 	// OPERATION 3
 	// Delete a Distributor
-	public void op3_delete_distributor(String distId) throws SQLException
+	public void op3_delete_distributor(int distId) throws SQLException
 	{
 		String query = "delete from Distributors where distId = "+distId;
 		statement.executeUpdate(query);
@@ -149,7 +226,7 @@ public class Distributor
 			float billAmt = 0;
 			for (int i = 0; i < OrderIds.length; i++)
 			{
-    		//OrderIds[i] = Integer.parseInt(OrderIds[i]);
+				//OrderIds[i] = Integer.parseInt(OrderIds[i]);
 				query = "Select OrderContains.quantity, OrderItems.price from OrderContains JOIN OrderItems ON OrderContains.orderItemId = OrderItems.orderItemId where OrderContains.orderId ="+OrderIds[i];
 				rs = statement.executeQuery(query);
 
