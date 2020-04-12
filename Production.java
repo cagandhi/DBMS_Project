@@ -69,6 +69,28 @@ public class Production
 	}
 
 	// ----------------------------------------------------------------- //
+	// OPERATION 3
+	public void op3_enter_chapter(int orderItemId, int pubId, String title, String chapterText, String chapterDate, String[] topicList, String[] authorList) throws SQLException
+	{
+		String query = "insert into Chapters values ('"+title+"',"+orderItemId+","+pubId+",'"+chapterText+"','"+chapterDate+"')";
+		statement.executeUpdate(query);
+
+		for(String topic: topicList)
+		{
+			// query = "insert into Chapters values ('"+title+"',"+orderItemId+","+pubId+")";
+			query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
+			statement.executeUpdate(query);
+		}
+
+		for(String authorId: authorList)
+		{
+			// query = "insert into Chapters values ('"+title+"',"+orderItemId+","+pubId+")";
+			query = "insert into ChapterWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+authorId+")";
+			statement.executeUpdate(query);
+		}	
+	}
+
+	// ----------------------------------------------------------------- //
 	// OPERATION 4
 	public void op4_update_text_article(String title, int orderItemId, int pubId, String articleText) throws SQLException
 	{
