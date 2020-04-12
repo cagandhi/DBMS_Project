@@ -54,9 +54,6 @@ public class Project {
 
 					execute_task2();
 
-					// call instance methods of class
-					// prod.getName("chintan");
-
 					break;
 
 				case 3: System.out.println("In case 3"); // distribution section
@@ -77,126 +74,6 @@ public class Project {
 					System.out.println("Invalid choice! Please enter correct choice");
 			}
 		}
-
-		/**
-		try {
-
-
-			boolean canAfford = checkAbilityToStudy("Todd");
-			// ************************************************************************
-
-			// --------- MODIFIED CODE START ---------
-
-			// MOD - try catch block to catch any SQLException occurring in modifyALittleBit2().
-			try
-			{
-				// MOD - set auto commit mode to false - this means that the changes made by SQL queries won't be committed to the database unless we call the commit() function manually.
-				connection.setAutoCommit(false);
-
-				// modifyALittleBit1();
-				modifyALittleBit2();
-
-				// MOD - call commit() manually to permanently commit changes to database as a single transaction.
-				// this statement will not be reached if one of the update statements in modifyALittleBit2() is not executed.
-				connection.commit();
-			}
-			// MOD - Catching a SQLException would mean that one of the update queries is not executed properly and hence rollback the database to its previous state.
-			catch(SQLException se)
-			{
-				connection.rollback();
-			}
-			// MOD - good practice to again enable the default auto-commit mode to prevent any other issues.
-			finally
-			{
-				connection.setAutoCommit(true);
-			}
-			// --------- MODIFIED CODE END ---------
-
-			boolean canAfford1 = checkAbilityToStudy("Angela");
-
-			if (canAfford == canAfford1) {
-				System.out.println("Success");
-			} else {
-				System.out.println("Failure");
-			}
-
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		**/
-		// ***********************************************************************
-		// close();
-	}
-
-	public static void op1_insert_chapter(Editing edit, int pubId, int orderItemId){
-		int ncmId;
-		String title, chapterText, creationDate, topic, ids;
-
-		Scanner intScanner = new Scanner(System.in);
-		Scanner lineScanner = new Scanner(System.in);
-
-		System.out.println("Enter the Title of chapter: ");
-		title = lineScanner.nextLine();
-		System.out.println("Enter the Chapter Text: ");
-		chapterText = lineScanner.nextLine();
-		System.out.println("Enter the Creation date of chapter: ");
-		creationDate = lineScanner.nextLine();
-
-		System.out.println("Enter the topics for this chapter separated by commas: ");
-		topic = lineScanner.nextLine();
-		String[] topics = topic.split(",");
-
-		System.out.println("Enter the IDs of authors of this chapter separated by commas: ");
-		ids = lineScanner.nextLine();
-		String[] idArray = ids.split(",");
-		int[] cmId = new int[idArray.length];
-		for(int i=0;i<idArray.length;i++){
-			cmId[i]=Integer.parseInt(idArray[i]);
-		}
-
-		try {
-			edit.op5_insert_chapter(title, orderItemId, pubId, chapterText, creationDate, topics, cmId);
-			System.out.println("Chapter successfully inserted!");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void op1_insert_article(Editing edit, int pubId, int orderItemId){
-		int ncmId;
-		String title, articleText, creationDate, topic, ids;
-
-		Scanner intScanner = new Scanner(System.in);
-		Scanner lineScanner = new Scanner(System.in);
-
-
-		System.out.println("Enter the Title of article: ");
-		title = lineScanner.nextLine();
-		System.out.println("Enter the Article Text: ");
-		articleText = lineScanner.nextLine();
-		System.out.println("Enter the Creation date of article: ");
-		creationDate = lineScanner.nextLine();
-
-		System.out.println("Enter the of topics for this article seperated by a comma: ");
-		topic = lineScanner.nextLine();
-		String[] topics = topic.split(",");
-
-		System.out.println("Enter the IDs of journalists of this chapter separated by commas: ");
-		ids = lineScanner.nextLine();
-		String[] idArray = ids.split(",");
-		int[] cmId = new int[idArray.length];
-		for(int i=0;i<idArray.length;i++){
-			cmId[i]=Integer.parseInt(idArray[i]);
-		}
-
-
-		try {
-			edit.op5_insert_article(title, orderItemId, pubId, articleText, creationDate, topics, cmId);
-			System.out.println("Article successfully inserted!");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void execute_task1(){
@@ -209,7 +86,6 @@ public class Project {
 		System.out.println("\nTASK 1: Editing and Publishing");
 		System.out.println("1. Enter basic information on a new publication");
 		System.out.println("2. Update title of a publication");
-		// System.out.println("3. Update number of editions of a book");
 		System.out.println("3. Update Periodicity of a Periodic Publication");
 		System.out.println("4. Update Frequency of a Periodic Publication");
 		System.out.println("5. Assign editor(s) to a publication");
@@ -218,13 +94,16 @@ public class Project {
 		System.out.println("8. Enter an article into a periodic publication");
 		System.out.println("9. Delete a chapter from a book");
 		System.out.println("10. Delete an article from a periodic publication");
+		System.out.println("0. Exit this menu");
 
 		int task1_choice = intScanner.nextInt();
+
 		switch (task1_choice){
 			case 1:
 				String pubTitle, pubDate;
 				int pubId;
 				float price;
+
 				System.out.println("Enter 0 to insert a new book and 1 to insert a new periodic publication");
 				int choice = intScanner.nextInt();
 				System.out.println("Enter the Publication ID: ");
@@ -235,10 +114,11 @@ public class Project {
 				pubDate = lineScanner.nextLine();
 				System.out.println("Enter the price: ");
 				price = floatScanner.nextFloat();
+
 				if(choice==0){
 					int edition;
 					String ISBN, topic;
-					System.out.println("Enter the topics for the book separated by commas: ");
+					System.out.println("Enter the topics for the book (separated by commas only): ");
 					topic = lineScanner.nextLine();
 					String[] topicList = topic.split(",");
 					System.out.println("Enter the edition for the book: ");
@@ -248,11 +128,12 @@ public class Project {
 
 					try {
 						edit.op1_insert_pub_book(pubTitle, pubId, edition, price, ISBN, pubDate, topicList);
+
 						System.out.println("Book successfully inserted!");
 						System.out.println("Would you like to add chapters for this Book? ");
 						String yn = lineScanner.nextLine();
 						while(yn.equalsIgnoreCase("y")){
-							op1_insert_chapter(edit, pubId, edition);
+							edit.op1_insert_chapter(pubId, edition); 
 							System.out.println("Would you like to add more chapters? ");
 							yn = lineScanner.nextLine();
 						}
@@ -264,19 +145,23 @@ public class Project {
 				else if(choice==1){
 					String periodicityType, frequency;
 					int issueNo;
-					System.out.println("Enter the Type of the Periodic Publication: ");
+
+					System.out.println("Enter the Type of the Periodic Publication (magazine, journal, etc.): ");
 					periodicityType = lineScanner.nextLine();
-					System.out.println("Enter the Frequency of the Periodic Publication: ");
+					System.out.println("Enter the Frequency of the Periodic Publication (monthly, weekly, etc.): ");
 					frequency = lineScanner.nextLine();
 					System.out.println("Enter the Issue No.: ");
 					issueNo = intScanner.nextInt();
+
 					try {
 						edit.op1_insert_pub_periodic(pubTitle, pubId, periodicityType, frequency, issueNo, price, pubDate);
 						System.out.println("Periodic publication successfully inserted!");
+						
 						System.out.println("Would you like to add articles for this Publication? ");
 						String yn = lineScanner.nextLine();
+						
 						while(yn.equalsIgnoreCase("y")){
-							op1_insert_article(edit, pubId, issueNo);
+							edit.op1_insert_article(pubId, issueNo);
 							System.out.println("Would you like to add more articles? ");
 							yn = lineScanner.nextLine();
 						}
@@ -290,6 +175,7 @@ public class Project {
 				}
 
 				break;
+			
 			case 2:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
@@ -335,13 +221,14 @@ public class Project {
 				int orderItemId;
 				System.out.println("Enter the ID of the publication: ");
 				pubId = intScanner.nextInt();
-				System.out.println("Enter the Order Item ID: ");
+				System.out.println("Enter edition/issue no. of the publication: ");
 				orderItemId = intScanner.nextInt();
-
-				System.out.println("Enter the IDs of editor(s) separated by commas: ");
+				System.out.println("Enter the IDs of editor(s) (separated by commas only): ");
 				String ids = lineScanner.nextLine();
+
 				String[] idArray = ids.split(",");
 				int[] cmIds = new int[idArray.length];
+
 				for(int i=0;i<idArray.length;i++){
 					cmIds[i]=Integer.parseInt(idArray[i]);
 				}
@@ -368,27 +255,31 @@ public class Project {
 			case 7:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				System.out.println("Enter the Order Item ID: ");
+				System.out.println("Enter the edition no. to which chapter is to be added: ");
 				orderItemId = intScanner.nextInt();
-				op1_insert_chapter(edit, pubId, orderItemId);
+
+				edit.op1_insert_chapter(pubId, orderItemId);
 				break;
 
 			case 8:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				System.out.println("Enter the Order Item ID: ");
+				System.out.println("Enter the issue no. to which article is to be added: ");
 				orderItemId = intScanner.nextInt();
-				op1_insert_article(edit, pubId, orderItemId);
+
+				edit.op1_insert_article(pubId, orderItemId);
 				break;
 
 			case 9:
 				String title;
+
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				System.out.println("Enter the Order Item ID: ");
+				System.out.println("Enter the edition no. to which chapter is linked: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the title of the Chapter: ");
 				title = lineScanner.nextLine();
+
 				try {
 					edit.op5_delete_chapter(title, orderItemId, pubId);
 					System.out.println("Chapter successfully deleted!");
@@ -400,7 +291,7 @@ public class Project {
 			case 10:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				System.out.println("Enter the Order Item ID: ");
+				System.out.println("Enter the issue no. to which article is linked: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the title of the Article: ");
 				title = lineScanner.nextLine();
@@ -412,6 +303,11 @@ public class Project {
 				}
 				break;
 
+			case 0:
+				break;
+
+			default:
+				System.out.println("Invalid choice! Please enter correct choice");
 		}
 	}
 
@@ -1268,14 +1164,15 @@ public class Project {
 		Scanner intScanner = new Scanner(System.in);
 		Scanner floatScanner = new Scanner(System.in);
 		Scanner lineScanner = new Scanner(System.in);
-		int distID
-		String distName
-		String distType
-		Float balance
-		String contactName
-		String contactPhone
-		String addr
-		String city
+		
+		int distID;
+		String distName;
+		String distType;
+		Float balance;
+		String contactName;
+		String contactPhone;
+		String addr;
+		String city;
 
 		int second_choice = intScanner.nextInt();
 		switch(second_choice)

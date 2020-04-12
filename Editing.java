@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.Date;
+import java.util.*;
 
 public class Editing {
     private Statement statement = null;
@@ -60,6 +60,78 @@ public class Editing {
         statement.executeUpdate(query);
     }
 
+    public static void op1_insert_chapter(int pubId, int orderItemId){
+        int ncmId;
+        String title, chapterText, creationDate, topic, ids;
+
+        Scanner intScanner = new Scanner(System.in);
+        Scanner lineScanner = new Scanner(System.in);
+
+        System.out.println("Enter the Title of chapter: ");
+        title = lineScanner.nextLine();
+        System.out.println("Enter the Chapter Text: ");
+        chapterText = lineScanner.nextLine();
+        System.out.println("Enter the Creation date of chapter: ");
+        creationDate = lineScanner.nextLine();
+
+        System.out.println("Enter the topics for this chapter (separated by commas only): ");
+        topic = lineScanner.nextLine();
+        String[] topics = topic.split(",");
+
+        System.out.println("Enter the IDs of authors of this chapter (separated by commas only): ");
+        ids = lineScanner.nextLine();
+
+        String[] idArray = ids.split(",");
+        int[] cmId = new int[idArray.length];
+
+        for(int i=0;i<idArray.length;i++){
+            cmId[i]=Integer.parseInt(idArray[i]);
+        }
+
+        try {
+            op5_insert_chapter(title, orderItemId, pubId, chapterText, creationDate, topics, cmId);
+            System.out.println("Chapter successfully inserted!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void op1_insert_article(int pubId, int orderItemId){
+        int ncmId;
+        String title, articleText, creationDate, topic, ids;
+
+        Scanner intScanner = new Scanner(System.in);
+        Scanner lineScanner = new Scanner(System.in);
+
+
+        System.out.println("Enter the Title of article: ");
+        title = lineScanner.nextLine();
+        System.out.println("Enter the Article Text: ");
+        articleText = lineScanner.nextLine();
+        System.out.println("Enter the Creation date of article: ");
+        creationDate = lineScanner.nextLine();
+
+        System.out.println("Enter the of topics for this article seperated by a comma: ");
+        topic = lineScanner.nextLine();
+        String[] topics = topic.split(",");
+
+        System.out.println("Enter the IDs of journalists of this chapter separated by commas: ");
+        ids = lineScanner.nextLine();
+        String[] idArray = ids.split(",");
+        int[] cmId = new int[idArray.length];
+
+        for(int i=0;i<idArray.length;i++){
+            cmId[i]=Integer.parseInt(idArray[i]);
+        }
+
+
+        try {
+            op5_insert_article(title, orderItemId, pubId, articleText, creationDate, topics, cmId);
+            System.out.println("Article successfully inserted!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     // ----------------------------------------------------------------- //
     // OPERATION 2
@@ -79,7 +151,7 @@ public class Editing {
         String query = "UPDATE PeriodicPublications SET frequency='"+frequency+"' WHERE pubId="+pubId;
         statement.executeUpdate(query);
     }
-    // TODO: Update Frequency of a Periodic Publication
+    
     // ----------------------------------------------------------------- //
     // OPERATION 3
     public void op3_assign_editor_pub(int[] cmId, int orderItemId, int pubId) throws SQLException{
@@ -92,9 +164,10 @@ public class Editing {
     // ----------------------------------------------------------------- //
     // OPERATION 4
     public void op4_find_editor_pub(int cmId) throws SQLException{
-        String query = "SELECT p.pubId, p.title FROM ItemEditedBy ie NATURAL JOIN Publications p WHERE ie.cmId="+cmId;
+        String query = "SELECT p.pubId, p.title, o.orderItemId, o.pubDate FROM ItemEditedBy ie NATURAL JOIN Publications p NATURAL JOIN OrderItems o WHERE ie.cmId="+cmId;
         rs = statement.executeQuery(query);
 
+        /*
         int count=1;
         while(rs.next()){
             System.out.println("\nRecord "+count+": ");
@@ -102,6 +175,30 @@ public class Editing {
             System.out.println("Publication Title: "+rs.getString("title"));
             count++;
         }
+        */
+
+        TableGenerator tableGenerator = new TableGenerator();
+        List<String> headersList = new ArrayList<>(); 
+        headersList.add("Publication ID");
+        headersList.add("Publication Title");
+        headersList.add("Edition or Issue No.");
+        headersList.add("Publication Date");
+
+        List<List<String>> rowsList = new ArrayList<>();
+
+        while(rs.next())
+        {
+            List<String> row = new ArrayList<>(); 
+
+            row.add(rs.getString("pubId"));
+            row.add(rs.getString("title"));
+            row.add(rs.getString("orderItemId"));
+            row.add(rs.getString("pubDate"));
+
+            rowsList.add(row);
+        }
+
+        System.out.println(tableGenerator.generateTable(headersList, rowsList));
     }
 
     // ----------------------------------------------------------------- //
