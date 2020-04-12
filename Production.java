@@ -1,5 +1,7 @@
 import java.sql.*;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Production
 {
@@ -27,7 +29,7 @@ public class Production
 		statement.executeUpdate(query);
 
 		// insert into editions
-		query = "insert into Editions values ("+orderItemId+","+pubId+","+isbn+")";
+		query = "insert into Editions values ("+orderItemId+","+pubId+",'"+isbn+"')";
 		statement.executeUpdate(query);
 	}
 
@@ -77,17 +79,105 @@ public class Production
 
 		for(String topic: topicList)
 		{
-			// query = "insert into Chapters values ('"+title+"',"+orderItemId+","+pubId+")";
 			query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
 			statement.executeUpdate(query);
 		}
 
 		for(String authorId: authorList)
 		{
-			// query = "insert into Chapters values ('"+title+"',"+orderItemId+","+pubId+")";
-			query = "insert into ChapterWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+authorId+")";
+			query = "insert into ChapterWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+Integer.parseInt(authorId)+")";
 			statement.executeUpdate(query);
 		}	
+	}
+
+	public void op3_enter_article(int orderItemId, int pubId, String title, String articleText, String articleDate, String[] topicList, String[] authorList) throws SQLException
+	{
+		String query = "insert into Articles values ('"+title+"',"+orderItemId+","+pubId+",'"+articleText+"','"+articleDate+"')";
+		statement.executeUpdate(query);
+
+		for(String topic: topicList)
+		{
+			query = "insert into ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
+			statement.executeUpdate(query);
+		}
+
+		for(String authorId: authorList)
+		{
+			query = "insert into ArticleWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+Integer.parseInt(authorId)+")";
+			statement.executeUpdate(query);
+		}	
+	}
+
+	public void op3_update_chapter_title(int orderItemId, int pubId, String title, String newTitle) throws SQLException
+	{
+		String query = "update Chapters set title='"+newTitle+"' where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId;
+		statement.executeUpdate(query);
+	}
+
+	public void op3_update_article_title(int orderItemId, int pubId, String title, String newTitle) throws SQLException
+	{
+		String query = "update Articles set title='"+newTitle+"' where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId;
+		statement.executeUpdate(query);
+	}
+
+	public void op3_update_chapter_date(int orderItemId, int pubId, String title, String creationDate) throws SQLException
+	{
+		String query = "update Chapters set creationDate='"+creationDate+"' where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId;
+		statement.executeUpdate(query);
+	}
+
+	public void op3_update_article_date(int orderItemId, int pubId, String title, String creationDate) throws SQLException
+	{
+		String query = "update Articles set creationDate='"+creationDate+"' where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId;
+		statement.executeUpdate(query);
+	}
+
+	public void op3_add_author_chapter(int orderItemId, int pubId, String title, int cmId) throws SQLException
+	{
+		String query = "insert into ChapterWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+cmId+")";
+		statement.executeUpdate(query);
+	}
+
+	public void op3_add_journalist_article(int orderItemId, int pubId, String title, int cmId) throws SQLException
+	{
+		String query = "insert into ArticleWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+cmId+")";
+		statement.executeUpdate(query);
+	}
+
+	public void op3_remove_author_chapter(int orderItemId, int pubId, String title, int cmId) throws SQLException
+	{
+		String query = "delete from ChapterWrittenBy where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId+" and cmId="+cmId;
+		statement.executeUpdate(query);
+	}
+
+	public void op3_remove_journalist_article(int orderItemId, int pubId, String title, int cmId) throws SQLException
+	{
+		String query = "delete from ArticleWrittenBy where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId+" and cmId="+cmId;
+		statement.executeUpdate(query);
+	}
+
+	public void op3_add_topic_chapter(int orderItemId, int pubId, String title, String topicName) throws SQLException
+	{
+		String query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topicName+"')";
+		statement.executeUpdate(query);
+	}
+
+	public void op3_add_topic_article(int orderItemId, int pubId, String title, String topicName) throws SQLException
+	{
+		String query = "insert into ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topicName+"')";
+		statement.executeUpdate(query);
+	}
+
+	public void op3_remove_topic_chapter(int orderItemId, int pubId, String title, String topicName) throws SQLException
+	{
+		String query = "delete from ChapterTopicMappings where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId+" and topicName='"+topicName+"'";
+		statement.executeUpdate(query);
+	}
+
+	public void op3_remove_topic_article(int orderItemId, int pubId, String title, String topicName) throws SQLException
+	{
+		String query = "delete from ArticleTopicMappings where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId+" and topicName='"+topicName+"'";
+		statement.executeUpdate(query);
 	}
 
 	// ----------------------------------------------------------------- //
@@ -102,20 +192,32 @@ public class Production
 	// OPERATION 5
 	public void op5_find_topic(String topicName) throws SQLException
 	{
-		String query = "select distinct P.title as PublicationTitle, noOfEditions as noOfEditionsOrIssueNo, '-' as ArticleTitle, topicName, 'Book' as 'BookOrArticle' from Books B natural join ChapterTopicMappings inner join Publications P on B.pubId = P.pubId where topicName='"+topicName+"' union select P.title as PublicationTitle, AT.orderItemId as noOfEditionsOrIssueNo, AT.title as ArticleTitle, topicName, 'Article' as 'BookOrArticle' from Publications P inner join ArticleTopicMappings AT on AT.pubId=P.pubId where AT.topicName='"+topicName+"'";
+		String query = "select P.title as PublicationTitle, noOfEditions as noOfEditionsOrIssueNo, '-' as ArticleTitle, topicName, 'Book' as BookOrArticle from Books natural join Publications P natural join BookTopicMappings where topicName='"+topicName+"' union select P.title as PublicationTitle, AT.orderItemId as noOfEditionsOrIssueNo, AT.title as ArticleTitle, topicName, 'Article' as 'BookOrArticle' from Publications P inner join ArticleTopicMappings AT on AT.pubId=P.pubId where AT.topicName='"+topicName+"'";
 		rs = statement.executeQuery(query);
 
-		int cnt = 1;
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+		headersList.add("Publication Title");
+		headersList.add("NoOfEditionsOrIssueNo");
+		headersList.add("Article Title");
+		headersList.add("Topic Name");
+		headersList.add("Book or Article");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
 		while(rs.next())
 		{
-			System.out.println("\nRECORD "+cnt+": ");
-			System.out.println("Publication Title: "+rs.getString("PublicationTitle"));
-			System.out.println("No of editions or issue no.: "+rs.getInt("noOfEditionsOrIssueNo"));
-			System.out.println("Article title: "+rs.getString("ArticleTitle"));
-			System.out.println("Topic Name: "+rs.getString("topicName"));
-			System.out.println("Book or Article: "+rs.getString("BookOrArticle"));
-			cnt++;
+			List<String> row = new ArrayList<>(); 
+			row.add(rs.getString("PublicationTitle"));
+			row.add(String.valueOf(rs.getInt("noOfEditionsOrIssueNo")));
+			row.add(rs.getString("ArticleTitle"));
+			row.add(rs.getString("topicName"));
+			row.add(rs.getString("BookOrArticle"));
+
+			rowsList.add(row);
 		}
+
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
 	}
 
 	public void op5_find_pubDate(String pubDate) throws SQLException
