@@ -19,6 +19,14 @@ public class Distributor
 			e.printStackTrace();
 		}
 	}
+	//Main Function
+
+	public void main_distributor()
+	{
+
+			
+
+	}
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 1
@@ -150,7 +158,6 @@ public class Distributor
 		rs = statement.getGeneratedKeys();
 		rs.next();
 		int billId = rs.getInt("billId");
-		System.out.println(billId);
 		for(int i=0;i<orderId.length;i++)
 		{
 
@@ -165,7 +172,42 @@ public class Distributor
 	// ----------------------------------------------------------------- //
 	// OPERATION 6
 	// Payment
-	public void op4_payment(float billId, String receiptDate, float distId) throws SQLException
+	public void op6_payment(int distId, String receiptDate) throws SQLException
+	{
+		System.out.println("Enter Payment Date");
+
+		System.out.println("Following Bills are Pending Payments");
+		String query = "Select * from Bills where receiptDate is NULL and distId="+distId+"";
+		rs = statement.executeQuery(query);
+
+		int cnt = 1;
+		while(rs.next())
+		{
+			System.out.println("\nRECORD "+cnt+": ");
+			System.out.println("Bill ID: "+rs.getInt("billId"));
+			System.out.println("Bill Amount: "+rs.getInt("billAmt"));
+			System.out.println("Generation Date: "+rs.getString("generationDate"));
+			System.out.println("Distributor ID: "+rs.getString("distId"));
+			cnt++;
+		}
+
+		System.out.println("Input Bill ID (Comma Seperated) for which you make Payment");
+		Scanner Scanner = new Scanner(System.in);
+		String billIds = Scanner.nextLine();
+
+		String[] BillIds = billIds.split(",");
+
+		for (int i = 0; i < BillIds.length; i++)
+		{
+			//OrderIds[i] = Integer.parseInt(OrderIds[i]);
+			op6_payment_helper(BillIds[i], receiptDate,distId);
+			System.out.println("Bill with id "+BillIds[i]+" Paid successfully");
+
+		}
+
+
+	}
+	public void op6_payment_helper(String billId, String receiptDate, float distId) throws SQLException
 	{
 
 
@@ -174,14 +216,16 @@ public class Distributor
 
 		query = "Select billAmt from Bills where billId = "+billId+";";
 		rs = statement.executeQuery(query);
-		Float billAmt = rs.getFloat("billAmt");
+		rs.next();
+		float billAmt = rs.getFloat("billAmt");
 
 		query = "Select balance from Distributors where distId = "+distId+";";
 		rs = statement.executeQuery(query);
-		Float balance = rs.getFloat("balance");
+		rs.next();
+		float balance = rs.getFloat("balance");
+		float updated_balance = balance-billAmt;
 
-
-		query = "update Distributors set balance = 700 where distId = '7';";
+		query = "update Distributors set balance = "+updated_balance+" where distId = "+distId+";";
 		rs = statement.executeQuery(query);
 
 
