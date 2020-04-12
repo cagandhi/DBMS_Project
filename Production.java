@@ -225,6 +225,7 @@ public class Production
 		String query = "select title as PublicationTitle, '-' as ArticleTitle, orderItemId as editionOrIssueNo, '-' as articleText, pubDate, 'Book' as 'BookOrArticle' from Publications natural join Books natural join OrderItems where pubDate='"+pubDate+"' union select P.title as PublicationTitle, A.title as ArticleTitle, A.orderItemId as editionOrIssueNo, articleText, creationDate as pubDate, 'Article' as 'BookOrArticle' from Publications P inner join Articles A on P.pubId=A.pubId where creationDate='"+pubDate+"'";
 		rs = statement.executeQuery(query);
 
+		/*
 		int cnt = 1;
 		while(rs.next())
 		{
@@ -237,6 +238,33 @@ public class Production
 			System.out.println("Book or Article: "+rs.getString("BookOrArticle"));
 			cnt++;
 		}
+		*/
+
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+		headersList.add("Publication Title");
+		headersList.add("Article title");
+		headersList.add("Edition or issue no");
+		headersList.add("Article Text");
+		headersList.add("Publication Date");
+		headersList.add("Book or Article");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
+		while(rs.next())
+		{
+			List<String> row = new ArrayList<>(); 
+			row.add(rs.getString("PublicationTitle"));
+			row.add(rs.getString("ArticleTitle"));
+			row.add(String.valueOf(rs.getInt("editionOrIssueNo")));
+			row.add(rs.getString("articleText"));
+			row.add(rs.getString("pubDate"));
+			row.add(rs.getString("BookOrArticle"));
+
+			rowsList.add(row);
+		}
+
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
 	}
 
 	public void op5_find_authorName(String authorName) throws SQLException
@@ -244,6 +272,7 @@ public class Production
 		String query = "select P.title as PublicationTitle, orderItemId as editionOrIssueNo, CW.title as ChapterOrArticleTitle, C.creationDate as pubDate, cmName as 'Authors Name', 'Book' as 'BookOrArticle' from Books B natural join ChapterWrittenBy CW natural join ContentManagers natural join Chapters C inner join Publications P on B.pubId=P.pubId where cmName='"+authorName+"' union select P.title as PublicationTitle, orderItemId as editionOrIssueNo, A.title as ChapterOrArticleTitle, creationDate as pubDate, cmName as 'Authors Name', 'Article' as 'BookOrArticle' from Articles A natural join ArticleWrittenBy natural join ContentManagers inner join Publications P on A.pubId=P.pubId where cmName='"+authorName+"'";
 		rs = statement.executeQuery(query);
 
+		/*
 		int cnt = 1;
 		while(rs.next())
 		{
@@ -256,6 +285,33 @@ public class Production
 			System.out.println("Book or Article: "+rs.getString("BookOrArticle"));
 			cnt++;
 		}
+		*/
+
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+		headersList.add("Publication Title");
+		headersList.add("Edition or issue no");
+		headersList.add("Chapter or Article title");
+		headersList.add("Publication Date");
+		headersList.add("Author's Name");
+		headersList.add("Book or Article");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
+		while(rs.next())
+		{
+			List<String> row = new ArrayList<>(); 
+			row.add(rs.getString("PublicationTitle"));
+			row.add(String.valueOf(rs.getInt("editionOrIssueNo")));
+			row.add(rs.getString("ChapterOrArticleTitle"));
+			row.add(rs.getString("pubDate"));
+			row.add(rs.getString("Authors Name"));
+			row.add(rs.getString("BookOrArticle"));
+
+			rowsList.add(row);
+		}
+
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
 	}
 
 	// ----------------------------------------------------------------- //
@@ -274,36 +330,4 @@ public class Production
 
 	// ----------------------------------------------------------------- //
 	// ----------------------------------------------------------------- //
-
-	public void getName(String name)
-	{
-		System.out.println("Hello - "+name);
-		try
-		{
-			statement.executeUpdate("drop table Test");
-			statement.executeUpdate("create table Test(pid int primary key, nm varchar(45) not null)");
-		} catch(SQLException e) { }
-
-		try
-		{
-			statement.executeUpdate("insert into Test values (1,'chintan')");
-			statement.executeUpdate("insert into Test values (2,'modi')");
-			statement.executeUpdate("insert into Test values (3,'himol')");
-			statement.executeUpdate("delete from Test where pid=3");
-			statement.executeUpdate("update Test set nm='Joy Mudi' where pid=2");
-			statement.executeUpdate("insert into Test values (4,'st')");
-			
-			rs = statement.executeQuery("select * from Test");
-
-			while(rs.next())
-			{
-				System.out.println(rs.getInt("pid") + " - " + rs.getString("nm")); 
-			}
-
-			System.out.println("table created successfully"); 
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 }
