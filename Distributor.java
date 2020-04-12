@@ -89,6 +89,7 @@ public class Distributor
 			String query = "Select * From Orders JOIN Locations ON Orders.locId=Locations.locId where (Orders.orderId not in (Select orderId from OrderBillMappings) and Locations.distID="+distId+")";
 			rs = statement.executeQuery(query);
 
+			/*
 			int cnt = 1;
 			System.out.println("Bills for following orders have not been generated for current distributor");
 			while(rs.next())
@@ -99,9 +100,39 @@ public class Distributor
 				System.out.println("Delivery Date: "+rs.getString("deliveryDate"));
 				cnt++;
 			}
+			*/
+
+			// ---------------------------
+			// ---------------------------
+			System.out.println("Bills for following orders have not been generated for current distributor: ");
+
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+
+			headersList.add("Order ID");
+			headersList.add("Order Date");
+			headersList.add("Delivery Date: ");
+
+			List<List<String>> rowsList = new ArrayList<>();
+
+			while(rs.next())
+			{
+				List<String> row = new ArrayList<>(); 
+
+				row.add(String.valueOf(rs.getInt("orderId")));
+				row.add(rs.getString("orderDate"));
+				row.add(rs.getString("deliveryDate"));
+
+				rowsList.add(row);
+			}
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+
+			// ---------------------------
+			// ---------------------------
 
 			Scanner Scanner = new Scanner(System.in);
-			System.out.println("Input Order ID (Comma Seperated) for which you want to generate Bill");
+			System.out.println("Input Order IDs for which you want to generate Bill (separated only by commas): ");
 			String orderIds = Scanner.nextLine();
 
 			String[] OrderIds = orderIds.split(",");

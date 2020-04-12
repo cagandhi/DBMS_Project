@@ -58,184 +58,7 @@ public class Project {
 
 					break;
 
-				case 3: System.out.println("In case 3"); // distribution section
-					System.out.println("	1. Add a Distributor");
-					System.out.println("	2. Update Distributor Type");
-					System.out.println("	3. Update Distributor Balance");
-					System.out.println("	4. Update Distributor Primary Contact");
-					System.out.println("	5. Delete a Distributor");
-					System.out.println("	6. Place an Order");
-					System.out.println("	7. Bill a Distributor");
-					System.out.println("	8. Payment From Distributor");
-
-					Distributor distributor = new Distributor(connection);
-
-					int second_choice = intScanner.nextInt();
-					switch(second_choice)
-					{
-
-						case 1: System.out.println("Provide Details of Distributor");
-							System.out.println("ID of Distributor ");
-							int distID = intScanner.nextInt();
-							System.out.println("Name of Distributor ");
-							String distName = lineScanner.nextLine();
-							System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
-							String distType = lineScanner.nextLine();
-							System.out.println("Balance of Distributor ");
-							Float balance = intScanner.nextFloat();
-							System.out.println("Primary Contact Distributor ");
-							String primaryContact = lineScanner.nextLine();
-
-							try
-					    {
-					        distributor.op1(distID, distName,distType,balance,primaryContact);
-									System.out.println("Record Added successfully");
-
-					    }
-					    catch (SQLException e)
-					    {
-					        e.printStackTrace();
-					    }
-						break;
-
-						case 2:System.out.println("Provide Details of Distributor");
-							System.out.println("Name of Distributor ");
-							distName = lineScanner.nextLine();
-							System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
-							distType = lineScanner.nextLine();
-
-							try
-					    {
-					        distributor.op2_update_distType(distName, distType);
-									System.out.println("Record Updated successfully");
-
-					    }
-					    catch (SQLException e)
-					    {
-					        e.printStackTrace();
-					    }
-						break;
-
-						case 3:System.out.println("Provide Details of Distributor");
-							System.out.println("Name of Distributor ");
-							distName = lineScanner.nextLine();
-							System.out.println("Balance of Distributor ");
-							balance = intScanner.nextFloat();
-
-							try
-					    {
-					        distributor.op2_update_balance(distName, balance);
-									System.out.println("Record Updated successfully");
-
-					    }
-					    catch (SQLException e)
-					    {
-					        e.printStackTrace();
-					    }
-						break;
-
-						case 4:System.out.println("Provide Details of Distributor");
-							System.out.println("Name of Distributor ");
-							distName = lineScanner.nextLine();
-							System.out.println("Primary Contact Distributor ");
-							primaryContact = lineScanner.nextLine();
-
-							try
-					    {
-					        distributor.op2_update_primaryContact(distName, primaryContact);
-									System.out.println("Record Updated successfully");
-					    }
-					    catch (SQLException e)
-					    {
-					        e.printStackTrace();
-					    }
-						break;
-
-						case 5:System.out.println("Provide Details of Distributor To Delete");
-							System.out.println("Name of Distributor ");
-							distName = lineScanner.nextLine();
-
-							try
-					    {
-					        distributor.op3_delete_distributor(distName);
-									System.out.println("Record Updated successfully");
-					    }
-					    catch (SQLException e)
-					    {
-					        e.printStackTrace();
-					    }
-						break;
-
-						case 6:System.out.println("Provide Details of Order");
-						System.out.println("ID of Order ");
-						int orderId = intScanner.nextInt();
-						System.out.println("Shipping Cost ");
-						Float shippingCost = intScanner.nextFloat();
-						System.out.println("Enter Order Date");
-						String orderDate = lineScanner.nextLine();
-						System.out.println("Enter Delivery Date");
-						String deliveryDate = lineScanner.nextLine();
-						System.out.println("Enter Location ID of Distributor's Warehouse");
-						int locId = intScanner.nextInt();
-						try
-						{
-								distributor.op4_input_order_Orders(orderId, shippingCost, orderDate, deliveryDate, locId);
-
-						}
-						catch (SQLException e)
-						{
-								e.printStackTrace();
-						}
-						System.out.println("Press 1 to add new Order Item and 0 to complete order");
-						int nn = intScanner.nextInt();
-
-						while(nn==1)
-						{
-							System.out.println("ID of Order Item");
-							int orderItemId = intScanner.nextInt();
-							System.out.println("ID of Publication");
-							int pubId = intScanner.nextInt();
-							System.out.println("Enter Quantity");
-							int quantity = intScanner.nextInt();
-
-							try
-							{
-									distributor.op4_input_order_OrderContains(orderId, orderItemId, pubId, quantity);
-
-							}
-							catch (SQLException e)
-							{
-									e.printStackTrace();
-							}
-							System.out.println("Press 1 to add new Item and 0 to complete order");
-							nn = intScanner.nextInt();
-						}
-						System.out.println("Order Placed successfully");
-
-						break;
-
-						case 7:System.out.println("Enter Distributor ID for which you want to generate bills");
-						int distId = intScanner.nextInt();
-						System.out.println("Enter Bill Generation Date");
-						String generationDate = lineScanner.nextLine();
-
-						try
-						{
-								distributor.op4_bill_distributor(distId, generationDate);
-								System.out.println("Bill Generated successfully");
-
-						}
-						catch (SQLException e)
-						{
-								e.printStackTrace();
-						}
-
-						break;
-
-						case 8:
-						break;
-
-					}
+				case 3: execute_task3();
 					break;
 
 				case 4: System.out.println("In case 4"); // reports section
@@ -1073,7 +896,7 @@ public class Project {
 		System.out.println("\nTASK 4: Reports");
 		System.out.println("1. Generate monthly reports.");
 		System.out.println("2. Calculate the total current number of distributors.");
-		System.out.println("3. calculate total revenue (since inception) per city, per distributor, and per location.");
+		System.out.println("3. Calculate total revenue (since inception) per city, per distributor, and per location.");
 		System.out.println("4. Calculate total payments to the editors and authors, per time period and per work type (book authorship, article authorship, or editorial work).");
 		System.out.println("0. Exit this menu");
 		System.out.println("Enter your choice: ");
@@ -1137,6 +960,203 @@ public class Project {
 		}
 
 
+	}
+
+	public static void execute_task3()
+	{
+		System.out.println("In case 3"); // distribution section
+		System.out.println("	1. Add a Distributor");
+		System.out.println("	2. Update Distributor Type");
+		System.out.println("	3. Update Distributor Balance");
+		System.out.println("	4. Update Distributor Primary Contact");
+		System.out.println("	5. Delete a Distributor");
+		System.out.println("	6. Place an Order");
+		System.out.println("	7. Bill a Distributor");
+		System.out.println("	8. Payment From Distributor");
+		System.out.println("    0. Exit this menu");
+		System.out.println("Enter your choice: ");
+
+		Distributor distributor = new Distributor(connection);
+
+		Scanner intScanner = new Scanner(System.in);
+		Scanner floatScanner = new Scanner(System.in);
+		Scanner lineScanner = new Scanner(System.in);
+
+		int second_choice = intScanner.nextInt();
+		switch(second_choice)
+		{
+
+			case 1: System.out.println("Provide Details of Distributor");
+				System.out.println("ID of Distributor ");
+				int distID = intScanner.nextInt();
+				System.out.println("Name of Distributor ");
+				String distName = lineScanner.nextLine();
+				System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
+				String distType = lineScanner.nextLine();
+				System.out.println("Balance of Distributor ");
+				Float balance = intScanner.nextFloat();
+				System.out.println("Primary Contact Distributor ");
+				String primaryContact = lineScanner.nextLine();
+
+				try
+		    {
+		        distributor.op1(distID, distName,distType,balance,primaryContact);
+						System.out.println("Record Added successfully");
+
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+			break;
+
+			case 2:System.out.println("Provide Details of Distributor");
+				System.out.println("Name of Distributor ");
+				distName = lineScanner.nextLine();
+				System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
+				distType = lineScanner.nextLine();
+
+				try
+		    {
+		        distributor.op2_update_distType(distName, distType);
+						System.out.println("Record Updated successfully");
+
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+			break;
+
+			case 3:System.out.println("Provide Details of Distributor");
+				System.out.println("Name of Distributor ");
+				distName = lineScanner.nextLine();
+				System.out.println("Balance of Distributor ");
+				balance = intScanner.nextFloat();
+
+				try
+		    {
+		        distributor.op2_update_balance(distName, balance);
+						System.out.println("Record Updated successfully");
+
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+			break;
+
+			case 4:System.out.println("Provide Details of Distributor");
+				System.out.println("Name of Distributor ");
+				distName = lineScanner.nextLine();
+				System.out.println("Primary Contact Distributor ");
+				primaryContact = lineScanner.nextLine();
+
+				try
+		    {
+		        distributor.op2_update_primaryContact(distName, primaryContact);
+						System.out.println("Record Updated successfully");
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+			break;
+
+			case 5:System.out.println("Provide Details of Distributor To Delete");
+				System.out.println("Name of Distributor ");
+				distName = lineScanner.nextLine();
+
+				try
+		    {
+		        distributor.op3_delete_distributor(distName);
+						System.out.println("Record Updated successfully");
+		    }
+		    catch (SQLException e)
+		    {
+		        e.printStackTrace();
+		    }
+			break;
+
+			case 6:
+
+				System.out.println("Provide Details of Order");
+				System.out.println("ID of Order ");
+				int orderId = intScanner.nextInt();
+				System.out.println("Shipping Cost ");
+				Float shippingCost = intScanner.nextFloat();
+				System.out.println("Enter Order Date");
+				String orderDate = lineScanner.nextLine();
+				System.out.println("Enter Delivery Date");
+				String deliveryDate = lineScanner.nextLine();
+				System.out.println("Enter Location ID of Distributor's Warehouse");
+				int locId = intScanner.nextInt();
+				try
+				{
+						distributor.op4_input_order_Orders(orderId, shippingCost, orderDate, deliveryDate, locId);
+
+				}
+				catch (SQLException e)
+				{
+						e.printStackTrace();
+				}
+				System.out.println("Press 1 to add new Order Item and 0 to complete order");
+				int nn = intScanner.nextInt();
+
+				while(nn==1)
+				{
+					System.out.println("ID of Order Item");
+					int orderItemId = intScanner.nextInt();
+					System.out.println("ID of Publication");
+					int pubId = intScanner.nextInt();
+					System.out.println("Enter Quantity");
+					int quantity = intScanner.nextInt();
+
+					try
+					{
+							distributor.op4_input_order_OrderContains(orderId, orderItemId, pubId, quantity);
+
+					}
+					catch (SQLException e)
+					{
+							e.printStackTrace();
+					}
+					System.out.println("Press 1 to add new Item and 0 to complete order");
+					nn = intScanner.nextInt();
+				}
+				System.out.println("Order Placed successfully");
+
+			break;
+
+			case 7:
+				System.out.println("Enter Distributor ID for which you want to generate bills");
+				int distId = intScanner.nextInt();
+				System.out.println("Enter Bill Generation Date");
+				String generationDate = lineScanner.nextLine();
+
+				try
+				{
+						distributor.op4_bill_distributor(distId, generationDate);
+						System.out.println("Bill Generated successfully");
+
+				}
+				catch (SQLException e)
+				{
+						e.printStackTrace();
+				}
+
+			break;
+
+			case 8:
+			break;
+
+			case 0:
+				break;
+
+			default:
+				System.out.println("Invalid choice! Please enter correct choice");
+
+		}
 	}
 
 	public static void resetDatabase() {
