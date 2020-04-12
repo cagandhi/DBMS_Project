@@ -159,7 +159,7 @@ public class Project {
 				else
 					isEdition = false;
 
-				System.out.println("Enter publication ID: ");
+				System.out.println("Enter publication id: ");
 				pubId = intScanner.nextInt();
 
 				if(isEdition)
@@ -176,7 +176,7 @@ public class Project {
 				System.out.println("Enter price: ");
 				price = floatScanner.nextFloat();
 
-				System.out.println("Enter publication date: ");
+				System.out.println("Enter publication date (YYYY-MM-DD): ");
 				pubDate = lineScanner.nextLine();
 
 				if(isEdition)
@@ -265,7 +265,7 @@ public class Project {
 						break;
 
 					case 2: 
-						System.out.println("Enter publication date: ");
+						System.out.println("Enter publication date (YYYY-MM-DD): ");
 						pubDate = lineScanner.nextLine();
 
 						System.out.println("Enter edition no./issue no. for which update is to be done: ");
@@ -357,10 +357,9 @@ public class Project {
 
 			case 3: //operation 3
 				System.out.println("\nSUB-MENU");
-				System.out.println("1. Enter a chapter");
-				System.out.println("2. Enter an article");
-				System.out.println("3. Update a chapter");
-				System.out.println("4. Update an article");
+				System.out.println("1. Enter a chapter"); //DONE
+				System.out.println("2. Enter an article"); //DONE
+				System.out.println("3. Update a chapter/article");
 				System.out.println("0. Exit this menu");
 				System.out.println("Enter your choice: ");
 
@@ -369,19 +368,19 @@ public class Project {
 				switch(val)
 				{
 					case 1: 
-						System.out.println("Enter publication id for this chapter: ");
+						System.out.println("Enter publication id to which this chapter is linked: ");
 						pubId = intScanner.nextInt();
 
-						System.out.println("Enter edition no. for this chapter: ");
+						System.out.println("Enter edition no. to which this chapter is linked: ");
 						orderItemId = intScanner.nextInt();
 
-						System.out.println("Enter title: ");
+						System.out.println("Enter chapter title: ");
 						String title = lineScanner.nextLine();
 
 						System.out.println("Enter chapter text: ");
 						String chapterText = lineScanner.nextLine();
 
-						System.out.println("Enter chapter date: ");
+						System.out.println("Enter chapter creation date (YYYY-MM-DD): ");
 						String chapterDate = lineScanner.nextLine();
 
 						System.out.println("Enter topic(s) associated with chapter (separated by commas only): ");
@@ -406,9 +405,304 @@ public class Project {
 						break;
 
 					case 2:
+						System.out.println("Enter publication id to which this article is linked: ");
+						pubId = intScanner.nextInt();
+
+						System.out.println("Enter issue no. to which this article is linked: ");
+						orderItemId = intScanner.nextInt();
+
+						System.out.println("Enter article title: ");
+						title = lineScanner.nextLine();
+
+						System.out.println("Enter article text: ");
+						String articleText = lineScanner.nextLine();
+
+						System.out.println("Enter article creation date (YYYY-MM-DD): ");
+						String articleDate = lineScanner.nextLine();
+
+						System.out.println("Enter topic(s) associated with article (separated by commas only): ");
+						topics = lineScanner.nextLine();
+
+						System.out.println("Enter journalist(s) id associated with article (separated by commas only): ");
+						authorIds = lineScanner.nextLine();
+
+						topicList = topics.split(",");
+						authorList = authorIds.split(",");
+
+						try
+						{
+							prod.op3_enter_article(orderItemId, pubId, title, articleText, articleDate, topicList, authorList);
+							System.out.println("New Article entered successfully!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
 						break;
 
-					case 3:
+					case 3: 
+						System.out.println("Enter publication id with which chapter/article is linked: ");
+						pubId = intScanner.nextInt();
+
+						System.out.println("Enter edition/issue no. with which chapter/article is linked: ");
+						orderItemId = intScanner.nextInt();
+
+						System.out.println("Enter title of the chapter/article which is to be updated: ");
+						title = lineScanner.nextLine();
+
+						System.out.println("Enter 0 to update chapter and 1 to update article: ");
+						int ch = intScanner.nextInt();
+
+						System.out.println("\nSUB-MENU");
+						System.out.println("1. Update title"); //DONE
+
+						if(ch==0)
+							System.out.println("2. Update authors"); //DONE
+						else
+							System.out.println("2. Update journalists"); //DONE
+						
+						System.out.println("3. Update topics");
+						System.out.println("4. Update creation date"); //DONE
+						System.out.println("0. Exit this menu");
+						System.out.println("Enter your choice: ");
+
+						val = intScanner.nextInt();
+
+						switch(val)
+						{
+							case 1: 
+								if(ch==0) //chapter
+								{
+									System.out.println("Enter new title for the chapter: ");
+									String newTitle = lineScanner.nextLine();
+
+									try
+									{
+										prod.op3_update_chapter_title(orderItemId, pubId, title, newTitle);
+										System.out.println("Chapter title updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+									}
+								}
+								else //article
+								{
+									System.out.println("Enter new title for the article: ");
+									String newTitle = lineScanner.nextLine();
+
+									try
+									{
+										prod.op3_update_article_title(orderItemId, pubId, title, newTitle);
+										System.out.println("Article title updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+									}
+								}
+								
+								break;
+
+							case 2: 
+								System.out.println("\nSUB-MENU");
+								System.out.println("1. Add author/journalist to chapter/article");
+								System.out.println("2. Remove author/journalist from chapter/article");
+								System.out.println("0. Exit this menu");
+								System.out.println("Enter your choice: ");
+
+								int subch = intScanner.nextInt();
+
+								if(subch == 1) // add author
+								{
+									if(ch == 0) //chapter
+									{
+										System.out.println("Enter author id to link with chapter: ");
+										int cmId = intScanner.nextInt();
+
+										try
+										{
+											prod.op3_add_author_chapter(orderItemId,pubId,title,cmId);
+											System.out.println("Author added to chapter!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+									else if(ch == 1)
+									{
+										System.out.println("Enter journalist id to link with article: ");
+										int cmId = intScanner.nextInt();
+
+										try
+										{
+											prod.op3_add_journalist_article(orderItemId,pubId,title,cmId);
+											System.out.println("Journalist added to article!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+								}
+								else if(subch == 2) // remove author
+								{
+									if(ch == 0) //chapter
+									{
+										System.out.println("Enter author id to remove from chapter: ");
+										int cmId = intScanner.nextInt();
+
+										try
+										{
+											prod.op3_remove_author_chapter(orderItemId,pubId,title,cmId);
+											System.out.println("Author removed from chapter!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+									else if(ch == 1)
+									{
+										System.out.println("Enter journalist id to remove from article: ");
+										int cmId = intScanner.nextInt();
+
+										try
+										{
+											prod.op3_remove_journalist_article(orderItemId,pubId,title,cmId);
+											System.out.println("Journalist removed from article!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+								}
+								else if(subch != 1 && subch != 2 && subch != 0)
+								{
+									System.out.println("Invalid choice! Please enter correct choice");
+								}
+								break;
+
+							case 3: // topic add/remove
+								System.out.println("\nSUB-MENU");
+								System.out.println("1. Add topic to chapter/article");
+								System.out.println("2. Remove topic from chapter/article");
+								System.out.println("0. Exit this menu");
+								System.out.println("Enter your choice: ");
+
+								subch = intScanner.nextInt();
+
+								if(subch == 1) // add topic
+								{
+									if(ch == 0) //chapter
+									{
+										System.out.println("Enter topic to link with chapter: ");
+										String topicName = lineScanner.nextLine();
+
+										try
+										{
+											prod.op3_add_topic_chapter(orderItemId,pubId,title,topicName);
+											System.out.println("Topic added to chapter!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+									else if(ch == 1)
+									{
+										System.out.println("Enter topic to link with article: ");
+										String topicName = lineScanner.nextLine();
+
+										try
+										{
+											prod.op3_add_topic_article(orderItemId,pubId,title,topicName);
+											System.out.println("Topic added to article!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+								}
+								else if(subch == 2) // remove author
+								{
+									if(ch == 0) //chapter
+									{
+										System.out.println("Enter topic to remove from chapter: ");
+										String topicName = lineScanner.nextLine();
+
+										try
+										{
+											prod.op3_remove_topic_chapter(orderItemId,pubId,title,topicName);
+											System.out.println("Topic removed from chapter!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+									else if(ch == 1)
+									{
+										System.out.println("Enter topic to remove from article: ");
+										String topicName = lineScanner.nextLine();
+
+										try
+										{
+											prod.op3_remove_topic_article(orderItemId,pubId,title,topicName);
+											System.out.println("Topic removed from article!");
+										}
+										catch(SQLException e)
+										{
+											e.printStackTrace();
+										}
+									}
+								}
+								else if(subch != 1 && subch != 2 && subch != 0)
+								{
+									System.out.println("Invalid choice! Please enter correct choice");
+								}
+								break;
+
+							case 4: 
+								if(ch==0) //chapter
+								{
+									System.out.println("Enter new chapter creation date (YYYY-MM-DD): ");
+									String creationDate = lineScanner.nextLine();
+
+									try
+									{
+										prod.op3_update_chapter_date(orderItemId, pubId, title, creationDate);
+										System.out.println("Chapter creation date updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+									}	
+								}
+								else
+								{
+									System.out.println("Enter new article creation date (YYYY-MM-DD): ");
+									String creationDate = lineScanner.nextLine();
+
+									try
+									{
+										prod.op3_update_article_date(orderItemId, pubId, title, creationDate);
+										System.out.println("Article creation date updated!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+									}	
+								}
+
+								break;
+
+							case 0: 
+								break;
+
+							default:
+								System.out.println("Invalid choice! Please enter correct choice");
+						}
 						break;
 
 					case 4:
@@ -476,7 +770,7 @@ public class Project {
 						break;
 
 					case 2:
-						System.out.println("Enter publication date: ");
+						System.out.println("Enter publication date (YYYY-MM-DD): ");
 						pubDate = lineScanner.nextLine();
 
 						try
@@ -534,7 +828,7 @@ public class Project {
 						System.out.println("Enter amount: ");
 						float amount = floatScanner.nextFloat();
 
-						System.out.println("Enter payment date: ");
+						System.out.println("Enter payment date (YYYY-MM-DD): ");
 						String payDate = lineScanner.nextLine();
 
 						try
@@ -556,7 +850,7 @@ public class Project {
 						System.out.println("Enter payment record id which is to be claimed: ");
 						payId = intScanner.nextInt();
 
-						System.out.println("Enter claim date: ");
+						System.out.println("Enter claim date (YYYY-MM-DD): ");
 						String claimDate = lineScanner.nextLine();
 
 						try
@@ -589,8 +883,6 @@ public class Project {
 
 	public static void resetDatabase() {
 		try {
-			// statement.executeUpdate("DROP TABLE Students");
-			// statement.executeUpdate("DROP TABLE Schools");
 			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,BookTopicMappings,Topics,Books,Publications");
 		} 
 		catch (SQLException e) { }
@@ -602,7 +894,7 @@ public class Project {
 	private static void initialize() {
 		try {
 			connectToDatabase();
-			resetDatabase();
+			// resetDatabase();
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {
