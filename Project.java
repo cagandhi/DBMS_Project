@@ -1268,6 +1268,14 @@ public class Project {
 		Scanner intScanner = new Scanner(System.in);
 		Scanner floatScanner = new Scanner(System.in);
 		Scanner lineScanner = new Scanner(System.in);
+		int distID
+		String distName
+		String distType
+		Float balance
+		String contactName
+		String contactPhone
+		String addr
+		String city
 
 		int second_choice = intScanner.nextInt();
 		switch(second_choice)
@@ -1276,21 +1284,21 @@ public class Project {
 			case 1: 
 				System.out.println("Provide Details of Distributor");
 				System.out.println("ID of Distributor ");
-				int distID = intScanner.nextInt();
+				distID = intScanner.nextInt();
 				System.out.println("Name of Distributor ");
-				String distName = lineScanner.nextLine();
+				distName = lineScanner.nextLine();
 				System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
-				String distType = lineScanner.nextLine();
+				distType = lineScanner.nextLine();
 				System.out.println("Balance of Distributor ");
-				Float balance = intScanner.nextFloat();
+				balance = intScanner.nextFloat();
 				System.out.println("Contact Person Name ");
-				String contactName = lineScanner.nextLine();
+				contactName = lineScanner.nextLine();
 				System.out.println("Contact Person Phone ");
-				String contactPhone = lineScanner.nextLine();
+				contactPhone = lineScanner.nextLine();
 				System.out.println("Address ");
-				String addr = lineScanner.nextLine();
+				addr = lineScanner.nextLine();
 				System.out.println("City ");
-				String city = lineScanner.nextLine();
+				city = lineScanner.nextLine();
 
 				try
 			    {
@@ -1362,12 +1370,12 @@ public class Project {
 
 			case 5:
 				System.out.println("Provide Details of Distributor To Delete");
-				System.out.println("Name of Distributor ");
-				distName = lineScanner.nextLine();
+				System.out.println("ID of Distributor ");
+				distID = lineScanner.nextLine();
 
 				try
 			    {
-			        distributor.op3_delete_distributor(distName);
+			        distributor.op3_delete_distributor(distID);
 					System.out.println("Record Updated successfully");
 			    }
 			    catch (SQLException e)

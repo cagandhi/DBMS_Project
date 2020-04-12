@@ -64,9 +64,9 @@ public class Distributor
 	// ----------------------------------------------------------------- //
 	// OPERATION 3
 	// Delete a Distributor
-	public void op3_delete_distributor(String distName) throws SQLException
+	public void op3_delete_distributor(String distId) throws SQLException
 	{
-		String query = "delete from Distributors where distName = '"+distName+"';";
+		String query = "delete from Distributors where distId = "+distId;
 		statement.executeUpdate(query);
 	}
 
