@@ -19,25 +19,22 @@ public class Distributor
 			e.printStackTrace();
 		}
 	}
+
 	//Main Function
-
-	public void main_distributor()
-	{
-
-			
-
-	}
+	public void main_distributor(){}
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 1
 	// Add new distributor
 
-	//need to take one location details with this
-	public void op1(int distId, String distName, String distType, float balance, String primaryContact) throws SQLException
+	public void op1(int distId, String distName, String distType, float balance, String contactName, String contactPhone, String addr, String city) throws SQLException
 	{
-		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+primaryContact+"');";
+		//assumption: distId will always be provided.
+		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+contactPhone+"');";
 		statement.executeUpdate(query);
 
+		query = "insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('"+contactName+"','"+contactPhone+"','"+addr+"','"++city"',"+distId+")";
+		statement.executeUpdate(query);
 	}
 
 	// ----------------------------------------------------------------- //
