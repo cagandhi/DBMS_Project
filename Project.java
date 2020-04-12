@@ -12,7 +12,7 @@ import java.util.*;
 **/
 
 public class Project {
-	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/cagandhi";
+	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jmodi3";
 	// Put your oracle ID and password here
 
 	static final String createFile = "create_java.sql";
@@ -60,6 +60,9 @@ public class Project {
 					break;
 
 				case 4: System.out.println("In case 4"); // reports section
+
+					execute_task4();
+					
 					break;
 
 				case 0: // exit program
@@ -881,6 +884,82 @@ public class Project {
 		}
 	}
 
+	public static void execute_task4() {
+		// pass connection so the class can work on SQL queries
+		Reports report = new Reports(connection);
+
+		Scanner intScanner = new Scanner(System.in);
+		
+
+		System.out.println("\nTASK 4: Reports");
+		System.out.println("1. Generate monthly reports.");
+		System.out.println("2. Calculate the total current number of distributors.");
+		System.out.println("3. calculate total revenue (since inception) per city, per distributor, and per location.");
+		System.out.println("4. Calculate total payments to the editors and authors, per time period and per work type (book authorship, article authorship, or editorial work)."); 
+		System.out.println("0. Exit this menu");
+		System.out.println("Enter your choice: ");
+		
+		int task4_choice = intScanner.nextInt();
+
+		switch(task4_choice)
+		{
+			case 1: // task 4 choice 1
+				try
+				{
+					report.op1_get_monthly_reports();
+				} catch(SQLException e)
+				{
+					e.printStackTrace();
+					// System.out.println("Operation Failed. Try Again!");
+				}
+				break;
+			case 2: // task 4 choice 2
+				try
+				{
+					report.op2_get_total_distributors();
+				} catch(SQLException e)
+				{
+					e.printStackTrace();
+					// System.out.println("Operation Failed. Try Again!");
+				}
+				break;
+			case 3: // task 4 choice 3
+				try
+				{
+					report.op3_calculate_total_revenue();
+				} catch(SQLException e)
+				{
+					e.printStackTrace();
+					// System.out.println("Operation Failed. Try Again!");
+				}
+				break;
+			case 4: // task 4 choice 4
+				Scanner lineScanner = new Scanner(System.in);
+				String beginDate,endDate;
+				System.out.println("Enter begin date: ");
+				beginDate = lineScanner.nextLine();
+				System.out.println("Enter end date: ");
+				endDate = lineScanner.nextLine();
+				
+				try
+				{
+					report.op4_calculate_total_payments(beginDate, endDate);
+				} catch(SQLException e)
+				{
+					e.printStackTrace();
+					// System.out.println("Operation Failed. Try Again!");
+				}
+				break;
+			case 0: 
+				break;
+
+			default: 
+				System.out.println("Invalid choice! Please enter correct choice");
+		}
+
+		
+	}
+
 	public static void resetDatabase() {
 		try {
 			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,BookTopicMappings,Topics,Books,Publications");
@@ -947,8 +1026,8 @@ public class Project {
 	private static void connectToDatabase() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
 
-		String user = "cagandhi";
-		String password = "200315238";
+		String user = "jmodi3";
+		String password = "200315622";
 
 		connection = DriverManager.getConnection(jdbcURL, user, password);
 		statement = connection.createStatement();
