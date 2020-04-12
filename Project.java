@@ -49,463 +49,7 @@ public class Project {
 
 				case 2: System.out.println("In case 2"); // production section
 					
-					// pass connection so the class can work on SQL queries
-					Production prod = new Production(connection);
-
-					System.out.println("\nTASK 2: Production");
-					System.out.println("1. Enter a new book edition or new issue of a publication"); 
-					System.out.println("2. Update, delete a book edition or publication issue");
-					System.out.println("3. Enter/update an article or chapter: title, author's name, topic, and date");
-					System.out.println("4. Enter/update text of an article");
-					System.out.println("5. Find books and articles by topic, date, author's name");
-					System.out.println("6. Enter payment for author or editor, and keep track of when each payment was claimed by its addressee");
-					System.out.println("0. Exit this menu");
-					System.out.println("Enter your choice: ");
-					
-					int task2_choice = intScanner.nextInt();
-
-					switch(task2_choice)
-					{
-						case 1: //operation 1
-							int pubId, orderItemId, val;
-							String pubDate;
-							float price;
-
-							boolean isEdition;
-							System.out.println("Enter 0 for edition and 1 for a periodic issue: ");
-							val = intScanner.nextInt();
-
-							if(val == 0)
-								isEdition = true;
-							else
-								isEdition = false;
-
-							System.out.println("Enter publication ID: ");
-							pubId = intScanner.nextInt();
-
-							if(isEdition)
-							{
-								System.out.println("Enter edition no: ");
-								orderItemId = intScanner.nextInt();
-							}
-							else
-							{
-								System.out.println("Enter issue no: ");
-								orderItemId = intScanner.nextInt();
-							}
-							
-							System.out.println("Enter price: ");
-							price = floatScanner.nextFloat();
-
-							System.out.println("Enter publication date: ");
-							pubDate = lineScanner.nextLine();
-
-							if(isEdition)
-							{
-								System.out.println("Enter ISBN: ");
-								String isbn = lineScanner.nextLine();
-
-								try
-								{
-									prod.op1_edition(orderItemId, pubId, price, pubDate, isbn);
-									System.out.println("New Book Edition inserted successfully!");
-								} catch(SQLException e)
-								{
-									e.printStackTrace();
-									// System.out.println("Operation Failed. Try Again!");
-								}
-							}
-							else
-							{
-								try
-								{
-									prod.op1_issue(orderItemId, pubId, price, pubDate, orderItemId);
-									System.out.println("New Periodic Issue inserted successfully!");
-								} catch(SQLException e)
-								{
-									e.printStackTrace();
-									// System.out.println("Operation Failed. Try Again!");
-								}
-							}
-
-							break;
-
-						case 2: //operation 2
-
-							// boolean isEdition;
-							System.out.println("Enter 0 for edition and 1 for a periodic issue: ");
-							val = intScanner.nextInt();
-
-							if(val == 0)
-								isEdition = true;
-							else
-								isEdition = false;
-
-							System.out.println("\nSUB-MENU");
-							System.out.println("1. Update price");
-							System.out.println("2. Update publication date");
-							
-							if(isEdition)
-							{
-								System.out.println("3. Update ISBN");
-								System.out.println("4. Delete Book Edition");
-							}
-							else
-							{
-								System.out.println("3. Delete Issue");
-							}
-
-							System.out.println("0. Exit this menu");
-
-							System.out.println("Enter choice:");
-							val = intScanner.nextInt();
-
-							switch(val)
-							{
-								case 1: 
-
-									System.out.println("Enter edition no./issue no. for which update is to be done: ");
-									orderItemId = intScanner.nextInt();
-
-									System.out.println("Enter publication id for which update is to be done: ");
-									pubId = intScanner.nextInt();
-
-									System.out.println("Enter new price: ");
-									price = floatScanner.nextFloat();
-									
-									try
-									{
-										prod.op2_update_price(price, orderItemId, pubId);
-										System.out.println("Price updated!");
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 2: 
-									System.out.println("Enter publication date: ");
-									pubDate = lineScanner.nextLine();
-
-									System.out.println("Enter edition no./issue no. for which update is to be done: ");
-									orderItemId = intScanner.nextInt();
-
-									System.out.println("Enter publication id for which update is to be done: ");
-									pubId = intScanner.nextInt();
-									
-									try
-									{
-										prod.op2_update_pubDate(pubDate, orderItemId, pubId);
-										System.out.println("Publication Date updated!");
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 3: 
-									if(isEdition)
-									{
-										System.out.println("Enter edition no./issue no. for which update is to be done: ");
-										orderItemId = intScanner.nextInt();
-
-										System.out.println("Enter publication id for which update is to be done: ");
-										pubId = intScanner.nextInt();
-
-										System.out.println("Enter ISBN: ");
-										String isbn = lineScanner.nextLine();
-										
-										try
-										{
-											prod.op2_update_isbn(isbn, orderItemId, pubId);
-											System.out.println("ISBN updated!");
-										} catch(SQLException e)
-										{
-											e.printStackTrace();
-											// System.out.println("Operation Failed. Try Again!");
-										}
-									}
-									else
-									{
-										System.out.println("Enter issue no. to be deleted: ");
-										orderItemId = intScanner.nextInt();
-
-										System.out.println("Enter publication id whose issue is to be deleted: ");
-										pubId = intScanner.nextInt();
-
-										try
-										{
-											prod.op2_delete_edition_issue(orderItemId, pubId);
-											System.out.println("Issue deleted successfully!");
-										} catch(SQLException e)
-										{
-											e.printStackTrace();
-											// System.out.println("Operation Failed. Try Again!");
-										}
-									}
-
-									break;
-
-								case 4: 
-									System.out.println("Enter edition no. to be deleted: ");
-									orderItemId = intScanner.nextInt();
-
-									System.out.println("Enter publication id whose edition is to be deleted: ");
-									pubId = intScanner.nextInt();
-
-									try
-									{
-										prod.op2_delete_edition_issue(orderItemId, pubId);
-										System.out.println("Book Edition deleted successfully!");
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-									break;
-
-								case 0: break;
-
-								default:
-									System.out.println("Invalid choice! Please enter correct choice");
-							}
-							
-							break;
-
-						case 3: //operation 3
-							System.out.println("\nSUB-MENU");
-							System.out.println("1. Enter a chapter");
-							System.out.println("2. Enter an article");
-							System.out.println("3. Update a chapter");
-							System.out.println("4. Update an article");
-							System.out.println("0. Exit this menu");
-							System.out.println("Enter your choice: ");
-
-							val = intScanner.nextInt();
-
-							switch(val)
-							{
-								case 1: 
-									System.out.println("Enter publication id for this chapter: ");
-									pubId = intScanner.nextInt();
-
-									System.out.println("Enter edition no. for this chapter: ");
-									orderItemId = intScanner.nextInt();
-
-									System.out.println("Enter title: ");
-									String title = lineScanner.nextLine();
-
-									System.out.println("Enter chapter text: ");
-									String chapterText = lineScanner.nextLine();
-
-									System.out.println("Enter chapter date: ");
-									String chapterDate = lineScanner.nextLine();
-
-									System.out.println("Enter topic(s) associated with chapter (separated by commas only): ");
-									String topics = lineScanner.nextLine();
-
-									System.out.println("Enter author(s) id associated with chapter (separated by commas only): ");
-									String authorIds = lineScanner.nextLine();
-
-									String[] topicList = topics.split(",");
-									String[] authorList = authorIds.split(",");
-
-									try
-									{
-										prod.op3_enter_chapter(orderItemId, pubId, title, chapterText, chapterDate, topicList, authorList);
-										System.out.println("New Chapter entered successfully!");
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 2:
-									break;
-
-								case 3:
-									break;
-
-								case 4:
-									break;
-
-								case 0:
-									break;
-
-								default:
-									System.out.println("Invalid choice! Please enter correct choice");
-							}
-
-							break;
-
-						case 4: //operation 4
-							System.out.println("Enter issue no. in which article was published: ");
-							orderItemId = intScanner.nextInt();
-
-							System.out.println("Enter publication id for the issue: ");
-							pubId = intScanner.nextInt();
-
-							System.out.println("Enter title of the article: ");
-							String title = lineScanner.nextLine();
-
-							System.out.println("Enter new text for the article: ");
-							String articleText = lineScanner.nextLine();
-
-							try
-							{
-								prod.op4_update_text_article(title, orderItemId, pubId, articleText);
-								System.out.println("Article's text updated!");
-							} catch(SQLException e)
-							{
-								e.printStackTrace();
-								// System.out.println("Operation Failed. Try Again!");
-							}	
-
-							break;
-
-						case 5: //operation 5
-							System.out.println("\nSUB-MENU");
-							System.out.println("1. Find books and articles by topic");
-							System.out.println("2. Find books and articles by date");
-							System.out.println("3. Find books and articles by author's name");
-							System.out.println("0. Exit this menu");
-							System.out.println("Enter your choice: ");
-
-							int op5_choice = intScanner.nextInt();
-
-							switch(op5_choice)
-							{
-								case 1: 
-									System.out.println("Enter topic name: ");
-									String topicName = lineScanner.nextLine();
-
-									try
-									{
-										prod.op5_find_topic(topicName);
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 2:
-									System.out.println("Enter publication date: ");
-									pubDate = lineScanner.nextLine();
-
-									try
-									{
-										prod.op5_find_pubDate(pubDate);
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 3:
-									System.out.println("Enter author's name: ");
-									String authorName = lineScanner.nextLine();
-
-									try
-									{
-										prod.op5_find_authorName(authorName);
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-									break;
-
-								case 0:
-									break;
-
-								default:
-									System.out.println("Invalid choice! Please enter correct choice");
-								
-							}
-							break;
-
-						case 6: //operation 6
-							System.out.println("\nSUB-MENU");
-							System.out.println("1. Enter payment record for a employee");
-							System.out.println("2. Claim payment");
-							System.out.println("0. Exit this menu");
-							System.out.println("Enter your choice: ");
-					
-							val = intScanner.nextInt();
-
-							switch(val)
-							{
-								case 1:
-									System.out.println("Enter payment id: ");
-									int payId = intScanner.nextInt();
-
-									System.out.println("Enter employee id for which payment record is to be entered: ");
-									int cmId = intScanner.nextInt();
-
-									System.out.println("Enter amount: ");
-									float amount = floatScanner.nextFloat();
-
-									System.out.println("Enter payment date: ");
-									String payDate = lineScanner.nextLine();
-
-									try
-									{
-										prod.op6_insert_payment(payId, cmId, amount, payDate);
-										System.out.println("Payment record entered!");
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 2: 
-									// System.out.println("Enter employee id who is claiming the payment: ");
-									// cmId = intScanner.nextInt();
-
-									System.out.println("Enter payment record id which is to be claimed: ");
-									payId = intScanner.nextInt();
-
-									System.out.println("Enter claim date: ");
-									String claimDate = lineScanner.nextLine();
-
-									try
-									{
-										prod.op6_claim_payment(payId, claimDate);
-										System.out.println("Payment record updated!");
-									} catch(SQLException e)
-									{
-										e.printStackTrace();
-										// System.out.println("Operation Failed. Try Again!");
-									}
-
-									break;
-
-								case 0:
-									break;
-
-								default:
-									System.out.println("Invalid choice! Please enter correct choice");
-							}
-							break;
-
-						case 0: 
-							break;
-
-						default: 
-							System.out.println("Invalid choice! Please enter correct choice");
-					}
+					execute_task2();
 
 					// call instance methods of class
 					// prod.getName("chintan");
@@ -576,6 +120,471 @@ public class Project {
 		**/
 		// ***********************************************************************
 		// close();
+	}
+
+	public static void execute_task2() 
+	{
+		// pass connection so the class can work on SQL queries
+		Production prod = new Production(connection);
+
+		Scanner intScanner = new Scanner(System.in);
+		Scanner floatScanner = new Scanner(System.in);
+		Scanner lineScanner = new Scanner(System.in);
+
+		System.out.println("\nTASK 2: Production");
+		System.out.println("1. Enter a new book edition or new issue of a publication"); 
+		System.out.println("2. Update, delete a book edition or publication issue");
+		System.out.println("3. Enter/update an article or chapter: title, author's name, topic, and date");
+		System.out.println("4. Enter/update text of an article");
+		System.out.println("5. Find books and articles by topic, date, author's name");
+		System.out.println("6. Enter payment for author or editor, and keep track of when each payment was claimed by its addressee");
+		System.out.println("0. Exit this menu");
+		System.out.println("Enter your choice: ");
+		
+		int task2_choice = intScanner.nextInt();
+
+		switch(task2_choice)
+		{
+			case 1: //operation 1
+				int pubId, orderItemId, val;
+				String pubDate;
+				float price;
+
+				boolean isEdition;
+				System.out.println("Enter 0 for edition and 1 for a periodic issue: ");
+				val = intScanner.nextInt();
+
+				if(val == 0)
+					isEdition = true;
+				else
+					isEdition = false;
+
+				System.out.println("Enter publication ID: ");
+				pubId = intScanner.nextInt();
+
+				if(isEdition)
+				{
+					System.out.println("Enter edition no: ");
+					orderItemId = intScanner.nextInt();
+				}
+				else
+				{
+					System.out.println("Enter issue no: ");
+					orderItemId = intScanner.nextInt();
+				}
+				
+				System.out.println("Enter price: ");
+				price = floatScanner.nextFloat();
+
+				System.out.println("Enter publication date: ");
+				pubDate = lineScanner.nextLine();
+
+				if(isEdition)
+				{
+					System.out.println("Enter ISBN: ");
+					String isbn = lineScanner.nextLine();
+
+					try
+					{
+						prod.op1_edition(orderItemId, pubId, price, pubDate, isbn);
+						System.out.println("New Book Edition inserted successfully!");
+					} catch(SQLException e)
+					{
+						e.printStackTrace();
+						// System.out.println("Operation Failed. Try Again!");
+					}
+				}
+				else
+				{
+					try
+					{
+						prod.op1_issue(orderItemId, pubId, price, pubDate, orderItemId);
+						System.out.println("New Periodic Issue inserted successfully!");
+					} catch(SQLException e)
+					{
+						e.printStackTrace();
+						// System.out.println("Operation Failed. Try Again!");
+					}
+				}
+
+				break;
+
+			case 2: //operation 2
+
+				// boolean isEdition;
+				System.out.println("Enter 0 for edition and 1 for a periodic issue: ");
+				val = intScanner.nextInt();
+
+				if(val == 0)
+					isEdition = true;
+				else
+					isEdition = false;
+
+				System.out.println("\nSUB-MENU");
+				System.out.println("1. Update price");
+				System.out.println("2. Update publication date");
+				
+				if(isEdition)
+				{
+					System.out.println("3. Update ISBN");
+					System.out.println("4. Delete Book Edition");
+				}
+				else
+				{
+					System.out.println("3. Delete Issue");
+				}
+
+				System.out.println("0. Exit this menu");
+
+				System.out.println("Enter choice:");
+				val = intScanner.nextInt();
+
+				switch(val)
+				{
+					case 1: 
+
+						System.out.println("Enter edition no./issue no. for which update is to be done: ");
+						orderItemId = intScanner.nextInt();
+
+						System.out.println("Enter publication id for which update is to be done: ");
+						pubId = intScanner.nextInt();
+
+						System.out.println("Enter new price: ");
+						price = floatScanner.nextFloat();
+						
+						try
+						{
+							prod.op2_update_price(price, orderItemId, pubId);
+							System.out.println("Price updated!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 2: 
+						System.out.println("Enter publication date: ");
+						pubDate = lineScanner.nextLine();
+
+						System.out.println("Enter edition no./issue no. for which update is to be done: ");
+						orderItemId = intScanner.nextInt();
+
+						System.out.println("Enter publication id for which update is to be done: ");
+						pubId = intScanner.nextInt();
+						
+						try
+						{
+							prod.op2_update_pubDate(pubDate, orderItemId, pubId);
+							System.out.println("Publication Date updated!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 3: 
+						if(isEdition)
+						{
+							System.out.println("Enter edition no./issue no. for which update is to be done: ");
+							orderItemId = intScanner.nextInt();
+
+							System.out.println("Enter publication id for which update is to be done: ");
+							pubId = intScanner.nextInt();
+
+							System.out.println("Enter ISBN: ");
+							String isbn = lineScanner.nextLine();
+							
+							try
+							{
+								prod.op2_update_isbn(isbn, orderItemId, pubId);
+								System.out.println("ISBN updated!");
+							} catch(SQLException e)
+							{
+								e.printStackTrace();
+								// System.out.println("Operation Failed. Try Again!");
+							}
+						}
+						else
+						{
+							System.out.println("Enter issue no. to be deleted: ");
+							orderItemId = intScanner.nextInt();
+
+							System.out.println("Enter publication id whose issue is to be deleted: ");
+							pubId = intScanner.nextInt();
+
+							try
+							{
+								prod.op2_delete_edition_issue(orderItemId, pubId);
+								System.out.println("Issue deleted successfully!");
+							} catch(SQLException e)
+							{
+								e.printStackTrace();
+								// System.out.println("Operation Failed. Try Again!");
+							}
+						}
+
+						break;
+
+					case 4: 
+						System.out.println("Enter edition no. to be deleted: ");
+						orderItemId = intScanner.nextInt();
+
+						System.out.println("Enter publication id whose edition is to be deleted: ");
+						pubId = intScanner.nextInt();
+
+						try
+						{
+							prod.op2_delete_edition_issue(orderItemId, pubId);
+							System.out.println("Book Edition deleted successfully!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+						break;
+
+					case 0: break;
+
+					default:
+						System.out.println("Invalid choice! Please enter correct choice");
+				}
+				
+				break;
+
+			case 3: //operation 3
+				System.out.println("\nSUB-MENU");
+				System.out.println("1. Enter a chapter");
+				System.out.println("2. Enter an article");
+				System.out.println("3. Update a chapter");
+				System.out.println("4. Update an article");
+				System.out.println("0. Exit this menu");
+				System.out.println("Enter your choice: ");
+
+				val = intScanner.nextInt();
+
+				switch(val)
+				{
+					case 1: 
+						System.out.println("Enter publication id for this chapter: ");
+						pubId = intScanner.nextInt();
+
+						System.out.println("Enter edition no. for this chapter: ");
+						orderItemId = intScanner.nextInt();
+
+						System.out.println("Enter title: ");
+						String title = lineScanner.nextLine();
+
+						System.out.println("Enter chapter text: ");
+						String chapterText = lineScanner.nextLine();
+
+						System.out.println("Enter chapter date: ");
+						String chapterDate = lineScanner.nextLine();
+
+						System.out.println("Enter topic(s) associated with chapter (separated by commas only): ");
+						String topics = lineScanner.nextLine();
+
+						System.out.println("Enter author(s) id associated with chapter (separated by commas only): ");
+						String authorIds = lineScanner.nextLine();
+
+						String[] topicList = topics.split(",");
+						String[] authorList = authorIds.split(",");
+
+						try
+						{
+							prod.op3_enter_chapter(orderItemId, pubId, title, chapterText, chapterDate, topicList, authorList);
+							System.out.println("New Chapter entered successfully!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 2:
+						break;
+
+					case 3:
+						break;
+
+					case 4:
+						break;
+
+					case 0:
+						break;
+
+					default:
+						System.out.println("Invalid choice! Please enter correct choice");
+				}
+
+				break;
+
+			case 4: //operation 4
+				System.out.println("Enter issue no. in which article was published: ");
+				orderItemId = intScanner.nextInt();
+
+				System.out.println("Enter publication id for the issue: ");
+				pubId = intScanner.nextInt();
+
+				System.out.println("Enter title of the article: ");
+				String title = lineScanner.nextLine();
+
+				System.out.println("Enter new text for the article: ");
+				String articleText = lineScanner.nextLine();
+
+				try
+				{
+					prod.op4_update_text_article(title, orderItemId, pubId, articleText);
+					System.out.println("Article's text updated!");
+				} catch(SQLException e)
+				{
+					e.printStackTrace();
+					// System.out.println("Operation Failed. Try Again!");
+				}	
+
+				break;
+
+			case 5: //operation 5
+				System.out.println("\nSUB-MENU");
+				System.out.println("1. Find books and articles by topic");
+				System.out.println("2. Find books and articles by date");
+				System.out.println("3. Find books and articles by author's name");
+				System.out.println("0. Exit this menu");
+				System.out.println("Enter your choice: ");
+
+				int op5_choice = intScanner.nextInt();
+
+				switch(op5_choice)
+				{
+					case 1: 
+						System.out.println("Enter topic name: ");
+						String topicName = lineScanner.nextLine();
+
+						try
+						{
+							prod.op5_find_topic(topicName);
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 2:
+						System.out.println("Enter publication date: ");
+						pubDate = lineScanner.nextLine();
+
+						try
+						{
+							prod.op5_find_pubDate(pubDate);
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 3:
+						System.out.println("Enter author's name: ");
+						String authorName = lineScanner.nextLine();
+
+						try
+						{
+							prod.op5_find_authorName(authorName);
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+						break;
+
+					case 0:
+						break;
+
+					default:
+						System.out.println("Invalid choice! Please enter correct choice");
+					
+				}
+				break;
+
+			case 6: //operation 6
+				System.out.println("\nSUB-MENU");
+				System.out.println("1. Enter payment record for a employee");
+				System.out.println("2. Claim payment");
+				System.out.println("0. Exit this menu");
+				System.out.println("Enter your choice: ");
+		
+				val = intScanner.nextInt();
+
+				switch(val)
+				{
+					case 1:
+						System.out.println("Enter payment id: ");
+						int payId = intScanner.nextInt();
+
+						System.out.println("Enter employee id for which payment record is to be entered: ");
+						int cmId = intScanner.nextInt();
+
+						System.out.println("Enter amount: ");
+						float amount = floatScanner.nextFloat();
+
+						System.out.println("Enter payment date: ");
+						String payDate = lineScanner.nextLine();
+
+						try
+						{
+							prod.op6_insert_payment(payId, cmId, amount, payDate);
+							System.out.println("Payment record entered!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 2: 
+						// System.out.println("Enter employee id who is claiming the payment: ");
+						// cmId = intScanner.nextInt();
+
+						System.out.println("Enter payment record id which is to be claimed: ");
+						payId = intScanner.nextInt();
+
+						System.out.println("Enter claim date: ");
+						String claimDate = lineScanner.nextLine();
+
+						try
+						{
+							prod.op6_claim_payment(payId, claimDate);
+							System.out.println("Payment record updated!");
+						} catch(SQLException e)
+						{
+							e.printStackTrace();
+							// System.out.println("Operation Failed. Try Again!");
+						}
+
+						break;
+
+					case 0:
+						break;
+
+					default:
+						System.out.println("Invalid choice! Please enter correct choice");
+				}
+				break;
+
+			case 0: 
+				break;
+
+			default: 
+				System.out.println("Invalid choice! Please enter correct choice");
+		}
 	}
 
 	public static void resetDatabase() {
