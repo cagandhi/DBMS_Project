@@ -1268,14 +1268,14 @@ public class Project {
 		Scanner intScanner = new Scanner(System.in);
 		Scanner floatScanner = new Scanner(System.in);
 		Scanner lineScanner = new Scanner(System.in);
-		int distID
-		String distName
-		String distType
-		Float balance
-		String contactName
-		String contactPhone
-		String addr
-		String city
+		int distID;
+		String distName;
+		String distType;
+		Float balance;
+		String contactName;
+		String contactPhone;
+		String addr;
+		String city;
 
 		int second_choice = intScanner.nextInt();
 		switch(second_choice)
@@ -1302,7 +1302,7 @@ public class Project {
 
 				try
 			    {
-			        distributor.op1_insert_distributor(distId, distName, distType, balance, contactName, contactPhone, addr, city);
+			        distributor.op1_insert_distributor(distID, distName, distType, balance, contactName, contactPhone, addr, city);
 					System.out.println("Record Added successfully");
 
 			    }
@@ -1351,27 +1351,27 @@ public class Project {
 				break;
 
 			case 4:
-				System.out.println("Provide Details of Distributor");
-				System.out.println("Name of Distributor ");
-				distName = lineScanner.nextLine();
-				System.out.println("Primary Contact Distributor ");
-				primaryContact = lineScanner.nextLine();
+				// System.out.println("Provide Details of Distributor");
+				// System.out.println("Name of Distributor ");
+				// distName = lineScanner.nextLine();
+				// System.out.println("Primary Contact Distributor ");
+				// primaryContact = lineScanner.nextLine();
 
-				try
-			    {
-			        distributor.op2_update_primaryContact(distName, primaryContact);
-					System.out.println("Record Updated successfully");
-			    }
-			    catch (SQLException e)
-			    {
-			        e.printStackTrace();
-			    }
+				// try
+			    // {
+			        // distributor.op2_update_primaryContact(distName, primaryContact);
+					// System.out.println("Record Updated successfully");
+			    // }
+			    // catch (SQLException e)
+			    // {
+			        // e.printStackTrace();
+			    // }
 				break;
 
 			case 5:
 				System.out.println("Provide Details of Distributor To Delete");
 				System.out.println("ID of Distributor ");
-				distID = lineScanner.nextLine();
+				distID = intScanner.nextInt();
 
 				try
 			    {

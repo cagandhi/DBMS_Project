@@ -30,10 +30,10 @@ public class Distributor
 	public void op1_insert_distributor(int distId, String distName, String distType, float balance, String contactName, String contactPhone, String addr, String city) throws SQLException
 	{
 		//assumption: distId will always be provided.
-		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+contactPhone+"');";
+		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+contactPhone+"')";
 		statement.executeUpdate(query);
 
-		query = "insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('"+contactName+"','"+contactPhone+"','"+addr+"','"++city"',"+distId+")";
+		query = "insert into Locations(contactPerson,phoneNumber,addr,city,distId) values('"+contactName+"','"+contactPhone+"','"+addr+"','"+city+"',"+distId+")";
 		statement.executeUpdate(query);
 	}
 
@@ -64,7 +64,7 @@ public class Distributor
 	// ----------------------------------------------------------------- //
 	// OPERATION 3
 	// Delete a Distributor
-	public void op3_delete_distributor(String distId) throws SQLException
+	public void op3_delete_distributor(int distId) throws SQLException
 	{
 		String query = "delete from Distributors where distId = "+distId;
 		statement.executeUpdate(query);
