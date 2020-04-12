@@ -7,6 +7,7 @@ public class Distributor
 {
 	private Statement statement = null;
 	private ResultSet rs = null;
+	private Scanner intScanner = null;
 
 
 	// CONSTRUCTOR
@@ -15,6 +16,7 @@ public class Distributor
 		try
 		{
 			statement = connection.createStatement();
+			intScanner = new Scanner(System.in);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -43,6 +45,7 @@ public class Distributor
 
 	public void op2_update_distributor(int distId) throws SQLException
 	{
+		
 		String query = "select * from Distributors where distId="+distId;
 		rs = statement.executeQuery(query);
 
@@ -73,7 +76,7 @@ public class Distributor
 		System.out.println(tableGenerator.generateTable(headersList, rowsList));
 		
 		int locationCnt=0;
-		String query = "select * from Locations where distId="+distId;
+		query = "select * from Locations where distId="+distId;
 		rs = statement.executeQuery(query);
 
 
@@ -88,7 +91,7 @@ public class Distributor
 		rowsList = new ArrayList<>();
 		while(rs.next()){
 			locationCnt++;
-			List<String> row = new ArrayList<>(); 
+			row = new ArrayList<>(); 
 			row.add(String.valueOf(rs.getInt("locId")));
 			row.add(rs.getString("contactPerson"));
 			row.add(rs.getString("phoneNumber"));
@@ -111,6 +114,8 @@ public class Distributor
 		if(locationCnt>0){
 			System.out.println("5. Update warehouse (location) details");
 		}
+
+
 
 	}
 
