@@ -1435,6 +1435,22 @@ public class Project {
 			break;
 
 			case 8:
+			System.out.println("Enter Distributor ID for which you want to Pay bills");
+			distId = intScanner.nextInt();
+			System.out.println("Enter Bill Payment Date");
+			generationDate = lineScanner.nextLine();
+			try
+			{
+					distributor.op6_payment(distId, generationDate);
+					System.out.println("Bills Paid successfully");
+
+			}
+			catch (SQLException e)
+			{
+					e.printStackTrace();
+			}
+
+
 			break;
 
 			case 0:
