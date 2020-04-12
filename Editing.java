@@ -20,7 +20,7 @@ public class Editing {
     // ----------------------------------------------------------------- //
     // OPERATION 1
     // for publications
-    public  void op1_insert_pub_book(String pubTitle, int pubId, int edition, float price, String ISBN, String pubDate, String[] topicList) throws SQLException{
+    public void op1_insert_pub_book(String pubTitle, int pubId, int edition, float price, String ISBN, String pubDate, String[] topicList) throws SQLException{
         String query = "INSERT INTO Publications values("+pubId+",'"+pubTitle+"')";
         statement.executeUpdate(query);
 
@@ -60,7 +60,7 @@ public class Editing {
         statement.executeUpdate(query);
     }
 
-    public static void op1_insert_chapter(int pubId, int orderItemId){
+    public void op1_insert_chapter(int pubId, int orderItemId){
         int ncmId;
         String title, chapterText, creationDate, topic, ids;
 

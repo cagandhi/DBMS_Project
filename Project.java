@@ -95,7 +95,8 @@ public class Project {
 		System.out.println("9. Delete a chapter from a book");
 		System.out.println("10. Delete an article from a periodic publication");
 		System.out.println("0. Exit this menu");
-
+		System.out.println("Enter your choice: ");
+		
 		int task1_choice = intScanner.nextInt();
 
 		switch (task1_choice){

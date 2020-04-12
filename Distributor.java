@@ -290,6 +290,7 @@ public class Distributor
 		String query = "Select * from Bills where receiptDate is NULL and distId="+distId+"";
 		rs = statement.executeQuery(query);
 
+		/*
 		int cnt = 1;
 		while(rs.next())
 		{
@@ -300,6 +301,36 @@ public class Distributor
 			System.out.println("Distributor ID: "+rs.getString("distId"));
 			cnt++;
 		}
+		*/
+
+		// ---------------------------
+		// ---------------------------
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+
+		headersList.add("Bill ID");
+		headersList.add("Bill Amount");
+		headersList.add("Generation Date");
+		headersList.add("Distributor ID");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
+		while(rs.next())
+		{
+			List<String> row = new ArrayList<>(); 
+
+			row.add(String.valueOf(rs.getInt("billId")));
+			row.add(String.valueOf(rs.getFloat("billAmt")));
+			row.add(rs.getString("generationDate"));
+			row.add(String.valueOf(rs.getInt("distId")));
+
+			rowsList.add(row);
+		}
+
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
+
+		// ---------------------------
+		// ---------------------------
 
 		System.out.println("Input Bill ID (Comma Seperated) for which you make Payment");
 		Scanner Scanner = new Scanner(System.in);
