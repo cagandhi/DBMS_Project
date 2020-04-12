@@ -41,13 +41,13 @@ public class Distributor
 	// OPERATION 2
 	//Update Operations
 
-	public void op2_update_distributor(int distID) throws SQLException
+	public void op2_update_distributor(int distId) throws SQLException
 	{
 		String query = "select * from Distributors where distId="+distId;
 		rs = statement.executeQuery(query);
 
 		if(!rs.next()){
-			System.out.println("Sorry, distributor with this ID does not exist.")
+			System.out.println("Sorry, distributor with this ID does not exist.");
 			return;
 		}
 
@@ -72,11 +72,45 @@ public class Distributor
 
 		System.out.println(tableGenerator.generateTable(headersList, rowsList));
 		
+		int locationCnt=0;
+		String query = "select * from Locations where distId="+distId;
+		rs = statement.executeQuery(query);
 
-		int cnt=0;
-		System.out.println("Edit-menu:")
-		System.out.println("1. Update ")
 
+		tableGenerator = new TableGenerator();
+		headersList = new ArrayList<>(); 
+		headersList.add("Location ID");
+		headersList.add("Contact Person");
+		headersList.add("Phone Number");
+		headersList.add("Address");
+		headersList.add("City");
+
+		rowsList = new ArrayList<>();
+		while(rs.next()){
+			locationCnt++;
+			List<String> row = new ArrayList<>(); 
+			row.add(String.valueOf(rs.getInt("locId")));
+			row.add(rs.getString("contactPerson"));
+			row.add(rs.getString("phoneNumber"));
+			row.add(rs.getString("addr"));
+			row.add(rs.getString("city"));
+
+			rowsList.add(row);
+		}
+
+		if(locationCnt>0){
+			System.out.println("Following is the list of warehouse locations of current distributor");
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+		
+		System.out.println("Edit-menu:");
+		System.out.println("1. Update Distributor Name");
+		System.out.println("2. Update Distributor Type");
+		System.out.println("3. Update Balance");
+		System.out.println("4. Update Primary Contact Number");
+		if(locationCnt>0){
+			System.out.println("5. Update warehouse (location) details");
+		}
 
 	}
 
