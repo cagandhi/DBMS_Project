@@ -41,7 +41,45 @@ public class Distributor
 	// OPERATION 2
 	//Update Operations
 
-	// need to make update with more options. There are a lot of things in distributor in demo data
+	public void op2_update_distributor(int distID) throws SQLException
+	{
+		String query = "select * from Distributors where distId="+distId;
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()){
+			System.out.println("Sorry, distributor with this ID does not exist.")
+			return;
+		}
+
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+		headersList.add("Distributor ID");
+		headersList.add("Distributor Name");
+		headersList.add("Distributor Type");
+		headersList.add("Balance");
+		headersList.add("Primary Contact Number");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
+		List<String> row = new ArrayList<>(); 
+		row.add(String.valueOf(rs.getInt("distId")));
+		row.add(rs.getString("distName"));
+		row.add(rs.getString("distType"));
+		row.add(String.valueOf(rs.getFloat("balance")));
+		row.add(rs.getString("primaryContact"));
+
+		rowsList.add(row);
+
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		
+
+		int cnt=0;
+		System.out.println("Edit-menu:")
+		System.out.println("1. Update ")
+
+
+	}
+
 	public void op2_update_distType(String distName, String distType) throws SQLException
 	{
 		String query = "update Distributors set distType='"+distType+"' where distName='"+distName+"';";
@@ -149,7 +187,7 @@ public class Distributor
 			float billAmt = 0;
 			for (int i = 0; i < OrderIds.length; i++)
 			{
-    		//OrderIds[i] = Integer.parseInt(OrderIds[i]);
+				//OrderIds[i] = Integer.parseInt(OrderIds[i]);
 				query = "Select OrderContains.quantity, OrderItems.price from OrderContains JOIN OrderItems ON OrderContains.orderItemId = OrderItems.orderItemId where OrderContains.orderId ="+OrderIds[i];
 				rs = statement.executeQuery(query);
 

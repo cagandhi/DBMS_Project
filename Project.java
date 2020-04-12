@@ -1301,34 +1301,31 @@ public class Project {
 				city = lineScanner.nextLine();
 
 				try
-			    {
-			        distributor.op1_insert_distributor(distID, distName, distType, balance, contactName, contactPhone, addr, city);
+				{
+					distributor.op1_insert_distributor(distID, distName, distType, balance, contactName, contactPhone, addr, city);
 					System.out.println("Record Added successfully");
 
-			    }
-			    catch (SQLException e)
-			    {
-			        e.printStackTrace();
-			    }
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
 				break;
 
 			case 2:
 				System.out.println("Provide Details of Distributor");
-				System.out.println("Name of Distributor ");
-				distName = lineScanner.nextLine();
-				System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
-				distType = lineScanner.nextLine();
-
+				System.out.println("ID of Distributor ");
+				distID = intScanner.nextInt();
+				
 				try
-			    {
-			        distributor.op2_update_distType(distName, distType);
+				{
+					distributor.op2_update_distributor(distID);
 					System.out.println("Record Updated successfully");
-
-			    }
-			    catch (SQLException e)
-			    {
-			        e.printStackTrace();
-			    }
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
 				break;
 
 			case 3:
@@ -1339,15 +1336,15 @@ public class Project {
 				balance = intScanner.nextFloat();
 
 				try
-			    {
-			        distributor.op2_update_balance(distName, balance);
+				{
+					distributor.op2_update_balance(distName, balance);
 					System.out.println("Record Updated successfully");
 
-			    }
-			    catch (SQLException e)
-			    {
-			        e.printStackTrace();
-			    }
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
 				break;
 
 			case 4:
@@ -1358,14 +1355,14 @@ public class Project {
 				// primaryContact = lineScanner.nextLine();
 
 				// try
-			    // {
-			        // distributor.op2_update_primaryContact(distName, primaryContact);
+				// {
+					// distributor.op2_update_primaryContact(distName, primaryContact);
 					// System.out.println("Record Updated successfully");
-			    // }
-			    // catch (SQLException e)
-			    // {
-			        // e.printStackTrace();
-			    // }
+				// }
+				// catch (SQLException e)
+				// {
+					// e.printStackTrace();
+				// }
 				break;
 
 			case 5:
@@ -1374,14 +1371,14 @@ public class Project {
 				distID = intScanner.nextInt();
 
 				try
-			    {
-			        distributor.op3_delete_distributor(distID);
+				{
+					distributor.op3_delete_distributor(distID);
 					System.out.println("Record Updated successfully");
-			    }
-			    catch (SQLException e)
-			    {
-			        e.printStackTrace();
-			    }
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
 				break;
 
 			case 6:
