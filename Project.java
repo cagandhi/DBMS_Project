@@ -1,22 +1,22 @@
 import java.sql.*;
 import java.io.*;
 import java.util.*;
-
 /**
- * 
+ *
  * Acknowledgments: This example is a modification of code provided by Dimitri
  * Rakitine. Further modified by Shrikanth N C for MySql(MariaDB) support.
  * Replace all $USER$ with your unity id and $PASSWORD$ with your 9 digit
  * student id or updated password (if changed)
- * 
+ *
 **/
 
 public class Project {
-	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/cagandhi";
+	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/nshah25";
 	// Put your oracle ID and password here
 
 	static final String createFile = "create_java.sql";
 	static final String insertFile = "insert_java.sql";
+
 
 	private static Connection connection = null;
 	private static Statement statement = null;
@@ -48,15 +48,192 @@ public class Project {
 					break;
 
 				case 2: System.out.println("In case 2"); // production section
-					
+
 					execute_task2();
 
 					// call instance methods of class
 					// prod.getName("chintan");
-					
+
 					break;
 
 				case 3: System.out.println("In case 3"); // distribution section
+					System.out.println("	1. Add a Distributor");
+					System.out.println("	2. Update Distributor Type");
+					System.out.println("	3. Update Distributor Balance");
+					System.out.println("	4. Update Distributor Primary Contact");
+					System.out.println("	5. Delete a Distributor");
+					System.out.println("	6. Place an Order");
+					System.out.println("	7. Bill a Distributor");
+					System.out.println("	8. Payment From Distributor");
+
+					Distributor distributor = new Distributor(connection);
+
+					int second_choice = intScanner.nextInt();
+					switch(second_choice)
+					{
+
+						case 1: System.out.println("Provide Details of Distributor");
+							System.out.println("ID of Distributor ");
+							int distID = intScanner.nextInt();
+							System.out.println("Name of Distributor ");
+							String distName = lineScanner.nextLine();
+							System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
+							String distType = lineScanner.nextLine();
+							System.out.println("Balance of Distributor ");
+							Float balance = intScanner.nextFloat();
+							System.out.println("Primary Contact Distributor ");
+							String primaryContact = lineScanner.nextLine();
+
+							try
+					    {
+					        distributor.op1(distID, distName,distType,balance,primaryContact);
+									System.out.println("Record Added successfully");
+
+					    }
+					    catch (SQLException e)
+					    {
+					        e.printStackTrace();
+					    }
+						break;
+
+						case 2:System.out.println("Provide Details of Distributor");
+							System.out.println("Name of Distributor ");
+							distName = lineScanner.nextLine();
+							System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
+							distType = lineScanner.nextLine();
+
+							try
+					    {
+					        distributor.op2_update_distType(distName, distType);
+									System.out.println("Record Updated successfully");
+
+					    }
+					    catch (SQLException e)
+					    {
+					        e.printStackTrace();
+					    }
+						break;
+
+						case 3:System.out.println("Provide Details of Distributor");
+							System.out.println("Name of Distributor ");
+							distName = lineScanner.nextLine();
+							System.out.println("Balance of Distributor ");
+							balance = intScanner.nextFloat();
+
+							try
+					    {
+					        distributor.op2_update_balance(distName, balance);
+									System.out.println("Record Updated successfully");
+
+					    }
+					    catch (SQLException e)
+					    {
+					        e.printStackTrace();
+					    }
+						break;
+
+						case 4:System.out.println("Provide Details of Distributor");
+							System.out.println("Name of Distributor ");
+							distName = lineScanner.nextLine();
+							System.out.println("Primary Contact Distributor ");
+							primaryContact = lineScanner.nextLine();
+
+							try
+					    {
+					        distributor.op2_update_primaryContact(distName, primaryContact);
+									System.out.println("Record Updated successfully");
+					    }
+					    catch (SQLException e)
+					    {
+					        e.printStackTrace();
+					    }
+						break;
+
+						case 5:System.out.println("Provide Details of Distributor To Delete");
+							System.out.println("Name of Distributor ");
+							distName = lineScanner.nextLine();
+
+							try
+					    {
+					        distributor.op3_delete_distributor(distName);
+									System.out.println("Record Updated successfully");
+					    }
+					    catch (SQLException e)
+					    {
+					        e.printStackTrace();
+					    }
+						break;
+
+						case 6:System.out.println("Provide Details of Order");
+						System.out.println("ID of Order ");
+						int orderId = intScanner.nextInt();
+						System.out.println("Shipping Cost ");
+						Float shippingCost = intScanner.nextFloat();
+						System.out.println("Enter Order Date");
+						String orderDate = lineScanner.nextLine();
+						System.out.println("Enter Delivery Date");
+						String deliveryDate = lineScanner.nextLine();
+						System.out.println("Enter Location ID of Distributor's Warehouse");
+						int locId = intScanner.nextInt();
+						try
+						{
+								distributor.op4_input_order_Orders(orderId, shippingCost, orderDate, deliveryDate, locId);
+
+						}
+						catch (SQLException e)
+						{
+								e.printStackTrace();
+						}
+						System.out.println("Press 1 to add new Order Item and 0 to complete order");
+						int nn = intScanner.nextInt();
+
+						while(nn==1)
+						{
+							System.out.println("ID of Order Item");
+							int orderItemId = intScanner.nextInt();
+							System.out.println("ID of Publication");
+							int pubId = intScanner.nextInt();
+							System.out.println("Enter Quantity");
+							int quantity = intScanner.nextInt();
+
+							try
+							{
+									distributor.op4_input_order_OrderContains(orderId, orderItemId, pubId, quantity);
+
+							}
+							catch (SQLException e)
+							{
+									e.printStackTrace();
+							}
+							System.out.println("Press 1 to add new Item and 0 to complete order");
+							nn = intScanner.nextInt();
+						}
+						System.out.println("Order Placed successfully");
+
+						break;
+
+						case 7:System.out.println("Enter Distributor ID for which you want to generate bills");
+						int distId = intScanner.nextInt();
+						System.out.println("Enter Bill Generation Date");
+						String generationDate = lineScanner.nextLine();
+
+						try
+						{
+								distributor.op4_bill_distributor(distId, generationDate);
+								System.out.println("Bill Generated successfully");
+
+						}
+						catch (SQLException e)
+						{
+								e.printStackTrace();
+						}
+
+						break;
+
+						case 8:
+						break;
+
+					}
 					break;
 
 				case 4: System.out.println("In case 4"); // reports section
@@ -70,11 +247,11 @@ public class Project {
 					System.out.println("Invalid choice! Please enter correct choice");
 			}
 		}
-		
+
 		/**
 		try {
-			
-			
+
+
 			boolean canAfford = checkAbilityToStudy("Todd");
 			// ************************************************************************
 
@@ -94,12 +271,12 @@ public class Project {
 				connection.commit();
 			}
 			// MOD - Catching a SQLException would mean that one of the update queries is not executed properly and hence rollback the database to its previous state.
-			catch(SQLException se) 
+			catch(SQLException se)
 			{
 				connection.rollback();
 			}
 			// MOD - good practice to again enable the default auto-commit mode to prevent any other issues.
-			finally 
+			finally
 			{
 				connection.setAutoCommit(true);
 			}
@@ -112,7 +289,7 @@ public class Project {
 			} else {
 				System.out.println("Failure");
 			}
-			
+
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -122,7 +299,7 @@ public class Project {
 		// close();
 	}
 
-	public static void execute_task2() 
+	public static void execute_task2()
 	{
 		// pass connection so the class can work on SQL queries
 		Production prod = new Production(connection);
@@ -132,7 +309,7 @@ public class Project {
 		Scanner lineScanner = new Scanner(System.in);
 
 		System.out.println("\nTASK 2: Production");
-		System.out.println("1. Enter a new book edition or new issue of a publication"); 
+		System.out.println("1. Enter a new book edition or new issue of a publication");
 		System.out.println("2. Update, delete a book edition or publication issue");
 		System.out.println("3. Enter/update an article or chapter: title, author's name, topic, and date");
 		System.out.println("4. Enter/update text of an article");
@@ -140,7 +317,7 @@ public class Project {
 		System.out.println("6. Enter payment for author or editor, and keep track of when each payment was claimed by its addressee");
 		System.out.println("0. Exit this menu");
 		System.out.println("Enter your choice: ");
-		
+
 		int task2_choice = intScanner.nextInt();
 
 		switch(task2_choice)
@@ -172,7 +349,7 @@ public class Project {
 					System.out.println("Enter issue no: ");
 					orderItemId = intScanner.nextInt();
 				}
-				
+
 				System.out.println("Enter price: ");
 				price = floatScanner.nextFloat();
 
@@ -223,7 +400,7 @@ public class Project {
 				System.out.println("\nSUB-MENU");
 				System.out.println("1. Update price");
 				System.out.println("2. Update publication date");
-				
+
 				if(isEdition)
 				{
 					System.out.println("3. Update ISBN");
@@ -241,7 +418,7 @@ public class Project {
 
 				switch(val)
 				{
-					case 1: 
+					case 1:
 
 						System.out.println("Enter edition no./issue no. for which update is to be done: ");
 						orderItemId = intScanner.nextInt();
@@ -251,7 +428,7 @@ public class Project {
 
 						System.out.println("Enter new price: ");
 						price = floatScanner.nextFloat();
-						
+
 						try
 						{
 							prod.op2_update_price(price, orderItemId, pubId);
@@ -264,7 +441,7 @@ public class Project {
 
 						break;
 
-					case 2: 
+					case 2:
 						System.out.println("Enter publication date: ");
 						pubDate = lineScanner.nextLine();
 
@@ -273,7 +450,7 @@ public class Project {
 
 						System.out.println("Enter publication id for which update is to be done: ");
 						pubId = intScanner.nextInt();
-						
+
 						try
 						{
 							prod.op2_update_pubDate(pubDate, orderItemId, pubId);
@@ -286,7 +463,7 @@ public class Project {
 
 						break;
 
-					case 3: 
+					case 3:
 						if(isEdition)
 						{
 							System.out.println("Enter edition no./issue no. for which update is to be done: ");
@@ -297,7 +474,7 @@ public class Project {
 
 							System.out.println("Enter ISBN: ");
 							String isbn = lineScanner.nextLine();
-							
+
 							try
 							{
 								prod.op2_update_isbn(isbn, orderItemId, pubId);
@@ -329,7 +506,7 @@ public class Project {
 
 						break;
 
-					case 4: 
+					case 4:
 						System.out.println("Enter edition no. to be deleted: ");
 						orderItemId = intScanner.nextInt();
 
@@ -352,7 +529,7 @@ public class Project {
 					default:
 						System.out.println("Invalid choice! Please enter correct choice");
 				}
-				
+
 				break;
 
 			case 3: //operation 3
@@ -368,7 +545,7 @@ public class Project {
 
 				switch(val)
 				{
-					case 1: 
+					case 1:
 						System.out.println("Enter publication id for this chapter: ");
 						pubId = intScanner.nextInt();
 
@@ -444,7 +621,7 @@ public class Project {
 				{
 					e.printStackTrace();
 					// System.out.println("Operation Failed. Try Again!");
-				}	
+				}
 
 				break;
 
@@ -460,7 +637,7 @@ public class Project {
 
 				switch(op5_choice)
 				{
-					case 1: 
+					case 1:
 						System.out.println("Enter topic name: ");
 						String topicName = lineScanner.nextLine();
 
@@ -509,7 +686,7 @@ public class Project {
 
 					default:
 						System.out.println("Invalid choice! Please enter correct choice");
-					
+
 				}
 				break;
 
@@ -519,7 +696,7 @@ public class Project {
 				System.out.println("2. Claim payment");
 				System.out.println("0. Exit this menu");
 				System.out.println("Enter your choice: ");
-		
+
 				val = intScanner.nextInt();
 
 				switch(val)
@@ -549,7 +726,7 @@ public class Project {
 
 						break;
 
-					case 2: 
+					case 2:
 						// System.out.println("Enter employee id who is claiming the payment: ");
 						// cmId = intScanner.nextInt();
 
@@ -579,10 +756,10 @@ public class Project {
 				}
 				break;
 
-			case 0: 
+			case 0:
 				break;
 
-			default: 
+			default:
 				System.out.println("Invalid choice! Please enter correct choice");
 		}
 	}
@@ -592,7 +769,7 @@ public class Project {
 			// statement.executeUpdate("DROP TABLE Students");
 			// statement.executeUpdate("DROP TABLE Schools");
 			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,BookTopicMappings,Topics,Books,Publications");
-		} 
+		}
 		catch (SQLException e) { }
 
 		createTables();
@@ -602,7 +779,7 @@ public class Project {
 	private static void initialize() {
 		try {
 			connectToDatabase();
-			resetDatabase();
+			//resetDatabase();
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {
@@ -655,8 +832,8 @@ public class Project {
 	private static void connectToDatabase() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
 
-		String user = "cagandhi";
-		String password = "200315238";
+		String user = "nshah25";
+		String password = "200304882";
 
 		connection = DriverManager.getConnection(jdbcURL, user, password);
 		statement = connection.createStatement();
