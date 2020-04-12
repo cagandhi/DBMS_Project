@@ -1283,12 +1283,18 @@ public class Project {
 				String distType = lineScanner.nextLine();
 				System.out.println("Balance of Distributor ");
 				Float balance = intScanner.nextFloat();
-				System.out.println("Primary Contact Distributor ");
-				String primaryContact = lineScanner.nextLine();
+				System.out.println("Contact Person Name ");
+				String contactName = lineScanner.nextLine();
+				System.out.println("Contact Person Phone ");
+				String contactPhone = lineScanner.nextLine();
+				System.out.println("Address ");
+				String addr = lineScanner.nextLine();
+				System.out.println("City ");
+				String city = lineScanner.nextLine();
 
 				try
 			    {
-			        distributor.op1(distID, distName,distType,balance,primaryContact);
+			        distributor.op1_insert_distributor(distId, distName, distType, balance, contactName, contactPhone, addr, city);
 					System.out.println("Record Added successfully");
 
 			    }

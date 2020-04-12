@@ -27,7 +27,7 @@ public class Distributor
 	// OPERATION 1
 	// Add new distributor
 
-	public void op1(int distId, String distName, String distType, float balance, String contactName, String contactPhone, String addr, String city) throws SQLException
+	public void op1_insert_distributor(int distId, String distName, String distType, float balance, String contactName, String contactPhone, String addr, String city) throws SQLException
 	{
 		//assumption: distId will always be provided.
 		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+contactPhone+"');";
