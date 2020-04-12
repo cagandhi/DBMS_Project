@@ -15,8 +15,8 @@ public class Project {
 	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/cagandhi";
 	// Put your oracle ID and password here
 
-	static final String createFile = "create_final.sql";
-	static final String insertFile = "insert_final.sql";
+	static final String createFile = "create_java.sql";
+	static final String insertFile = "insert_java.sql";
 
 	private static Connection connection = null;
 	private static Statement statement = null;
@@ -277,6 +277,71 @@ public class Project {
 							break;
 
 						case 3: //operation 3
+							System.out.println("\nSUB-MENU");
+							System.out.println("1. Enter a chapter");
+							System.out.println("2. Enter an article");
+							System.out.println("3. Update a chapter");
+							System.out.println("4. Update an article");
+							System.out.println("0. Exit this menu");
+							System.out.println("Enter your choice: ");
+
+							val = intScanner.nextInt();
+
+							switch(val)
+							{
+								case 1: 
+									System.out.println("Enter publication id for this chapter: ");
+									pubId = intScanner.nextInt();
+
+									System.out.println("Enter edition no. for this chapter: ");
+									orderItemId = intScanner.nextInt();
+
+									System.out.println("Enter title: ");
+									String title = lineScanner.nextLine();
+
+									System.out.println("Enter chapter text: ");
+									String chapterText = lineScanner.nextLine();
+
+									System.out.println("Enter chapter date: ");
+									String chapterDate = lineScanner.nextLine();
+
+									System.out.println("Enter topic(s) associated with chapter (separated by commas only): ");
+									String topics = lineScanner.nextLine();
+
+									System.out.println("Enter author(s) id associated with chapter (separated by commas only): ");
+									String authorIds = lineScanner.nextLine();
+
+									String[] topicList = topics.split(",");
+									String[] authorList = authorIds.split(",");
+
+									try
+									{
+										prod.op3_enter_chapter(orderItemId, pubId, title, chapterText, chapterDate, topicList, authorList);
+										System.out.println("New Chapter entered successfully!");
+									} catch(SQLException e)
+									{
+										e.printStackTrace();
+										// System.out.println("Operation Failed. Try Again!");
+									}
+
+									break;
+
+								case 2:
+									break;
+
+								case 3:
+									break;
+
+								case 4:
+									break;
+
+								case 0:
+									break;
+
+								default:
+									System.out.println("Invalid choice! Please enter correct choice");
+							}
+
 							break;
 
 						case 4: //operation 4
@@ -517,7 +582,7 @@ public class Project {
 		try {
 			// statement.executeUpdate("DROP TABLE Students");
 			// statement.executeUpdate("DROP TABLE Schools");
-			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Topics,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,Periodicity,Books,Publications");
+			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,BookTopicMappings,Topics,Books,Publications");
 		} 
 		catch (SQLException e) { }
 

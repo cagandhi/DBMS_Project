@@ -1,6 +1,6 @@
 -- use cagandhi;
 
-drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Topics,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,Periodicity,Books,Publications;
+drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,BookTopicMappings,Topics,Books,Publications;
 
 create table Publications(
 pubId int primary key auto_increment,
@@ -14,22 +14,35 @@ foreign key (pubId) references Publications(pubId) on delete cascade on update c
 constraint chk_no_editions check (noOFEditions>0)
 );
 
-create table Periodicity(
-periodicityType varchar(50) primary key,
-frequency varchar(50) not null
+create table Topics(
+topicName varchar(50) primary key
+);
+
+create table BookTopicMappings(
+pubId int,
+topicName varchar(50),
+primary key (pubId, topicName),
+foreign key (topicName) references Topics(topicName) on delete cascade on update cascade,
+foreign key (pubId) references Books(pubId) on delete cascade on update cascade
 );
 
 create table PeriodicPublications(
 pubId int primary key,
-periodicityType varchar(50),
-foreign key (periodicityType) references Periodicity(periodicityType) on delete set null on update cascade,
+periodicityType varchar(50) not null,
+frequency varchar(50) not null,
 foreign key (pubId) references Publications(pubId) on delete cascade on update cascade
 );
 
 create table ContentManagers(
 cmId int primary key auto_increment,
 cmName varchar(200) not null,
-salary float
+salary float,
+age int not null,
+gender char(1) not null,
+phoneNo char(12) not null,
+emailId varchar(100) not null,
+address varchar(200) not null,
+constraint chk_age_gender check (age>0 and gender in ('M','F'))
 );
 
 create table Editors(
@@ -91,10 +104,6 @@ issueNo int not null default 1,
 primary key (orderItemId, pubId),
 foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade,
 constraint chk_issue_no check (issueNo>0)
-);
-
-create table Topics(
-topicName varchar(50) primary key
 );
 
 create table Chapters(
