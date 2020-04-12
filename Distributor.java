@@ -31,6 +31,8 @@ public class Distributor
 	// ----------------------------------------------------------------- //
 	// OPERATION 1
 	// Add new distributor
+
+	//need to take one location details with this
 	public void op1(int distId, String distName, String distType, float balance, String primaryContact) throws SQLException
 	{
 		String query = "insert into Distributors(distId, distName,distType,balance,primaryContact) values("+distId+",'"+distName+"','"+distType+"',"+balance+",'"+primaryContact+"');";
@@ -41,9 +43,12 @@ public class Distributor
 	// ----------------------------------------------------------------- //
 	// OPERATION 2
 	//Update Operations
+
+	// need to make update with more options. There are a lot of things in distributor in demo data
 	public void op2_update_distType(String distName, String distType) throws SQLException
 	{
 		String query = "update Distributors set distType='"+distType+"' where distName='"+distName+"';";
+		// what if there are many distributors with same name? Show IDs
 		statement.executeUpdate(query);
 	}
 
