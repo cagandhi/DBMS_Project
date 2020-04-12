@@ -11,7 +11,9 @@ import java.util.*;
 **/
 
 public class Project {
-	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/jmodi3";
+	static final String username = "cagandhi";
+	static final String password = "200315238";
+	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/"+username;
 	// Put your oracle ID and password here
 
 	static final String createFile = "create_java.sql";
@@ -1203,10 +1205,7 @@ public class Project {
 	private static void connectToDatabase() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
 
-		String user = "jmodi3";
-		String password = "200315622";
-
-		connection = DriverManager.getConnection(jdbcURL, user, password);
+		connection = DriverManager.getConnection(jdbcURL, username, password);
 		statement = connection.createStatement();
 	}
 

@@ -1,7 +1,8 @@
 /*
 * This code is just used to display database tables properly on the console. 
 * This is not a required component of our code and we don't take any ownership of the same.
-* This code was directly taken from a StackOverFlow answer here: https://stackoverflow.com/a/41406399/6543250
+*
+* Acknowledgements: This code was directly taken from a StackOverFlow answer here: https://stackoverflow.com/a/41406399/6543250
 */
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 public class TableGenerator {
 
-	private int PADDING_SIZE = 2;
+	private int PADDING_SIZE = 1;
 	private String NEW_LINE = "\n";
 	private String TABLE_JOINT_SYMBOL = "+";
 	private String TABLE_V_SPLIT_SYMBOL = "|";
