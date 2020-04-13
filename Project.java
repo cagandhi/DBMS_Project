@@ -1157,13 +1157,11 @@ public class Project {
 	public static void execute_task3()
 	{
 		System.out.println("	1. Add a Distributor");
-		System.out.println("	2. Update Distributor Type");
-		System.out.println("	3. Update Distributor Balance");
-		System.out.println("	4. Update Distributor Primary Contact");
-		System.out.println("	5. Delete a Distributor");
-		System.out.println("	6. Place an Order");
-		System.out.println("	7. Bill a Distributor");
-		System.out.println("	8. Payment From Distributor");
+		System.out.println("	2. Update Distributor ");
+		System.out.println("	3. Delete a Distributor");
+		System.out.println("	4. Place an Order");
+		System.out.println("	5. Bill a Distributor");
+		System.out.println("	6. Payment From Distributor");
 		System.out.println("    0. Exit this menu");
 		System.out.println("Enter your choice: ");
 
@@ -1192,7 +1190,7 @@ public class Project {
 				distID = intScanner.nextInt();
 				System.out.println("Name of Distributor ");
 				distName = lineScanner.nextLine();
-				System.out.println("Type of Distributor(wholesale distributor', 'library', 'bookstore')");
+				System.out.println("Type of Distributor('wholesale distributor', 'library', 'bookstore')");
 				distType = lineScanner.nextLine();
 				System.out.println("Balance of Distributor ");
 				balance = intScanner.nextFloat();
@@ -1234,43 +1232,6 @@ public class Project {
 				break;
 
 			case 3:
-				System.out.println("Provide Details of Distributor");
-				System.out.println("Name of Distributor ");
-				distName = lineScanner.nextLine();
-				System.out.println("Balance of Distributor ");
-				balance = intScanner.nextFloat();
-
-				try
-				{
-					distributor.op2_update_balance(distName, balance);
-					System.out.println("Record Updated successfully");
-
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
-				break;
-
-			case 4:
-				// System.out.println("Provide Details of Distributor");
-				// System.out.println("Name of Distributor ");
-				// distName = lineScanner.nextLine();
-				// System.out.println("Primary Contact Distributor ");
-				// primaryContact = lineScanner.nextLine();
-
-				// try
-				// {
-					// distributor.op2_update_primaryContact(distName, primaryContact);
-					// System.out.println("Record Updated successfully");
-				// }
-				// catch (SQLException e)
-				// {
-					// e.printStackTrace();
-				// }
-				break;
-
-			case 5:
 				System.out.println("Provide Details of Distributor To Delete");
 				System.out.println("ID of Distributor ");
 				distID = intScanner.nextInt();
@@ -1286,7 +1247,7 @@ public class Project {
 				}
 				break;
 
-			case 6:
+			case 4:
 				System.out.println("Provide Details of Order");
 				System.out.println("ID of Order ");
 				int orderId = intScanner.nextInt();
@@ -1335,7 +1296,7 @@ public class Project {
 
 				break;
 
-			case 7:
+			case 5:
 				System.out.println("Enter Distributor ID for which you want to generate bills");
 				int distId = intScanner.nextInt();
 				System.out.println("Enter Bill Generation Date");
@@ -1354,7 +1315,7 @@ public class Project {
 
 				break;
 
-			case 8:
+			case 6:
 				System.out.println("Enter Distributor ID for which you want to Pay bills");
 				distId = intScanner.nextInt();
 				System.out.println("Enter Bill Payment Date");
@@ -1371,7 +1332,7 @@ public class Project {
 				}
 
 
-			break;
+				break;
 
 			case 0:
 				break;
