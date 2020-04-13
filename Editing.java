@@ -147,7 +147,7 @@ public class Editing {
         String query = "UPDATE PeriodicPublications SET frequency='"+frequency+"' WHERE pubId="+pubId;
         statement.executeUpdate(query);
     }
-    
+
     // ----------------------------------------------------------------- //
     // OPERATION 3
     public void op3_assign_editor_pub(int[] cmId, int orderItemId, int pubId) throws SQLException{
@@ -174,7 +174,7 @@ public class Editing {
         */
 
         TableGenerator tableGenerator = new TableGenerator();
-        List<String> headersList = new ArrayList<>(); 
+        List<String> headersList = new ArrayList<>();
         headersList.add("Publication ID");
         headersList.add("Publication Title");
         headersList.add("Edition or Issue No.");
@@ -184,7 +184,7 @@ public class Editing {
 
         while(rs.next())
         {
-            List<String> row = new ArrayList<>(); 
+            List<String> row = new ArrayList<>();
 
             row.add(rs.getString("pubId"));
             row.add(rs.getString("title"));
@@ -253,8 +253,9 @@ public class Editing {
 
     // ----------------------------------------------------------------- //
     // ----------------------------------------------------------------- //
-    public void show_publications(int pubId){
+    public void show_publications(int pubId) throws SQLException{
         String query = "SELECT * FROM OrderItems NATURAL JOIN Publications WHERE pubId="+pubId;
+        rs = statement.executeQuery(query);
         TableGenerator tableGenerator = new TableGenerator();
         List<String> headersList = new ArrayList<>();
         headersList.add("Edition or Issue No.");

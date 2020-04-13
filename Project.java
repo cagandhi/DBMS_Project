@@ -8,7 +8,7 @@ import java.util.*;
  * Replace all $USER$ with your unity id and $PASSWORD$ with your 9 digit
  * student id or updated password (if changed)
  *
-**/
+ **/
 
 public class Project {
 	static final String username = "cagandhi";
@@ -96,7 +96,7 @@ public class Project {
 		System.out.println("10. Delete an article from a periodic publication");
 		System.out.println("0. Exit this menu");
 		System.out.println("Enter your choice: ");
-		
+
 		int task1_choice = intScanner.nextInt();
 
 		switch (task1_choice){
@@ -157,10 +157,10 @@ public class Project {
 					try {
 						edit.op1_insert_pub_periodic(pubTitle, pubId, periodicityType, frequency, issueNo, price, pubDate);
 						System.out.println("Periodic publication successfully inserted!");
-						
+
 						System.out.println("Would you like to add articles for this Publication? ");
 						String yn = lineScanner.nextLine();
-						
+
 						while(yn.equalsIgnoreCase("y")){
 							edit.op1_insert_article(pubId, issueNo, pubDate);
 							System.out.println("Would you like to add more articles? ");
@@ -176,7 +176,7 @@ public class Project {
 				}
 
 				break;
-			
+
 			case 2:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
@@ -222,7 +222,11 @@ public class Project {
 				int orderItemId;
 				System.out.println("Enter the ID of the publication: ");
 				pubId = intScanner.nextInt();
-				edit.show_publications(pubId);
+				try {
+					edit.show_publications(pubId);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Enter edition/issue no. of the publication: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the IDs of editor(s) (separated by commas only): ");
@@ -257,7 +261,11 @@ public class Project {
 			case 7:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				edit.show_publications(pubId);
+				try {
+					edit.show_publications(pubId);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Enter the edition no. to which chapter is to be added: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the Creation date of chapter: ");
@@ -268,11 +276,15 @@ public class Project {
 			case 8:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				edit.show_publications(pubId);
+				try {
+					edit.show_publications(pubId);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Enter the issue no. to which article is to be added: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the Creation date of article: ");
-				String creationDate = lineScanner.nextLine();
+				creationDate = lineScanner.nextLine();
 				edit.op1_insert_article(pubId, orderItemId, creationDate);
 				break;
 
@@ -281,7 +293,11 @@ public class Project {
 
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				edit.show_publications(pubId);
+				try {
+					edit.show_publications(pubId);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Enter the edition no. to which chapter is linked: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the title of the Chapter: ");
@@ -298,7 +314,11 @@ public class Project {
 			case 10:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				edit.show_publications(pubId);
+				try {
+					edit.show_publications(pubId);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Enter the issue no. to which article is linked: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the title of the Article: ");
@@ -1186,7 +1206,7 @@ public class Project {
 		switch(second_choice)
 		{
 
-			case 1: 
+			case 1:
 				System.out.println("Provide Details of Distributor");
 				System.out.println("ID of Distributor ");
 				distID = intScanner.nextInt();
@@ -1221,7 +1241,7 @@ public class Project {
 				System.out.println("Provide Details of Distributor");
 				System.out.println("ID of Distributor ");
 				distID = intScanner.nextInt();
-				
+
 				try
 				{
 					distributor.op2_update_distributor(distID);
@@ -1261,12 +1281,12 @@ public class Project {
 
 				// try
 				// {
-					// distributor.op2_update_primaryContact(distName, primaryContact);
-					// System.out.println("Record Updated successfully");
+				// distributor.op2_update_primaryContact(distName, primaryContact);
+				// System.out.println("Record Updated successfully");
 				// }
 				// catch (SQLException e)
 				// {
-					// e.printStackTrace();
+				// e.printStackTrace();
 				// }
 				break;
 
@@ -1371,7 +1391,7 @@ public class Project {
 				}
 
 
-			break;
+				break;
 
 			case 0:
 				break;
