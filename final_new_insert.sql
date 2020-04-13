@@ -497,7 +497,7 @@ insert into Distributors values(2001,'BookSell','bookstore',215,'9191234567');
 insert into Locations values(1,'Jason','9191234567','2200, A Street, NC','charlotte',2001);
 
 insert into Distributors values(2002,'BookDist','wholesaler',0,'9291234567');
-insert into Locations values(2,Alex','9291234567','2200, B Street, NC','Raleigh',2002);
+insert into Locations values(2,'Alex','9291234567','2200, B Street, NC','Raleigh',2002);
 
 insert into ContentManagers values (3001,'John',1000,36,'M','9391234567','3001@gmail.com','21 ABC St, NC 27');
 insert into Editors values(3001);
