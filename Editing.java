@@ -20,22 +20,23 @@ public class Editing {
     // ----------------------------------------------------------------- //
     // OPERATION 1
     // for publications
-    public void op1_insert_pub_book(String pubTitle, int pubId, int edition, float price, String ISBN, String pubDate, String[] topicList) throws SQLException{
+    public void op1_insert_pub_book(String pubTitle, int pubId, int edition, float price, String ISBN, String pubDate, String[] topicList, boolean topicEmpty) throws SQLException{
         String query = "INSERT INTO Publications values("+pubId+",'"+pubTitle+"')";
         statement.executeUpdate(query);
 
         query = "INSERT INTO Books(pubId) values("+pubId+")";
         statement.executeUpdate(query);
-
-        for(String topic: topicList) {
-            String check_query = "SELECT * FROM Topics where topicName='"+topic+"'";
-            rs = statement.executeQuery(check_query);
-            if(!rs.next()){
-                query = "INSERT INTO Topics values('"+topic+"')";
+        if(!topicEmpty) {
+            for (String topic : topicList) {
+                String check_query = "SELECT * FROM Topics where topicName='" + topic + "'";
+                rs = statement.executeQuery(check_query);
+                if (!rs.next()) {
+                    query = "INSERT INTO Topics values('" + topic + "')";
+                    statement.executeUpdate(query);
+                }
+                query = "INSERT INTO BookTopicMappings values(" + pubId + ",'" + topic + "')";
                 statement.executeUpdate(query);
             }
-            query = "INSERT INTO BookTopicMappings values(" + pubId + ",'" + topic + "')";
-            statement.executeUpdate(query);
         }
 
         query = "INSERT INTO OrderItems values("+edition+","+pubId+","+price+",'"+pubDate+"')";
@@ -61,10 +62,10 @@ public class Editing {
     }
 
     public void op1_insert_chapter(int pubId, int orderItemId, String creationDate){
-        int ncmId;
         String title, chapterText, topic, ids;
+        boolean authorEmpty=false, topicEmpty=false;
+        int[] cmId = new int[0];
 
-        Scanner intScanner = new Scanner(System.in);
         Scanner lineScanner = new Scanner(System.in);
 
         System.out.println("Enter the Title of chapter: ");
@@ -72,22 +73,30 @@ public class Editing {
         System.out.println("Enter the Chapter Text: ");
         chapterText = lineScanner.nextLine();
 
-        System.out.println("Enter the topics for this chapter (separated by commas only): ");
+        System.out.println("Enter the topics for this chapter (separated by commas only, press ENTER to skip): ");
         topic = lineScanner.nextLine();
+        if(topic.isEmpty()){
+            topicEmpty=true;
+        }
         String[] topics = topic.split(",");
 
-        System.out.println("Enter the IDs of authors of this chapter (separated by commas only): ");
+        System.out.println("Enter the IDs of authors of this chapter (separated by commas only, press ENTER to skip): ");
         ids = lineScanner.nextLine();
-
-        String[] idArray = ids.split(",");
-        int[] cmId = new int[idArray.length];
-
-        for(int i=0;i<idArray.length;i++){
-            cmId[i]=Integer.parseInt(idArray[i]);
+        if(ids.isEmpty()){
+            authorEmpty=true;
         }
+        else{
+            String[] idArray = ids.split(",");
+            cmId = new int[idArray.length];
+
+            for(int i=0;i<idArray.length;i++){
+                cmId[i]=Integer.parseInt(idArray[i]);
+            }
+        }
+        
 
         try {
-            op5_insert_chapter(title, orderItemId, pubId, chapterText, creationDate, topics, cmId);
+            op5_insert_chapter(title, orderItemId, pubId, chapterText, creationDate, topics, cmId, authorEmpty, topicEmpty);
             System.out.println("Chapter successfully inserted!");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,10 +104,10 @@ public class Editing {
     }
 
     public void op1_insert_article(int pubId, int orderItemId, String creationDate){
-        int ncmId;
+        boolean journalistEmpty=false, topicEmpty=false;
         String title, articleText, topic, ids;
+        int[] cmId = new int[0];
 
-        Scanner intScanner = new Scanner(System.in);
         Scanner lineScanner = new Scanner(System.in);
 
 
@@ -107,22 +116,30 @@ public class Editing {
         System.out.println("Enter the Article Text: ");
         articleText = lineScanner.nextLine();
 
-        System.out.println("Enter the of topics for this article seperated by a comma: ");
+        System.out.println("Enter the of topics for this article (separated by commas only, press ENTER to skip): ");
         topic = lineScanner.nextLine();
+        if(topic.isEmpty()){
+            topicEmpty=true;
+        }
         String[] topics = topic.split(",");
 
-        System.out.println("Enter the IDs of journalists of this chapter separated by commas: ");
+        System.out.println("Enter the IDs of journalists of this chapter (separated commas only, press ENTER to skip): ");
         ids = lineScanner.nextLine();
-        String[] idArray = ids.split(",");
-        int[] cmId = new int[idArray.length];
+        if(ids.isEmpty()){
+            journalistEmpty=true;
+        }
+        else{
+            String[] idArray = ids.split(",");
+            cmId = new int[idArray.length];
 
-        for(int i=0;i<idArray.length;i++){
-            cmId[i]=Integer.parseInt(idArray[i]);
+            for(int i=0;i<idArray.length;i++){
+                cmId[i]=Integer.parseInt(idArray[i]);
+            }
         }
 
 
         try {
-            op5_insert_article(title, orderItemId, pubId, articleText, creationDate, topics, cmId);
+            op5_insert_article(title, orderItemId, pubId, articleText, creationDate, topics, cmId, journalistEmpty, topicEmpty);
             System.out.println("Article successfully inserted!");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -199,45 +216,49 @@ public class Editing {
 
     // ----------------------------------------------------------------- //
     // OPERATION 5
-    public void op5_insert_chapter(String title, int orderItemId, int pubId, String chapterText, String creationDate, String[] topicName, int[] cmId) throws SQLException{
+    public void op5_insert_chapter(String title, int orderItemId, int pubId, String chapterText, String creationDate, String[] topicName, int[] cmId, boolean authorEmpty, boolean topicEmpty) throws SQLException{
         String query = "INSERT INTO Chapters values ('"+title+"',"+orderItemId+","+pubId+",'"+chapterText+"','"+creationDate+"')";
         statement.executeUpdate(query);
-
-        for (String topic:topicName) {
-            String check_query = "SELECT * FROM Topics where topicName='"+topic+"'";
-            rs = statement.executeQuery(check_query);
-            if(!rs.next()){
-                query = "INSERT INTO Topics values('"+topic+"')";
+        if(!topicEmpty) {
+            for (String topic : topicName) {
+                String check_query = "SELECT * FROM Topics where topicName='" + topic + "'";
+                rs = statement.executeQuery(check_query);
+                if (!rs.next()) {
+                    query = "INSERT INTO Topics values('" + topic + "')";
+                    statement.executeUpdate(query);
+                }
+                query = "INSERT INTO ChapterTopicMappings values ('" + title + "'," + orderItemId + "," + pubId + ",'" + topic + "')";
                 statement.executeUpdate(query);
             }
-            query = "INSERT INTO ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
-            statement.executeUpdate(query);
         }
-
-        for (int cId : cmId){
-            query = "INSERT INTO ChapterWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+cId+")";
-            statement.executeUpdate(query);
+        if(!authorEmpty) {
+            for (int cId : cmId) {
+                query = "INSERT INTO ChapterWrittenBy values ('" + title + "'," + orderItemId + "," + pubId + "," + cId + ")";
+                statement.executeUpdate(query);
+            }
         }
     }
 
-    public void op5_insert_article(String title, int orderItemId, int pubId, String articleText, String creationDate, String[] topicName, int[] cmId) throws SQLException{
+    public void op5_insert_article(String title, int orderItemId, int pubId, String articleText, String creationDate, String[] topicName, int[] cmId, boolean journalistEmpty, boolean topicEmpty) throws SQLException{
         String query = "INSERT INTO Articles(title, orderItemId, pubId, articleText, creationDate) values ('"+title+"',"+orderItemId+","+pubId+",'"+articleText+"','"+creationDate+"')";
         statement.executeUpdate(query);
-
-        for (String topic:topicName) {
-            String check_query = "SELECT * FROM Topics where topicName='"+topic+"'";
-            rs = statement.executeQuery(check_query);
-            if(!rs.next()){
-                query = "INSERT INTO Topics values('"+topic+"')";
+        if(!topicEmpty) {
+            for (String topic : topicName) {
+                String check_query = "SELECT * FROM Topics where topicName='" + topic + "'";
+                rs = statement.executeQuery(check_query);
+                if (!rs.next()) {
+                    query = "INSERT INTO Topics values('" + topic + "')";
+                    statement.executeUpdate(query);
+                }
+                query = "INSERT INTO ArticleTopicMappings values ('" + title + "'," + orderItemId + "," + pubId + ",'" + topic + "')";
                 statement.executeUpdate(query);
             }
-            query = "INSERT INTO ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
-            statement.executeUpdate(query);
         }
-
-        for (int cId : cmId){
-            query = "INSERT INTO ArticleWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+cId+")";
-            statement.executeUpdate(query);
+        if(!journalistEmpty) {
+            for (int cId : cmId) {
+                query = "INSERT INTO ArticleWrittenBy values ('" + title + "'," + orderItemId + "," + pubId + "," + cId + ")";
+                statement.executeUpdate(query);
+            }
         }
     }
 

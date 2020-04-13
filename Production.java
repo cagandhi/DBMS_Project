@@ -188,56 +188,56 @@ public class Production
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 3
-	public void op3_enter_chapter(int orderItemId, int pubId, String title, String chapterText, String chapterDate, String[] topicList, String[] authorList) throws SQLException
+	public void op3_enter_chapter(int orderItemId, int pubId, String title, String chapterText, String chapterDate, String[] topicList, String[] authorList, boolean topicEmpty, boolean authorEmpty) throws SQLException
 	{
 		String query = "insert into Chapters values ('"+title+"',"+orderItemId+","+pubId+",'"+chapterText+"','"+chapterDate+"')";
 		statement.executeUpdate(query);
+		if(!topicEmpty) {
+			for (String topic : topicList) {
+				query = "SELECT * FROM Topics where topicName='" + topic + "'";
+				rs = statement.executeQuery(query);
 
-		for(String topic: topicList)
-		{
-			query = "SELECT * FROM Topics where topicName='"+topic+"'";
-			rs = statement.executeQuery(query);
+				if (!rs.next()) {
+					query = "INSERT INTO Topics values('" + topic + "')";
+					statement.executeUpdate(query);
+				}
 
-			if(!rs.next()){
-				query = "INSERT INTO Topics values('"+topic+"')";
+				query = "insert into ChapterTopicMappings values ('" + title + "'," + orderItemId + "," + pubId + ",'" + topic + "')";
 				statement.executeUpdate(query);
 			}
-
-			query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
-			statement.executeUpdate(query);
 		}
-
-		for(String authorId: authorList)
-		{
-			query = "insert into ChapterWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+Integer.parseInt(authorId)+")";
-			statement.executeUpdate(query);
-		}	
+		if(!authorEmpty) {
+			for (String authorId : authorList) {
+				query = "insert into ChapterWrittenBy values ('" + title + "'," + orderItemId + "," + pubId + "," + Integer.parseInt(authorId) + ")";
+				statement.executeUpdate(query);
+			}
+		}
 	}
 
-	public void op3_enter_article(int orderItemId, int pubId, String title, String articleText, String articleDate, String[] topicList, String[] authorList) throws SQLException
+	public void op3_enter_article(int orderItemId, int pubId, String title, String articleText, String articleDate, String[] topicList, String[] authorList, boolean topicEmpty, boolean journalistEmpty) throws SQLException
 	{
 		String query = "insert into Articles values ('"+title+"',"+orderItemId+","+pubId+",'"+articleText+"','"+articleDate+"')";
 		statement.executeUpdate(query);
+		if(!topicEmpty) {
+			for (String topic : topicList) {
+				query = "SELECT * FROM Topics where topicName='" + topic + "'";
+				rs = statement.executeQuery(query);
 
-		for(String topic: topicList)
-		{
-			query = "SELECT * FROM Topics where topicName='"+topic+"'";
-			rs = statement.executeQuery(query);
+				if (!rs.next()) {
+					query = "INSERT INTO Topics values('" + topic + "')";
+					statement.executeUpdate(query);
+				}
 
-			if(!rs.next()){
-				query = "INSERT INTO Topics values('"+topic+"')";
+				query = "insert into ArticleTopicMappings values ('" + title + "'," + orderItemId + "," + pubId + ",'" + topic + "')";
 				statement.executeUpdate(query);
 			}
-
-			query = "insert into ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
-			statement.executeUpdate(query);
 		}
-
-		for(String authorId: authorList)
-		{
-			query = "insert into ArticleWrittenBy values ('"+title+"',"+orderItemId+","+pubId+","+Integer.parseInt(authorId)+")";
-			statement.executeUpdate(query);
-		}	
+		if(!journalistEmpty) {
+			for (String authorId : authorList) {
+				query = "insert into ArticleWrittenBy values ('" + title + "'," + orderItemId + "," + pubId + "," + Integer.parseInt(authorId) + ")";
+				statement.executeUpdate(query);
+			}
+		}
 	}
 
 	public void op3_update_chapter_title(int orderItemId, int pubId, String title, String newTitle) throws SQLException

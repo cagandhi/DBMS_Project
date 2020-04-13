@@ -11,8 +11,8 @@ import java.util.*;
  **/
 
 public class Project {
-	static final String username = "cagandhi";
-	static final String password = "200315238";
+	static final String username = "sshah28";
+	static final String password = "sigma8980172149";
 	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/"+username;
 	// Put your oracle ID and password here
 
@@ -104,8 +104,10 @@ public class Project {
 				String pubTitle, pubDate;
 				int pubId;
 				float price;
-
-				System.out.println("Enter 0 to insert a new book and 1 to insert a new periodic publication");
+				System.out.println("SUB-MENU");
+				System.out.println("0. Insert a new book");
+				System.out.println("1. Insert a new periodic publication");
+				System.out.println("Enter your choice: ");
 				int choice = intScanner.nextInt();
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
@@ -119,8 +121,13 @@ public class Project {
 				if(choice==0){
 					int edition;
 					String ISBN, topic;
-					System.out.println("Enter the topics for the book (separated by commas only): ");
+					boolean topicEmpty=false;
+
+					System.out.println("Enter the topics for the book (separated by commas only, press ENTER to skip): ");
 					topic = lineScanner.nextLine();
+					if(topic.isEmpty()){
+						topicEmpty=true;
+					}
 					String[] topicList = topic.split(",");
 					System.out.println("Enter the edition for the book: ");
 					edition = intScanner.nextInt();
@@ -128,14 +135,14 @@ public class Project {
 					ISBN = lineScanner.nextLine();
 
 					try {
-						edit.op1_insert_pub_book(pubTitle, pubId, edition, price, ISBN, pubDate, topicList);
+						edit.op1_insert_pub_book(pubTitle, pubId, edition, price, ISBN, pubDate, topicList, topicEmpty);
 
 						System.out.println("Book successfully inserted!");
-						System.out.println("Would you like to add chapters for this Book? ");
+						System.out.println("Would you like to add chapters for this Book? y/n ");
 						String yn = lineScanner.nextLine();
 						while(yn.equalsIgnoreCase("y")){
 							edit.op1_insert_chapter(pubId, edition, pubDate);
-							System.out.println("Would you like to add more chapters? ");
+							System.out.println("Would you like to add more chapters? y/n ");
 							yn = lineScanner.nextLine();
 						}
 					} catch (SQLException e) {
@@ -158,12 +165,12 @@ public class Project {
 						edit.op1_insert_pub_periodic(pubTitle, pubId, periodicityType, frequency, issueNo, price, pubDate);
 						System.out.println("Periodic publication successfully inserted!");
 
-						System.out.println("Would you like to add articles for this Publication? ");
+						System.out.println("Would you like to add articles for this Publication? y/n ");
 						String yn = lineScanner.nextLine();
 
 						while(yn.equalsIgnoreCase("y")){
 							edit.op1_insert_article(pubId, issueNo, pubDate);
-							System.out.println("Would you like to add more articles? ");
+							System.out.println("Would you like to add more articles? y/n ");
 							yn = lineScanner.nextLine();
 						}
 					} catch (SQLException e) {
@@ -268,7 +275,7 @@ public class Project {
 				}
 				System.out.println("Enter the edition no. to which chapter is to be added: ");
 				orderItemId = intScanner.nextInt();
-				System.out.println("Enter the Creation date of chapter: ");
+				System.out.println("Enter the Creation date of chapter (YYYY-MM-DD): ");
 				String creationDate = lineScanner.nextLine();
 				edit.op1_insert_chapter(pubId, orderItemId, creationDate);
 				break;
@@ -283,7 +290,7 @@ public class Project {
 				}
 				System.out.println("Enter the issue no. to which article is to be added: ");
 				orderItemId = intScanner.nextInt();
-				System.out.println("Enter the Creation date of article: ");
+				System.out.println("Enter the Creation date of article (YYYY-MM-DD): ");
 				creationDate = lineScanner.nextLine();
 				edit.op1_insert_article(pubId, orderItemId, creationDate);
 				break;
@@ -600,8 +607,15 @@ public class Project {
 				switch(val)
 				{
 					case 1:
+						boolean topicEmpty=false, authorEmpty=false;
 						System.out.println("Enter publication id to which this chapter is linked: ");
 						pubId = intScanner.nextInt();
+
+						try {
+							int temp = prod.op2_display_OrderItems(pubId);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 
 						System.out.println("Enter edition no. to which this chapter is linked: ");
 						orderItemId = intScanner.nextInt();
@@ -615,18 +629,25 @@ public class Project {
 						System.out.println("Enter chapter creation date (YYYY-MM-DD): ");
 						String chapterDate = lineScanner.nextLine();
 
-						System.out.println("Enter topic(s) associated with chapter (separated by commas only): ");
+						System.out.println("Enter topic(s) associated with chapter (separated by commas only, press ENTER to skip): ");
 						String topics = lineScanner.nextLine();
 
-						System.out.println("Enter author(s) id associated with chapter (separated by commas only): ");
+						System.out.println("Enter author(s) id associated with chapter (separated by commas only, press ENTER to skip): ");
 						String authorIds = lineScanner.nextLine();
 
 						String[] topicList = topics.split(",");
 						String[] authorList = authorIds.split(",");
 
+						if(topics.isEmpty()){
+							topicEmpty=true;
+						}
+						if(authorIds.isEmpty()){
+							authorEmpty=true;
+						}
+
 						try
 						{
-							prod.op3_enter_chapter(orderItemId, pubId, title, chapterText, chapterDate, topicList, authorList);
+							prod.op3_enter_chapter(orderItemId, pubId, title, chapterText, chapterDate, topicList, authorList, topicEmpty, authorEmpty);
 							System.out.println("New Chapter entered successfully!");
 						} catch(SQLException e)
 						{
@@ -637,8 +658,16 @@ public class Project {
 						break;
 
 					case 2:
+						authorEmpty=false;
+						topicEmpty=false;
 						System.out.println("Enter publication id to which this article is linked: ");
 						pubId = intScanner.nextInt();
+
+						try {
+							int temp = prod.op2_display_OrderItems(pubId);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 
 						System.out.println("Enter issue no. to which this article is linked: ");
 						orderItemId = intScanner.nextInt();
@@ -652,18 +681,25 @@ public class Project {
 						System.out.println("Enter article creation date (YYYY-MM-DD): ");
 						String articleDate = lineScanner.nextLine();
 
-						System.out.println("Enter topic(s) associated with article (separated by commas only): ");
+						System.out.println("Enter topic(s) associated with article (separated by commas only, press ENTER to skip): ");
 						topics = lineScanner.nextLine();
 
-						System.out.println("Enter journalist(s) id associated with article (separated by commas only): ");
+						System.out.println("Enter journalist(s) id associated with article (separated by commas only, press ENTER to skip): ");
 						authorIds = lineScanner.nextLine();
 
 						topicList = topics.split(",");
 						authorList = authorIds.split(",");
 
+						if(topics.isEmpty()){
+							topicEmpty=true;
+						}
+						if(authorIds.isEmpty()){
+							authorEmpty=true;
+						}
+
 						try
 						{
-							prod.op3_enter_article(orderItemId, pubId, title, articleText, articleDate, topicList, authorList);
+							prod.op3_enter_article(orderItemId, pubId, title, articleText, articleDate, topicList, authorList, topicEmpty, authorEmpty);
 							System.out.println("New Article entered successfully!");
 						} catch(SQLException e)
 						{
