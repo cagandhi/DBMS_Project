@@ -222,6 +222,7 @@ public class Project {
 				int orderItemId;
 				System.out.println("Enter the ID of the publication: ");
 				pubId = intScanner.nextInt();
+				edit.show_publications(pubId);
 				System.out.println("Enter edition/issue no. of the publication: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the IDs of editor(s) (separated by commas only): ");
@@ -256,6 +257,7 @@ public class Project {
 			case 7:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
+				edit.show_publications(pubId);
 				System.out.println("Enter the edition no. to which chapter is to be added: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the Creation date of chapter: ");
@@ -266,6 +268,7 @@ public class Project {
 			case 8:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
+				edit.show_publications(pubId);
 				System.out.println("Enter the issue no. to which article is to be added: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the Creation date of article: ");
@@ -278,6 +281,7 @@ public class Project {
 
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
+				edit.show_publications(pubId);
 				System.out.println("Enter the edition no. to which chapter is linked: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the title of the Chapter: ");
@@ -294,6 +298,7 @@ public class Project {
 			case 10:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
+				edit.show_publications(pubId);
 				System.out.println("Enter the issue no. to which article is linked: ");
 				orderItemId = intScanner.nextInt();
 				System.out.println("Enter the title of the Article: ");
