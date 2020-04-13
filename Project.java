@@ -11,8 +11,8 @@ import java.util.*;
  **/
 
 public class Project {
-	static final String username = "sshah28";
-	static final String password = "sigma8980172149";
+	static final String username = "jmodi3";
+	static final String password = "200315622";
 	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/"+username;
 	// Put your oracle ID and password here
 
@@ -1538,7 +1538,7 @@ public class Project {
 	private static void initialize() {
 		try {
 			connectToDatabase();
-			// resetDatabase();
+			resetDatabase();
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {

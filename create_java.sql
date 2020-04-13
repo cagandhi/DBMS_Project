@@ -22,9 +22,9 @@ create table OrderItems(orderItemId int not null,pubId int,price float not null,
 
 create table ItemEditedBy(cmId int,orderItemId int,pubId int,primary key (cmId,orderItemId,pubId),foreign key (cmId) references Editors(cmId) on delete cascade on update cascade,foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade);
 
-create table Editions(orderItemId int,pubId int, ISBN varchar(20) not null unique,primary key (orderItemId, pubId),foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade); 
+create table Editions(orderItemId int, pubId int, ISBN varchar(20) not null unique, primary key (orderItemId, pubId), foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade, foreign key (pubId) references Books(pubId) on delete cascade on update cascade); 
 
-create table Issues(orderItemId int,pubId int,issueNo int not null default 1,primary key (orderItemId, pubId),foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade,constraint chk_issue_no check (issueNo>0));
+create table Issues(orderItemId int,pubId int,issueNo int not null default 1,primary key (orderItemId, pubId),foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade,foreign key (pubId) references PeriodicPublications(pubId) on delete cascade on update cascade,constraint chk_issue_no check (issueNo>0));
 
 create table Chapters(title varchar(200) not null,orderItemId int,pubId int,chapterText varchar(200),creationDate date not null,primary key (title, orderItemId, pubId),foreign key (orderItemId, pubId) references Editions(orderItemId, pubId) on delete cascade on update cascade);
 

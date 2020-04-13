@@ -94,7 +94,8 @@ orderItemId int,
 pubId int, 
 ISBN varchar(20) not null unique,
 primary key (orderItemId, pubId),
-foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade
+foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade,
+foreign key (pubId) references Books(pubId) on delete cascade on update cascade
 ); 
 
 create table Issues(
@@ -103,6 +104,7 @@ pubId int,
 issueNo int not null default 1,
 primary key (orderItemId, pubId),
 foreign key (orderItemId, pubId) references OrderItems(orderItemId, pubId) on delete cascade on update cascade,
+foreign key (pubId) references PeriodicPublications(pubId) on delete cascade on update cascade,
 constraint chk_issue_no check (issueNo>0)
 );
 
