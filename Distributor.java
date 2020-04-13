@@ -423,7 +423,7 @@ public class Distributor
 			billAmt += shippingCost;
 		}
 
-		// call the function bill the distributor for 'billAmt' amount
+		// call the function to bill the distributor for 'billAmt' amount
 		op5_bill_distributor_helper(billAmt, generationDate, distId, OrderIds);
 		
 		return 1;
