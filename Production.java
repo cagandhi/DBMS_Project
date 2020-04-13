@@ -68,6 +68,124 @@ public class Production
 		statement.executeUpdate(query);
 	}
 
+	public int op2_display_OrderItems(int pubId) throws SQLException
+	{
+		String query = "select * from OrderItems where pubId="+pubId;
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo editions/issues found for this publication ID!");
+			return 0;
+		}
+		else
+		{
+			System.out.println("\nThese are the editions/issues found for this publication ID: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Edition/Issue No.");
+			headersList.add("Price");
+			headersList.add("Publication Date");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(String.valueOf(rs.getFloat("price")));
+				row.add(rs.getString("pubDate"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+		return 1;
+	}
+
+	public int op2_display_Articles(int pubId, int orderItemId) throws SQLException
+	{
+		String query = "select * from Articles where pubId="+pubId+" and orderItemId="+orderItemId;
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo articles found for this publication ID + issue no.!");
+			return 0;
+		}
+		else
+		{
+			System.out.println("\nThese are the articles found for this publication ID + issue no.: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Issue No.");
+			headersList.add("Article Title");
+			headersList.add("Article Text");
+			headersList.add("Article Creation Date");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(rs.getString("title"));
+				row.add(rs.getString("articleText"));
+				row.add(rs.getString("creationDate"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+		return 1;
+	}
+
+	public int op2_display_Chapters(int pubId, int orderItemId) throws SQLException
+	{
+		String query = "select * from Chapters where pubId="+pubId+" and orderItemId="+orderItemId;
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo chapters found for this publication ID + edition no.!");
+			return 0;
+		}
+		else
+		{
+			System.out.println("\nThese are the chapters found for this publication ID + edition no.: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Edition No.");
+			headersList.add("Chapter Title");
+			headersList.add("Chapter Text");
+			headersList.add("Chapter Creation Date");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(rs.getString("title"));
+				row.add(rs.getString("chapterText"));
+				row.add(rs.getString("creationDate"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+		return 1;
+	}
+
 	// ----------------------------------------------------------------- //
 	// OPERATION 3
 	public void op3_enter_chapter(int orderItemId, int pubId, String title, String chapterText, String chapterDate, String[] topicList, String[] authorList) throws SQLException
@@ -77,6 +195,14 @@ public class Production
 
 		for(String topic: topicList)
 		{
+			query = "SELECT * FROM Topics where topicName='"+topic+"'";
+			rs = statement.executeQuery(query);
+
+			if(!rs.next()){
+				query = "INSERT INTO Topics values('"+topic+"')";
+				statement.executeUpdate(query);
+			}
+
 			query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
 			statement.executeUpdate(query);
 		}
@@ -95,6 +221,14 @@ public class Production
 
 		for(String topic: topicList)
 		{
+			query = "SELECT * FROM Topics where topicName='"+topic+"'";
+			rs = statement.executeQuery(query);
+
+			if(!rs.next()){
+				query = "INSERT INTO Topics values('"+topic+"')";
+				statement.executeUpdate(query);
+			}
+
 			query = "insert into ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topic+"')";
 			statement.executeUpdate(query);
 		}
@@ -156,13 +290,29 @@ public class Production
 
 	public void op3_add_topic_chapter(int orderItemId, int pubId, String title, String topicName) throws SQLException
 	{
-		String query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topicName+"')";
+		String query = "SELECT * FROM Topics where topicName='"+topicName+"'";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()){
+			query = "INSERT INTO Topics values('"+topicName+"')";
+			statement.executeUpdate(query);
+		}
+
+		query = "insert into ChapterTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topicName+"')";
 		statement.executeUpdate(query);
 	}
 
 	public void op3_add_topic_article(int orderItemId, int pubId, String title, String topicName) throws SQLException
 	{
-		String query = "insert into ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topicName+"')";
+		String query = "SELECT * FROM Topics where topicName='"+topicName+"'";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()){
+			query = "INSERT INTO Topics values('"+topicName+"')";
+			statement.executeUpdate(query);
+		}
+
+		query = "insert into ArticleTopicMappings values ('"+title+"',"+orderItemId+","+pubId+",'"+topicName+"')";
 		statement.executeUpdate(query);
 	}
 
@@ -177,6 +327,151 @@ public class Production
 		String query = "delete from ArticleTopicMappings where title='"+title+"' and orderItemId="+orderItemId+" and pubId="+pubId+" and topicName='"+topicName+"'";
 		statement.executeUpdate(query);
 	}
+
+	public void op3_display_chapter_topics(int orderItemId, int pubId, String title) throws SQLException
+	{
+		String query = "select * from ChapterTopicMappings where pubId="+pubId+" and orderItemId="+orderItemId+" and title='"+title+"'";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo topics associated with this chapter!");
+		}
+		else
+		{
+			System.out.println("\nThese are the topics associated with this chapter: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Edition No.");
+			headersList.add("Chapter Title");
+			headersList.add("Topic Name");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(rs.getString("title"));
+				row.add(rs.getString("topicName"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+	}
+
+	public void op3_display_article_topics(int orderItemId, int pubId, String title) throws SQLException
+	{
+		String query = "select * from ArticleTopicMappings where pubId="+pubId+" and orderItemId="+orderItemId+" and title='"+title+"'";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo topics associated with this article!");
+		}
+		else
+		{
+			System.out.println("\nThese are the topics associated with this article: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Issue No.");
+			headersList.add("Article Title");
+			headersList.add("Topic Name");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(rs.getString("title"));
+				row.add(rs.getString("topicName"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+	}
+
+	public void op3_display_chapter_authors(int orderItemId, int pubId, String title) throws SQLException
+	{
+		String query = "select * from ChapterWrittenBy where pubId="+pubId+" and orderItemId="+orderItemId+" and title='"+title+"'";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo authors associated with this chapter!");
+		}
+		else
+		{
+			System.out.println("\nThese are the author IDs associated with this chapter: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Issue No.");
+			headersList.add("Chapter Title");
+			headersList.add("Author ID");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(rs.getString("title"));
+				row.add(rs.getString("cmId"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+	}
+
+	public void op3_display_article_journalists(int orderItemId, int pubId, String title) throws SQLException
+	{
+		String query = "select * from ArticleWrittenBy where pubId="+pubId+" and orderItemId="+orderItemId+" and title='"+title+"'";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo journalists associated with this article!");
+		}
+		else
+		{
+			System.out.println("\nThese are the journalist IDs associated with this article: ");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Publication ID");
+			headersList.add("Issue No.");
+			headersList.add("Article Title");
+			headersList.add("Journalist ID");
+			
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("pubId")));
+				row.add(String.valueOf(rs.getInt("orderItemId")));
+				row.add(rs.getString("title"));
+				row.add(rs.getString("cmId"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+	}
+
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 4
@@ -314,9 +609,9 @@ public class Production
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 6
-	public void op6_insert_payment(int payId, int cmId, float amount, String payDate) throws SQLException
+	public void op6_insert_payment(int cmId, float amount, String payDate) throws SQLException
 	{
-		String query = "insert into Payrolls(payId,cmId,amount,paymentDate,claimDate) values ("+payId+","+cmId+","+amount+",'"+payDate+"',NULL)";
+		String query = "insert into Payrolls(cmId,amount,paymentDate,claimDate) values ("+cmId+","+amount+",'"+payDate+"',NULL)";
 		statement.executeUpdate(query);
 	}
 
@@ -324,6 +619,44 @@ public class Production
 	{
 		String query = "update Payrolls set claimDate='"+claimDate+"' where payId="+payId;
 		statement.executeUpdate(query);
+	}
+
+	public int op6_display_unclaimed_payments(int cmId) throws SQLException
+	{
+		String query = "select * from Payrolls where cmId="+cmId+" and claimDate is null";
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()) // no rows
+		{
+			System.out.println("\nNo unclaimed payments present!");
+			return 0;
+		}
+		else
+		{
+			System.out.println("\nThese are the unclaimed payments for the entered employee ID");
+			TableGenerator tableGenerator = new TableGenerator();
+			List<String> headersList = new ArrayList<>(); 
+			headersList.add("Payment ID");
+			headersList.add("Employee ID");
+			headersList.add("Amount");
+			headersList.add("Payment Date");
+
+			List<List<String>> rowsList = new ArrayList<>();
+
+			do
+			{
+				List<String> row = new ArrayList<>(); 
+				row.add(String.valueOf(rs.getInt("payId")));
+				row.add(String.valueOf(rs.getInt("cmId")));
+				row.add(String.valueOf(rs.getFloat("amount")));
+				row.add(rs.getString("paymentDate"));
+
+				rowsList.add(row);
+			} while(rs.next());
+
+			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+		}
+		return 1;
 	}
 
 	// ----------------------------------------------------------------- //
