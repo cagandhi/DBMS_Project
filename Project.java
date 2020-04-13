@@ -134,7 +134,7 @@ public class Project {
 						System.out.println("Would you like to add chapters for this Book? ");
 						String yn = lineScanner.nextLine();
 						while(yn.equalsIgnoreCase("y")){
-							edit.op1_insert_chapter(pubId, edition); 
+							edit.op1_insert_chapter(pubId, edition, pubDate);
 							System.out.println("Would you like to add more chapters? ");
 							yn = lineScanner.nextLine();
 						}
@@ -162,7 +162,7 @@ public class Project {
 						String yn = lineScanner.nextLine();
 						
 						while(yn.equalsIgnoreCase("y")){
-							edit.op1_insert_article(pubId, issueNo);
+							edit.op1_insert_article(pubId, issueNo, pubDate);
 							System.out.println("Would you like to add more articles? ");
 							yn = lineScanner.nextLine();
 						}
@@ -258,8 +258,9 @@ public class Project {
 				pubId = intScanner.nextInt();
 				System.out.println("Enter the edition no. to which chapter is to be added: ");
 				orderItemId = intScanner.nextInt();
-
-				edit.op1_insert_chapter(pubId, orderItemId);
+				System.out.println("Enter the Creation date of chapter: ");
+				String creationDate = lineScanner.nextLine();
+				edit.op1_insert_chapter(pubId, orderItemId, creationDate);
 				break;
 
 			case 8:
@@ -267,8 +268,9 @@ public class Project {
 				pubId = intScanner.nextInt();
 				System.out.println("Enter the issue no. to which article is to be added: ");
 				orderItemId = intScanner.nextInt();
-
-				edit.op1_insert_article(pubId, orderItemId);
+				System.out.println("Enter the Creation date of article: ");
+				String creationDate = lineScanner.nextLine();
+				edit.op1_insert_article(pubId, orderItemId, creationDate);
 				break;
 
 			case 9:
