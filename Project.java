@@ -1368,8 +1368,9 @@ public class Project {
 
 				try
 				{
-					distributor.op2_update_distributor(distID);
-					System.out.println("Record Updated successfully");
+					if(distributor.op2_update_distributor(distID)==1){
+						System.out.println("Record Updated successfully");
+					}
 				}
 				catch (SQLException e)
 				{
@@ -1414,11 +1415,9 @@ public class Project {
 				{
 					e.printStackTrace();
 				}
-				System.out.println("Press 1 to add new Order Item and 0 to complete order");
-				int nn = intScanner.nextInt();
-
-				while(nn==1)
-				{
+				
+				int nn;
+				do{
 					System.out.println("ID of Order Item");
 					int orderItemId = intScanner.nextInt();
 					System.out.println("ID of Publication");
@@ -1429,7 +1428,6 @@ public class Project {
 					try
 					{
 						distributor.op4_input_order_OrderContains(orderId, orderItemId, pubId, quantity);
-
 					}
 					catch (SQLException e)
 					{
@@ -1437,7 +1435,8 @@ public class Project {
 					}
 					System.out.println("Press 1 to add new Item and 0 to complete order");
 					nn = intScanner.nextInt();
-				}
+				}while(nn==1);
+
 				System.out.println("Order Placed successfully");
 
 				break;
@@ -1450,9 +1449,9 @@ public class Project {
 
 				try
 				{
-					distributor.op4_bill_distributor(distId, generationDate);
-					System.out.println("Bill Generated successfully");
-
+					if(distributor.op5_bill_distributor(distId, generationDate)==1){
+						System.out.println("Bill Generated successfully");
+					}
 				}
 				catch (SQLException e)
 				{
@@ -1465,11 +1464,12 @@ public class Project {
 				System.out.println("Enter Distributor ID for which you want to Pay bills");
 				distId = intScanner.nextInt();
 				System.out.println("Enter Bill Payment Date");
-				generationDate = lineScanner.nextLine();
+				String receiptDate = lineScanner.nextLine();
 				try
 				{
-					distributor.op6_payment(distId, generationDate);
-					System.out.println("Bills Paid successfully");
+					if(distributor.op6_payment(distId, receiptDate)==1){
+						System.out.println("Bills Paid successfully");
+					}
 
 				}
 				catch (SQLException e)

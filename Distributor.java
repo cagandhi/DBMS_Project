@@ -49,7 +49,7 @@ public class Distributor
 	// OPERATION 2
 	//Update Operations
 
-	public void op2_update_distributor(int distId) throws SQLException
+	public int op2_update_distributor(int distId) throws SQLException
 	{
 		
 		String query = "select * from Distributors where distId="+distId;
@@ -57,8 +57,10 @@ public class Distributor
 
 		if(!rs.next()){
 			System.out.println("Sorry, distributor with this ID does not exist.");
-			return;
+			return 0;
 		}
+
+		int status=0;
 
 		TableGenerator tableGenerator = new TableGenerator();
 		List<String> headersList = new ArrayList<>(); 
@@ -130,53 +132,25 @@ public class Distributor
 				String distName;
 				System.out.println("Enter New Name ");
 				distName = lineScanner.nextLine();
-				try
-				{
-					op2_update_distributor_name(distId, distName);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_name(distId, distName);
 				break;
 			case 2:
 				String distType;
 				System.out.println("Enter New Type ('wholesale distributor', 'library', 'bookstore') ");
 				distType = lineScanner.nextLine();
-				try
-				{
-					op2_update_distributor_type(distId, distType);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_type(distId, distType);
 				break;
 			case 3: 
 				float balance;
 				System.out.println("Enter New Balance ");
 				balance = floatScanner.nextFloat();
-				try
-				{
-					op2_update_distributor_balance(distId, balance);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_balance(distId, balance);
 				break;
 			case 4:
 				String contactPhone;
 				System.out.println("Enter New Contact Number ");
 				contactPhone = lineScanner.nextLine(); 
-				try
-				{
-					op2_update_distributor_contact(distId, contactPhone);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_contact(distId, contactPhone);
 				break;
 			case 5: 
 				if(locationCnt==0){
@@ -186,14 +160,7 @@ public class Distributor
 				int locId;
 				System.out.println("Enter ID of the location that you want to update ");
 				locId = intScanner.nextInt();
-				try
-				{
-					op2_update_distributor_location(distId, locId);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_location(distId, locId);
 				break;
 			case 0: 
 				break;
@@ -201,36 +168,44 @@ public class Distributor
 			default: 
 				System.out.println("Invalid choice! Please enter correct choice");
 		}
+
+		return status;
 	}
 
-	public void op2_update_distributor_name(int distId, String distName) throws SQLException{
+	public int op2_update_distributor_name(int distId, String distName) throws SQLException{
 		String query = "update Distributors set distName='"+distName+"' where distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_type(int distId, String distType) throws SQLException{
+	public int op2_update_distributor_type(int distId, String distType) throws SQLException{
 		String query = "update Distributors set distType='"+distType+"' where distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_balance(int distId, float balance) throws SQLException{
+	public int op2_update_distributor_balance(int distId, float balance) throws SQLException{
 		String query = "update Distributors set balance="+balance+" where distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_contact(int distId, String contactPhone) throws SQLException{
+	public int op2_update_distributor_contact(int distId, String contactPhone) throws SQLException{
 		String query = "update Distributors set primaryContact='"+contactPhone+"' where distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_location(int distId, int locId) throws SQLException{
+	public int op2_update_distributor_location(int distId, int locId) throws SQLException{
 		String query = "select * from Locations where locId="+locId+" and distId="+distId;
 		rs = statement.executeQuery(query);
 
 		if(!rs.next()){
 			System.out.println("Sorry, the given location ID does not exist for current distributor.");
-			return;
+			return 0;
 		}
+
+		int status=0;
 
 		System.out.println("Distributor Location Edit Menu:");
 		System.out.println("1. Update Contact Person");
@@ -246,53 +221,25 @@ public class Distributor
 				String contactPerson;
 				System.out.println("Enter New Name ");
 				contactPerson = lineScanner.nextLine();
-				try
-				{
-					op2_update_distributor_location_contact_person(distId, locId, contactPerson);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_location_contact_person(distId, locId, contactPerson);
 				break;
 			case 2:
 				String phoneNumber;
 				System.out.println("Enter New Phone Number ");
 				phoneNumber = lineScanner.nextLine();
-				try
-				{
-					op2_update_distributor_location_phone_number(distId, locId, phoneNumber);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_location_phone_number(distId, locId, phoneNumber);
 				break;
 			case 3: 
 				String addr;
 				System.out.println("Enter New Address ");
 				addr = lineScanner.nextLine();
-				try
-				{
-					op2_update_distributor_location_address(distId, locId, addr);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_location_address(distId, locId, addr);
 				break;
 			case 4:
 				String city;
 				System.out.println("Enter New City ");
 				city = lineScanner.nextLine(); 
-				try
-				{
-					op2_update_distributor_location_city(distId, locId, city);
-				}
-				catch (SQLException e)
-				{
-					e.printStackTrace();
-				}
+				status = op2_update_distributor_location_city(distId, locId, city);
 				break;
 			
 			case 0: 
@@ -301,27 +248,32 @@ public class Distributor
 			default: 
 				System.out.println("Invalid choice! Please enter correct choice");
 		}
+		return status;
 		
 	}
 
-	public void op2_update_distributor_location_contact_person(int distId, int locId, String contactPerson) throws SQLException{
+	public int op2_update_distributor_location_contact_person(int distId, int locId, String contactPerson) throws SQLException{
 		String query = "update Locations set contactPerson='"+contactPerson+"' where locId="+locId+" and distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_location_phone_number(int distId, int locId, String phoneNumber) throws SQLException{
+	public int op2_update_distributor_location_phone_number(int distId, int locId, String phoneNumber) throws SQLException{
 		String query = "update Locations set phoneNumber='"+phoneNumber+"' where locId="+locId+" and distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_location_address(int distId, int locId, String addr) throws SQLException{
+	public int op2_update_distributor_location_address(int distId, int locId, String addr) throws SQLException{
 		String query = "update Locations set addr='"+addr+"' where locId="+locId+" and distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
-	public void op2_update_distributor_location_city(int distId, int locId, String city) throws SQLException{
+	public int op2_update_distributor_location_city(int distId, int locId, String city) throws SQLException{
 		String query = "update Locations set city='"+city+"' where locId="+locId+" and distId="+distId;
 		statement.executeUpdate(query);
+		return 1;
 	}
 
 
@@ -338,160 +290,139 @@ public class Distributor
 	// Input Order from distributors, for a book edition or an issue of a publication per distributor, for a certain date
 	public void op4_input_order_Orders(int orderId, float shippingCost, String orderDate, String deliveryDate, int locId) throws SQLException
 	{
-
-
 		String query = "insert into Orders(orderId, shippingCost,orderDate,deliveryDate,locId) values("+orderId+","+shippingCost+",'"+orderDate+"','"+deliveryDate+"',"+locId+");";
 		rs = statement.executeQuery(query);
-
-
 	}
 
 	public void op4_input_order_OrderContains(int orderId, int orderItemId, int pubId, int quantity) throws SQLException
 	{
-
 		String query = "insert into OrderContains(orderItemId,pubId,orderId,quantity) values("+orderItemId+","+pubId+","+orderId+","+quantity+");";
 		rs = statement.executeQuery(query);
-
 	}
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 5
 	// Bill Distributor
-	public void op4_bill_distributor(int distId, String generationDate) throws SQLException
+	public int op5_bill_distributor(int distId, String generationDate) throws SQLException
 	{
+		String query = "select * from Distributors where distId="+distId;
+		rs = statement.executeQuery(query);
 
-			String query = "Select * From Orders JOIN Locations ON Orders.locId=Locations.locId where (Orders.orderId not in (Select orderId from OrderBillMappings) and Locations.distID="+distId+")";
+		if(!rs.next()){
+			System.out.println("Sorry, distributor with this ID does not exist.");
+			return 0;
+		}
+
+		query = "Select * From Orders JOIN Locations ON Orders.locId=Locations.locId where (Orders.orderId not in (Select orderId from OrderBillMappings) and Locations.distID="+distId+")";
+		rs = statement.executeQuery(query);
+
+
+		TableGenerator tableGenerator = new TableGenerator();
+		List<String> headersList = new ArrayList<>(); 
+
+		headersList.add("Order ID");
+		headersList.add("Order Date");
+		headersList.add("Delivery Date: ");
+
+		List<List<String>> rowsList = new ArrayList<>();
+
+		int orderCnt=0;
+		while(rs.next())
+		{
+			orderCnt++;
+			List<String> row = new ArrayList<>(); 
+
+			row.add(String.valueOf(rs.getInt("orderId")));
+			row.add(rs.getString("orderDate"));
+			row.add(rs.getString("deliveryDate"));
+
+			rowsList.add(row);
+		}
+
+		if(orderCnt==0){
+			System.out.println("Sorry, no unbilled orders exist for current distributor.");
+			return 0;
+		}
+
+		System.out.println("Bills for following orders have not been generated for current distributor: ");
+		System.out.println(tableGenerator.generateTable(headersList, rowsList));
+
+		Scanner Scanner = new Scanner(System.in);
+		System.out.println("Input Order IDs for which you want to generate Bill (separated only by commas): ");
+		String orderIds = Scanner.nextLine();
+
+		String[] OrderIds = orderIds.split(",");
+		float billAmt = 0;
+		for (int i = 0; i < OrderIds.length; i++)
+		{
+			query = "Select OrderContains.quantity, OrderItems.price from OrderContains JOIN OrderItems ON OrderContains.orderItemId = OrderItems.orderItemId where OrderContains.orderId ="+OrderIds[i];
 			rs = statement.executeQuery(query);
 
-			/*
-			int cnt = 1;
-			System.out.println("Bills for following orders have not been generated for current distributor");
 			while(rs.next())
 			{
-				System.out.println("\nRECORD "+cnt+": ");
-				System.out.println("Order ID: "+rs.getInt("orderId"));
-				System.out.println("Order Date: "+rs.getString("orderDate"));
-				System.out.println("Delivery Date: "+rs.getString("deliveryDate"));
-				cnt++;
-			}
-			*/
-
-			// ---------------------------
-			// ---------------------------
-			System.out.println("Bills for following orders have not been generated for current distributor: ");
-
-			TableGenerator tableGenerator = new TableGenerator();
-			List<String> headersList = new ArrayList<>(); 
-
-			headersList.add("Order ID");
-			headersList.add("Order Date");
-			headersList.add("Delivery Date: ");
-
-			List<List<String>> rowsList = new ArrayList<>();
-
-			while(rs.next())
-			{
-				List<String> row = new ArrayList<>(); 
-
-				row.add(String.valueOf(rs.getInt("orderId")));
-				row.add(rs.getString("orderDate"));
-				row.add(rs.getString("deliveryDate"));
-
-				rowsList.add(row);
+				int quantity = rs.getInt("quantity");
+				Float price = rs.getFloat("price");
+				billAmt = billAmt + price*quantity;
 			}
 
-			System.out.println(tableGenerator.generateTable(headersList, rowsList));
+			query = "Select shippingCost from Orders where orderId ="+OrderIds[i];
+			rs = statement.executeQuery(query);
+			rs.next();
+			Float shippingCost = rs.getFloat("shippingCost");
 
-			// ---------------------------
-			// ---------------------------
+			billAmt += shippingCost;
+		}
 
-			Scanner Scanner = new Scanner(System.in);
-			System.out.println("Input Order IDs for which you want to generate Bill (separated only by commas): ");
-			String orderIds = Scanner.nextLine();
-
-			String[] OrderIds = orderIds.split(",");
-			float billAmt = 0;
-			for (int i = 0; i < OrderIds.length; i++)
-			{
-				//OrderIds[i] = Integer.parseInt(OrderIds[i]);
-				query = "Select OrderContains.quantity, OrderItems.price from OrderContains JOIN OrderItems ON OrderContains.orderItemId = OrderItems.orderItemId where OrderContains.orderId ="+OrderIds[i];
-				rs = statement.executeQuery(query);
-
-				while(rs.next())
-				{
-					int quantity = rs.getInt("quantity");
-					Float price = rs.getFloat("price");
-					billAmt = billAmt + price*quantity;
-				}
-
-				query = "Select shippingCost from Orders where orderId ="+OrderIds[i];
-				rs = statement.executeQuery(query);
-				rs.next();
-				Float shippingCost = rs.getFloat("shippingCost");
-
-			  billAmt += shippingCost;
-
-			}
-
-			try
-			{
-
-				op4_bill_distributor_helper(billAmt, generationDate, distId, OrderIds);
-
-			}catch(SQLException e)
-			{
-				e.printStackTrace();
-			}
+		op5_bill_distributor_helper(billAmt, generationDate, distId, OrderIds);
+		
+		return 1;
 
 	}
 
-	public void op4_bill_distributor_helper(float billAmt, String generationDate, int distId, String[] orderId) throws SQLException
+	public void op5_bill_distributor_helper(float billAmt, String generationDate, int distId, String[] orderId) throws SQLException
 	{
-
 		String query = "insert into Bills(billAmt,generationDate,distId) values("+billAmt+",'"+generationDate+"', "+distId+");";
 		rs = statement.executeQuery(query);
-		query = "SELECT LAST_INSERT_ID()";
-		//rs = statement.executeQuery(query);
+		
 		rs = statement.getGeneratedKeys();
 		rs.next();
+
 		int billId = rs.getInt("billId");
 		for(int i=0;i<orderId.length;i++)
 		{
-
 			query = "insert into OrderBillMappings(orderId, billId) values("+orderId[i]+","+billId+");";
 			rs = statement.executeQuery(query);
-
 		}
 
+		//update distributor's balance
+		query = "select balance from Distributors where distId="+distId;
+		rs = statement.executeQuery(query);
+		rs.next();
+		float balance = rs.getFloat("balance");
+		float updated_balance = balance+billAmt;
 
+		query = "update Distributors set balance="+updated_balance+"where distId="+distId;
+		statement.executeUpdate(query);
 	}
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 6
 	// Payment
-	public void op6_payment(int distId, String receiptDate) throws SQLException
+	public int op6_payment(int distId, String receiptDate) throws SQLException
 	{
-		System.out.println("Enter Payment Date");
-
-		System.out.println("Following Bills are Pending Payments");
-		String query = "Select * from Bills where receiptDate is NULL and distId="+distId+"";
+		String query = "select * from Distributors where distId="+distId;
 		rs = statement.executeQuery(query);
 
-		/*
-		int cnt = 1;
-		while(rs.next())
-		{
-			System.out.println("\nRECORD "+cnt+": ");
-			System.out.println("Bill ID: "+rs.getInt("billId"));
-			System.out.println("Bill Amount: "+rs.getInt("billAmt"));
-			System.out.println("Generation Date: "+rs.getString("generationDate"));
-			System.out.println("Distributor ID: "+rs.getString("distId"));
-			cnt++;
+		if(!rs.next()){
+			System.out.println("Sorry, distributor with this ID does not exist.");
+			return 0;
 		}
-		*/
 
-		// ---------------------------
-		// ---------------------------
+		int status = 0;
+		
+		query = "Select * from Bills where receiptDate is NULL and distId="+distId;
+		rs = statement.executeQuery(query);
+
 		TableGenerator tableGenerator = new TableGenerator();
 		List<String> headersList = new ArrayList<>(); 
 
@@ -502,8 +433,10 @@ public class Distributor
 
 		List<List<String>> rowsList = new ArrayList<>();
 
+		int billCnt=0;
 		while(rs.next())
 		{
+			billCnt++;
 			List<String> row = new ArrayList<>(); 
 
 			row.add(String.valueOf(rs.getInt("billId")));
@@ -514,11 +447,15 @@ public class Distributor
 			rowsList.add(row);
 		}
 
+		if(billCnt==0){
+			System.out.println("Sorry, no bill payments are pending for current distributor.");
+			return 0;
+		}
+
+		System.out.println("Following Bills are Pending Payments");
 		System.out.println(tableGenerator.generateTable(headersList, rowsList));
 
-		// ---------------------------
-		// ---------------------------
-
+	
 		System.out.println("Input Bill ID (Comma Seperated) for which you make Payment");
 		Scanner Scanner = new Scanner(System.in);
 		String billIds = Scanner.nextLine();
@@ -527,14 +464,12 @@ public class Distributor
 
 		for (int i = 0; i < BillIds.length; i++)
 		{
-			//OrderIds[i] = Integer.parseInt(OrderIds[i]);
 			op6_payment_helper(BillIds[i], receiptDate,distId);
 			System.out.println("Bill with id "+BillIds[i]+" Paid successfully");
-
 		}
-
-
+		return 1;
 	}
+
 	public void op6_payment_helper(String billId, String receiptDate, float distId) throws SQLException
 	{
 
@@ -555,8 +490,6 @@ public class Distributor
 
 		query = "update Distributors set balance = "+updated_balance+" where distId = "+distId+";";
 		rs = statement.executeQuery(query);
-
-
 	}
 
 }
