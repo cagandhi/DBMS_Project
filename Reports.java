@@ -87,7 +87,7 @@ public class Reports
 	}
 
 	public void op1_get_monthly_reports_total_revenue() throws SQLException{	
-		String query = "select sum(price*quantity) as 'totalOrder', sum(shippingCost) as 'totalShipping', sum((price*quantity)+shippingCost) as 'totalRevenue' from OrderItems natural join OrderContains natural join Orders";
+		String query = "select sum(totalOrder) as 'totalOrder', sum(totalShipping) as 'totalShipping', sum(totalRevenue) as 'totalRevenue' from (select sum(price*quantity) as 'totalOrder', shippingCost as 'totalShipping', sum(price*quantity)+shippingCost as 'totalRevenue', orderId from OrderItems natural join OrderContains natural join Orders group by orderId) as S";
 		rs = statement.executeQuery(query);
 
 		rs.next();
@@ -162,12 +162,14 @@ public class Reports
 	}
 
 	public void op3_calculate_total_revenue_per_city() throws SQLException{
-		String query = "select sum(price*quantity) as total_revenue,city from OrderItems natural join OrderContains natural join Orders natural join Locations group by city";
+		String query = "select sum(totalOrder) as 'totalOrder', sum(totalShipping) as 'totalShipping', sum(totalRevenue) as 'totalRevenue', city from (select sum(price*quantity) as 'totalOrder', shippingCost as 'totalShipping', sum(price*quantity)+shippingCost as 'totalRevenue', city, orderId from OrderItems natural join OrderContains natural join Orders natural join Locations group by orderId, city) as S group by city";
 		rs = statement.executeQuery(query);
 
 		TableGenerator tableGenerator = new TableGenerator();
 		List<String> headersList = new ArrayList<>(); 
 
+		headersList.add("Total Order Cost");
+		headersList.add("Total Shipping Cost");
 		headersList.add("Total Revenue");
 		headersList.add("City");
 
@@ -176,7 +178,9 @@ public class Reports
 		while(rs.next())
 		{
 			List<String> row = new ArrayList<>(); 
-			row.add(String.valueOf(rs.getFloat("total_revenue")));
+			row.add(String.valueOf(rs.getFloat("totalOrder")));
+			row.add(String.valueOf(rs.getFloat("totalShipping")));
+			row.add(String.valueOf(rs.getFloat("totalRevenue")));
 			row.add(rs.getString("city"));
 
 			rowsList.add(row);
@@ -186,12 +190,14 @@ public class Reports
 	}
 
 	public void op3_calculate_total_revenue_per_distributor() throws SQLException{
-		String query = "select sum(price*quantity) as total_revenue,distId,distName from OrderItems natural join OrderContains natural join Orders natural join Locations natural join Distributors group by distId";
+		String query = "select sum(totalOrder) as 'totalOrder', sum(totalShipping) as 'totalShipping', sum(totalRevenue) as 'totalRevenue', distId, distName from (select sum(price*quantity) as 'totalOrder', shippingCost as 'totalShipping', sum(price*quantity)+shippingCost as 'totalRevenue', orderId, distId, distName from OrderItems natural join OrderContains natural join Orders natural join Locations natural join Distributors group by orderId, distId) as S group by distId";
 		rs = statement.executeQuery(query);
 
 		TableGenerator tableGenerator = new TableGenerator();
 		List<String> headersList = new ArrayList<>(); 
 
+		headersList.add("Total Order Cost");
+		headersList.add("Total Shipping Cost");
 		headersList.add("Total Revenue");
 		headersList.add("Distributor ID");
 		headersList.add("Distributor Name");
@@ -201,7 +207,9 @@ public class Reports
 		while(rs.next())
 		{
 			List<String> row = new ArrayList<>(); 
-			row.add(String.valueOf(rs.getFloat("total_revenue")));
+			row.add(String.valueOf(rs.getFloat("totalOrder")));
+			row.add(String.valueOf(rs.getFloat("totalShipping")));
+			row.add(String.valueOf(rs.getFloat("totalRevenue")));
 			row.add(String.valueOf(rs.getInt("distId")));
 			row.add(rs.getString("distName"));
 
@@ -212,24 +220,30 @@ public class Reports
 	}
 
 	public void op3_calculate_total_revenue_per_location() throws SQLException{
-		String query = "select sum(price*quantity) as total_revenue,locId,contactPerson from OrderItems natural join OrderContains natural join Orders natural join Locations group by locId";
+		String query = "select sum(totalOrder) as 'totalOrder', sum(totalShipping) as 'totalShipping', sum(totalRevenue) as 'totalRevenue', addr, city, locId from (select sum(price*quantity) as 'totalOrder', shippingCost as 'totalShipping', sum(price*quantity)+shippingCost as 'totalRevenue', orderId, locId, addr, city from OrderItems natural join OrderContains natural join Orders natural join Locations group by orderId, locId) as S group by locId";
 		rs = statement.executeQuery(query);
 
 		TableGenerator tableGenerator = new TableGenerator();
 		List<String> headersList = new ArrayList<>(); 
 
+		headersList.add("Total Order Cost");
+		headersList.add("Total Shipping Cost");
 		headersList.add("Total Revenue");
+		headersList.add("Location address");
+		headersList.add("Location city");
 		headersList.add("Location ID");
-		headersList.add("Contact person name");
 
 		List<List<String>> rowsList = new ArrayList<>();
 
 		while(rs.next())
 		{
 			List<String> row = new ArrayList<>(); 
-			row.add(String.valueOf(rs.getFloat("total_revenue")));
+			row.add(String.valueOf(rs.getFloat("totalOrder")));
+			row.add(String.valueOf(rs.getFloat("totalShipping")));
+			row.add(String.valueOf(rs.getFloat("totalRevenue")));
+			row.add(rs.getString("addr"));
+			row.add(rs.getString("city"));
 			row.add(String.valueOf(rs.getInt("locId")));
-			row.add(rs.getString("contactPerson"));
 
 			rowsList.add(row);
 		}
