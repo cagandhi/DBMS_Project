@@ -7,8 +7,10 @@ public class Distributor
 {
 	private Statement statement = null;
 	private ResultSet rs = null;
+	
 	private Scanner intScanner = null;
-
+	private Scanner lineScanner = null;
+	private Scanner floatScanner = null;
 
 	// CONSTRUCTOR
 	public Distributor(Connection connection)
@@ -16,7 +18,11 @@ public class Distributor
 		try
 		{
 			statement = connection.createStatement();
+			
 			intScanner = new Scanner(System.in);
+			lineScanner = new Scanner(System.in);
+			floatScanner = new Scanner(System.in);
+
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -106,7 +112,7 @@ public class Distributor
 			System.out.println(tableGenerator.generateTable(headersList, rowsList));
 		}
 		
-		System.out.println("Edit-menu:");
+		System.out.println("Distributor Edit Menu:");
 		System.out.println("1. Update Distributor Name");
 		System.out.println("2. Update Distributor Type");
 		System.out.println("3. Update Balance");
@@ -114,29 +120,210 @@ public class Distributor
 		if(locationCnt>0){
 			System.out.println("5. Update warehouse (location) details");
 		}
+		System.out.println("Enter your choice: ");
 
+		int choice = intScanner.nextInt();
 
+		switch(choice)
+		{
+			case 1:
+				String distName;
+				System.out.println("Enter New Name ");
+				distName = lineScanner.nextLine();
+				try
+				{
+					op2_update_distributor_name(distId, distName);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				String distType;
+				System.out.println("Enter New Type ('wholesale distributor', 'library', 'bookstore') ");
+				distType = lineScanner.nextLine();
+				try
+				{
+					op2_update_distributor_type(distId, distType);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 3: 
+				float balance;
+				System.out.println("Enter New Balance ");
+				balance = floatScanner.nextFloat();
+				try
+				{
+					op2_update_distributor_balance(distId, balance);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				String contactPhone;
+				System.out.println("Enter New Contact Number ");
+				contactPhone = lineScanner.nextLine(); 
+				try
+				{
+					op2_update_distributor_contact(distId, contactPhone);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 5: 
+				if(locationCnt==0){
+					System.out.println("Invalid choice! Please enter correct choice");
+					break;
+				}
+				int locId;
+				System.out.println("Enter ID of the location that you want to update ");
+				locId = intScanner.nextInt();
+				try
+				{
+					op2_update_distributor_location(distId, locId);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 0: 
+				break;
 
+			default: 
+				System.out.println("Invalid choice! Please enter correct choice");
+		}
 	}
 
-	public void op2_update_distType(String distName, String distType) throws SQLException
-	{
-		String query = "update Distributors set distType='"+distType+"' where distName='"+distName+"';";
-		// what if there are many distributors with same name? Show IDs
+	public void op2_update_distributor_name(int distId, String distName) throws SQLException{
+		String query = "update Distributors set distName='"+distName+"' where distId="+distId;
 		statement.executeUpdate(query);
 	}
 
-	public void op2_update_balance(String distName, float balance) throws SQLException
-	{
-		String query = "update Distributors set balance="+balance+" where distName='"+distName+"';";
+	public void op2_update_distributor_type(int distId, String distType) throws SQLException{
+		String query = "update Distributors set distType='"+distType+"' where distId="+distId;
 		statement.executeUpdate(query);
 	}
 
-	public void op2_update_primaryContact(String distName, String primaryContact) throws SQLException
-	{
-		String query = "update Distributors set primaryContact='"+primaryContact+"' where distName='"+distName+"';";
+	public void op2_update_distributor_balance(int distId, float balance) throws SQLException{
+		String query = "update Distributors set balance="+balance+" where distId="+distId;
 		statement.executeUpdate(query);
 	}
+
+	public void op2_update_distributor_contact(int distId, String contactPhone) throws SQLException{
+		String query = "update Distributors set primaryContact='"+contactPhone+"' where distId="+distId;
+		statement.executeUpdate(query);
+	}
+
+	public void op2_update_distributor_location(int distId, int locId) throws SQLException{
+		String query = "select * from Locations where locId="+locId+" and distId="+distId;
+		rs = statement.executeQuery(query);
+
+		if(!rs.next()){
+			System.out.println("Sorry, the given location ID does not exist for current distributor.");
+			return;
+		}
+
+		System.out.println("Distributor Location Edit Menu:");
+		System.out.println("1. Update Contact Person");
+		System.out.println("2. Update Phone Number");
+		System.out.println("3. Update Address");
+		System.out.println("4. Update City");
+		System.out.println("Enter your choice: ");
+		int choice = intScanner.nextInt();
+
+		switch(choice)
+		{
+			case 1:
+				String contactPerson;
+				System.out.println("Enter New Name ");
+				contactPerson = lineScanner.nextLine();
+				try
+				{
+					op2_update_distributor_location_contact_person(distId, locId, contactPerson);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				String phoneNumber;
+				System.out.println("Enter New Phone Number ");
+				phoneNumber = lineScanner.nextLine();
+				try
+				{
+					op2_update_distributor_location_phone_number(distId, locId, phoneNumber);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 3: 
+				String addr;
+				System.out.println("Enter New Address ");
+				addr = lineScanner.nextLine();
+				try
+				{
+					op2_update_distributor_location_address(distId, locId, addr);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				String city;
+				System.out.println("Enter New City ");
+				city = lineScanner.nextLine(); 
+				try
+				{
+					op2_update_distributor_location_city(distId, locId, city);
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+				break;
+			
+			case 0: 
+				break;
+
+			default: 
+				System.out.println("Invalid choice! Please enter correct choice");
+		}
+		
+	}
+
+	public void op2_update_distributor_location_contact_person(int distId, int locId, String contactPerson) throws SQLException{
+		String query = "update Locations set contactPerson='"+contactPerson+"' where locId="+locId+" and distId="+distId;
+		statement.executeUpdate(query);
+	}
+
+	public void op2_update_distributor_location_phone_number(int distId, int locId, String phoneNumber) throws SQLException{
+		String query = "update Locations set phoneNumber='"+phoneNumber+"' where locId="+locId+" and distId="+distId;
+		statement.executeUpdate(query);
+	}
+
+	public void op2_update_distributor_location_address(int distId, int locId, String addr) throws SQLException{
+		String query = "update Locations set addr='"+addr+"' where locId="+locId+" and distId="+distId;
+		statement.executeUpdate(query);
+	}
+
+	public void op2_update_distributor_location_city(int distId, int locId, String city) throws SQLException{
+		String query = "update Locations set city='"+city+"' where locId="+locId+" and distId="+distId;
+		statement.executeUpdate(query);
+	}
+
 
 	// ----------------------------------------------------------------- //
 	// OPERATION 3
