@@ -87,7 +87,7 @@ public class Reports
 	}
 
 	public void op1_get_monthly_reports_total_revenue() throws SQLException{	
-		String query = "select sum(totalOrder) as 'totalOrder', sum(totalShipping) as 'totalShipping', sum(totalRevenue) as 'totalRevenue' from (select sum(price*quantity) as 'totalOrder', shippingCost as 'totalShipping', sum(price*quantity)+shippingCost as 'totalRevenue', orderId from OrderItems natural join OrderContains natural join Orders group by orderId) as S";
+		String query = "select sum(totalOrder) as 'totalOrder', round(sum(totalShipping),2) as 'totalShipping', round(sum(totalRevenue),2) as 'totalRevenue',  extract(year from orderDate) as orderYear,extract(month from orderDate) orderMonth from (select sum(price*quantity) as 'totalOrder', shippingCost as 'totalShipping', sum(price*quantity)+shippingCost as 'totalRevenue', orderId, orderDate from OrderItems natural join OrderContains natural join Orders group by orderId) as S group by orderYear,orderMonth";
 		rs = statement.executeQuery(query);
 
 		rs.next();
@@ -111,7 +111,7 @@ public class Reports
 	}
 
 	public void op1_get_monthly_reports_total_expenses() throws SQLException{
-		String query = "select sum(amount) as total_expenses from Payrolls";
+		String query = "select sum(amount) as total_expenses,extract(year from paymentDate) as paymentYear,extract(month from paymentDate) paymentMonth from Payrolls group by paymentYear,paymentMonth ";
 		rs = statement.executeQuery(query);
 
 		rs.next();
