@@ -60,9 +60,9 @@ public class Editing {
         statement.executeUpdate(query);
     }
 
-    public void op1_insert_chapter(int pubId, int orderItemId){
+    public void op1_insert_chapter(int pubId, int orderItemId, String creationDate){
         int ncmId;
-        String title, chapterText, creationDate, topic, ids;
+        String title, chapterText, topic, ids;
 
         Scanner intScanner = new Scanner(System.in);
         Scanner lineScanner = new Scanner(System.in);
@@ -71,8 +71,6 @@ public class Editing {
         title = lineScanner.nextLine();
         System.out.println("Enter the Chapter Text: ");
         chapterText = lineScanner.nextLine();
-        System.out.println("Enter the Creation date of chapter: ");
-        creationDate = lineScanner.nextLine();
 
         System.out.println("Enter the topics for this chapter (separated by commas only): ");
         topic = lineScanner.nextLine();
@@ -96,9 +94,9 @@ public class Editing {
         }
     }
 
-    public void op1_insert_article(int pubId, int orderItemId){
+    public void op1_insert_article(int pubId, int orderItemId, String creationDate){
         int ncmId;
-        String title, articleText, creationDate, topic, ids;
+        String title, articleText, topic, ids;
 
         Scanner intScanner = new Scanner(System.in);
         Scanner lineScanner = new Scanner(System.in);
@@ -108,8 +106,6 @@ public class Editing {
         title = lineScanner.nextLine();
         System.out.println("Enter the Article Text: ");
         articleText = lineScanner.nextLine();
-        System.out.println("Enter the Creation date of article: ");
-        creationDate = lineScanner.nextLine();
 
         System.out.println("Enter the of topics for this article seperated by a comma: ");
         topic = lineScanner.nextLine();
@@ -257,6 +253,31 @@ public class Editing {
 
     // ----------------------------------------------------------------- //
     // ----------------------------------------------------------------- //
+    public void show_publications(int pubId){
+        String query = "SELECT * FROM OrderItems NATURAL JOIN Publications WHERE pubId="+pubId;
+        TableGenerator tableGenerator = new TableGenerator();
+        List<String> headersList = new ArrayList<>();
+        headersList.add("Edition or Issue No.");
+        headersList.add("Publication ID");
+        headersList.add("Title");
+        headersList.add("Price");
+        headersList.add("Publication Date");
 
+        List<List<String>> rowsList = new ArrayList<>();
+
+        while(rs.next())
+        {
+            List<String> row = new ArrayList<>();
+            row.add(rs.getString("orderItemId"));
+            row.add(rs.getString("pubId"));
+            row.add(rs.getString("title"));
+            row.add(rs.getString("price"));
+            row.add(rs.getString("pubDate"));
+
+            rowsList.add(row);
+        }
+
+        System.out.println(tableGenerator.generateTable(headersList, rowsList));
+    }
 
 }
