@@ -11,8 +11,8 @@ import java.util.*;
  **/
 
 public class Project {
-	static final String username = "jmodi3";
-	static final String password = "200315622";
+	static final String username = "nshah25";
+	static final String password = "200304882";
 	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/"+username;
 	// Put your oracle ID and password here
 
@@ -149,9 +149,10 @@ public class Project {
 							String yn = lineScanner.nextLine();
 							while(yn.equalsIgnoreCase("y")){
 								// The function 'op1_insert_chapter' internally calls 'op5_insert_chapter' function which performs following operations:
-									// 5. Insert into 'Topics' table
-									// 6. Insert into 'ChapterTopicMappings' table
-									// 7. Insert into 'ChapterWrittenBy' table
+									// 5. Insert into 'Chapters' table
+									// 6. Insert into 'Topics' table
+									// 7. Insert into 'ChapterTopicMappings' table
+									// 8. Insert into 'ChapterWrittenBy' table
 								edit.op1_insert_chapter(pubId, edition, pubDate);
 								System.out.println("Would you like to add more chapters? y/n ");
 								yn = lineScanner.nextLine();
@@ -182,21 +183,33 @@ public class Project {
 					System.out.println("Enter the Issue No.: ");
 					issueNo = intScanner.nextInt();
 
-					try {
-						edit.op1_insert_pub_periodic(pubTitle, pubId, periodicityType, frequency, issueNo, price, pubDate);
-						System.out.println("Periodic publication successfully inserted!");
+					try{
+						try {
+							connection.setAutoCommit(false);
+							edit.op1_insert_pub_periodic(pubTitle, pubId, periodicityType, frequency, issueNo, price, pubDate);
+							System.out.println("Periodic publication successfully inserted!");
 
-						System.out.println("Would you like to add articles for this Publication? y/n ");
-						String yn = lineScanner.nextLine();
+							System.out.println("Would you like to add articles for this Publication? y/n ");
+							String yn = lineScanner.nextLine();
 
-						while(yn.equalsIgnoreCase("y")){
-							edit.op1_insert_article(pubId, issueNo, pubDate);
-							System.out.println("Would you like to add more articles? y/n ");
-							yn = lineScanner.nextLine();
+							while(yn.equalsIgnoreCase("y")){
+								edit.op1_insert_article(pubId, issueNo, pubDate);
+								System.out.println("Would you like to add more articles? y/n ");
+								yn = lineScanner.nextLine();
+							}
+							connection.commit();
+						} catch (SQLException e) {
+							connection.rollback();
+							System.out.println("Operation Failed. Changes to database rolled back!");
 						}
-					} catch (SQLException e) {
-						e.printStackTrace();
+						finally{
+							connection.setAutoCommit(true);
+						}
 					}
+					catch(SQLException e){
+						System.out.println("Some error occured. Try again!");
+					}
+					
 
 				}
 				else{
@@ -289,31 +302,54 @@ public class Project {
 			case 7:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				try {
-					edit.show_publications(pubId);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				
+				try{
+					try {
+						connection.setAutoCommit(false);
+						edit.show_publications(pubId);
+						System.out.println("Enter the edition no. to which chapter is to be added: ");
+						orderItemId = intScanner.nextInt();
+						System.out.println("Enter the Creation date of chapter (YYYY-MM-DD): ");
+						String creationDate = lineScanner.nextLine();
+						edit.op1_insert_chapter(pubId, orderItemId, creationDate);
+						connection.commit();
+					} catch (SQLException e) {
+						connection.rollback();
+						System.out.println("Operation Failed. Changes to database rolled back!");
+					}
+					finally{
+						connection.setAutoCommit(true);
+					}
 				}
-				System.out.println("Enter the edition no. to which chapter is to be added: ");
-				orderItemId = intScanner.nextInt();
-				System.out.println("Enter the Creation date of chapter (YYYY-MM-DD): ");
-				String creationDate = lineScanner.nextLine();
-				edit.op1_insert_chapter(pubId, orderItemId, creationDate);
+				catch(SQLException e){
+					System.out.println("Some error occured. Try again!");
+				}
 				break;
 
 			case 8:
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
-				try {
-					edit.show_publications(pubId);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				try{
+					try {
+						connection.setAutoCommit(false);
+						edit.show_publications(pubId);
+						System.out.println("Enter the issue no. to which article is to be added: ");
+						orderItemId = intScanner.nextInt();
+						System.out.println("Enter the Creation date of article (YYYY-MM-DD): ");
+						creationDate = lineScanner.nextLine();
+						edit.op1_insert_article(pubId, orderItemId, creationDate);
+						connection.commit();
+					} catch (SQLException e) {
+						connection.rollback();
+						System.out.println("Operation Failed. Changes to database rolled back!");
+					}
+					finally{
+						connection.setAutoCommit(true);
+					}
 				}
-				System.out.println("Enter the issue no. to which article is to be added: ");
-				orderItemId = intScanner.nextInt();
-				System.out.println("Enter the Creation date of article (YYYY-MM-DD): ");
-				creationDate = lineScanner.nextLine();
-				edit.op1_insert_article(pubId, orderItemId, creationDate);
+				catch(SQLException e){
+					System.out.println("Some error occured. Try again!");
+				}
 				break;
 
 			case 9:
@@ -1581,7 +1617,7 @@ public class Project {
 	private static void initialize() {
 		try {
 			connectToDatabase();
-			resetDatabase();
+			// resetDatabase();
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {

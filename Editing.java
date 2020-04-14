@@ -61,7 +61,7 @@ public class Editing {
         statement.executeUpdate(query);
     }
 
-    public void op1_insert_chapter(int pubId, int orderItemId, String creationDate){
+    public void op1_insert_chapter(int pubId, int orderItemId, String creationDate) throws SQLException{
         String title, chapterText, topic, ids;
         boolean authorEmpty=false, topicEmpty=false;
         int[] cmId = new int[0];
@@ -95,15 +95,11 @@ public class Editing {
         }
         
 
-        try {
-            op5_insert_chapter(title, orderItemId, pubId, chapterText, creationDate, topics, cmId, authorEmpty, topicEmpty);
-            System.out.println("Chapter successfully inserted!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        op5_insert_chapter(title, orderItemId, pubId, chapterText, creationDate, topics, cmId, authorEmpty, topicEmpty);
+        System.out.println("Chapter successfully inserted!");
     }
 
-    public void op1_insert_article(int pubId, int orderItemId, String creationDate){
+    public void op1_insert_article(int pubId, int orderItemId, String creationDate) throws SQLException{
         boolean journalistEmpty=false, topicEmpty=false;
         String title, articleText, topic, ids;
         int[] cmId = new int[0];
@@ -138,12 +134,9 @@ public class Editing {
         }
 
 
-        try {
-            op5_insert_article(title, orderItemId, pubId, articleText, creationDate, topics, cmId, journalistEmpty, topicEmpty);
-            System.out.println("Article successfully inserted!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        op5_insert_article(title, orderItemId, pubId, articleText, creationDate, topics, cmId, journalistEmpty, topicEmpty);
+        System.out.println("Article successfully inserted!");
+
     }
 
     // ----------------------------------------------------------------- //
