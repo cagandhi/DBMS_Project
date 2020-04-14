@@ -30,6 +30,7 @@ public class Project {
 
 		while(true)
 		{
+			// main menu for tasks 1-4
 			System.out.println("\nMAIN MENU");
 			System.out.println("1. Editing and Publishing");
 			System.out.println("2. Production of a book edition or of an issue of a publication");
@@ -46,21 +47,21 @@ public class Project {
 
 			switch(main_choice)
 			{
-				case 1: System.out.println("In case 1"); // editing and publishing section
+				case 1: System.out.println("\nIN TASK 1"); // editing and publishing section
 					execute_task1();
 					break;
 
-				case 2: System.out.println("In case 2"); // production section
+				case 2: System.out.println("\nIN TASK 2"); // production section
 
 					execute_task2();
 
 					break;
 
-				case 3: System.out.println("In case 3"); // distribution section
+				case 3: System.out.println("\nIN TASK 3"); // distribution section
 					execute_task3();
 					break;
 
-				case 4: System.out.println("In case 4"); // reports section
+				case 4: System.out.println("\nIN TASK 4"); // reports section
 
 					execute_task4();
 
@@ -76,6 +77,7 @@ public class Project {
 		}
 	}
 
+	// handler function for all operations in task 1
 	public static void execute_task1(){
 		Editing edit = new Editing(connection);
 
@@ -162,7 +164,7 @@ public class Project {
 							}
 							// so, using transactions here will ensure that all the above mentioned changes are done together in the database
 							connection.commit();
-						} catch (SQLException e) {
+						} catch (Exception e) {
 							connection.rollback();
 							System.out.println("Operation Failed. Changes to database rolled back!");
 						}
@@ -170,7 +172,7 @@ public class Project {
 							connection.setAutoCommit(true);
 						}
 					}
-					catch(SQLException e){
+					catch(Exception e){
 						System.out.println("Some error occured. Try again!");
 					}
 
@@ -201,7 +203,7 @@ public class Project {
 								yn = lineScanner.nextLine();
 							}
 							connection.commit();
-						} catch (SQLException e) {
+						} catch (Exception e) {
 							connection.rollback();
 							System.out.println("Operation Failed. Changes to database rolled back!");
 						}
@@ -209,7 +211,7 @@ public class Project {
 							connection.setAutoCommit(true);
 						}
 					}
-					catch(SQLException e){
+					catch(Exception e){
 						System.out.println("Some error occured. Try again!");
 					}
 					
@@ -229,8 +231,9 @@ public class Project {
 				try {
 					edit.op2_update_pub(pubTitle, pubId);
 					System.out.println("Title successfully updated!");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 
 				break;
@@ -243,8 +246,9 @@ public class Project {
 				try {
 					edit.op2_update_periodicty(pubId, periodicityType);
 					System.out.println("Periodicity type successfully updated!");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -257,8 +261,9 @@ public class Project {
 				try {
 					edit.op2_update_frequency(pubId, frequency);
 					System.out.println("Frequency successfully updated!");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -268,8 +273,9 @@ public class Project {
 				pubId = intScanner.nextInt();
 				try {
 					edit.show_publications(pubId);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				System.out.println("Enter edition/issue no. of the publication: ");
 				orderItemId = intScanner.nextInt();
@@ -286,8 +292,9 @@ public class Project {
 				try {
 					edit.op3_assign_editor_pub(cmIds, orderItemId, pubId);
 					System.out.println("Editors successfully assigned!");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -297,8 +304,9 @@ public class Project {
 				cmId = intScanner.nextInt();
 				try {
 					edit.op4_find_editor_pub(cmId);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -316,7 +324,7 @@ public class Project {
 						String creationDate = lineScanner.nextLine();
 						edit.op1_insert_chapter(pubId, orderItemId, creationDate);
 						connection.commit();
-					} catch (SQLException e) {
+					} catch (Exception e) {
 						connection.rollback();
 						System.out.println("Operation Failed. Changes to database rolled back!");
 					}
@@ -324,7 +332,7 @@ public class Project {
 						connection.setAutoCommit(true);
 					}
 				}
-				catch(SQLException e){
+				catch(Exception e){
 					System.out.println("Some error occured. Try again!");
 				}
 				break;
@@ -342,7 +350,7 @@ public class Project {
 						String creationDate = lineScanner.nextLine();
 						edit.op1_insert_article(pubId, orderItemId, creationDate);
 						connection.commit();
-					} catch (SQLException e) {
+					} catch (Exception e) {
 						connection.rollback();
 						System.out.println("Operation Failed. Changes to database rolled back!");
 					}
@@ -350,7 +358,7 @@ public class Project {
 						connection.setAutoCommit(true);
 					}
 				}
-				catch(SQLException e){
+				catch(Exception e){
 					System.out.println("Some error occured. Try again!");
 				}
 				break;
@@ -362,15 +370,17 @@ public class Project {
 				pubId = intScanner.nextInt();
 				try {
 					edit.show_publications(pubId);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				System.out.println("Enter the edition no. to which chapter is linked: ");
 				orderItemId = intScanner.nextInt();
                 try {
                     edit.show_chapter(orderItemId, pubId);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                	System.out.println("Some error occured. Try again!");
+                    // e.printStackTrace();
                 }
 
                 System.out.println("Enter the title of the Chapter: ");
@@ -379,8 +389,9 @@ public class Project {
 				try {
 					edit.op5_delete_chapter(title, orderItemId, pubId);
 					System.out.println("Chapter successfully deleted!");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -389,16 +400,18 @@ public class Project {
 				pubId = intScanner.nextInt();
 				try {
 					edit.show_publications(pubId);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				System.out.println("Enter the issue no. to which article is linked: ");
 				orderItemId = intScanner.nextInt();
 
                 try {
                     edit.show_articles(orderItemId, pubId);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                	System.out.println("Some error occured. Try again!");
+                    // e.printStackTrace();
                 }
 
                 System.out.println("Enter the title of the Article: ");
@@ -406,8 +419,9 @@ public class Project {
 				try {
 					edit.op5_delete_article(title, orderItemId, pubId);
 					System.out.println("Article successfully deleted!");
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -419,6 +433,7 @@ public class Project {
 		}
 	}
 
+	// handler function for all operations in task 2
 	public static void execute_task2()
 	{
 		// pass connection so the class can work on SQL queries
@@ -493,19 +508,20 @@ public class Project {
 
 							prod.op1_edition(orderItemId, pubId, price, pubDate, isbn);
 							System.out.println("New Book Edition inserted successfully!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
 							connection.rollback();
-							e.printStackTrace();
+							// e.printStackTrace();
 							System.out.println("Operation Failed. Changes to database rolled back!");
 						}
 						finally
 						{
 							connection.setAutoCommit(true);
 						}
-					} catch(SQLException e)
+					} catch(Exception e)
 					{
-						e.printStackTrace();
+						System.out.println("Some error occured. Try again!");
+						// e.printStackTrace();
 					}
 				}
 				else
@@ -517,18 +533,19 @@ public class Project {
 							connection.setAutoCommit(false);
 							prod.op1_issue(orderItemId, pubId, price, pubDate, orderItemId);
 							System.out.println("New Periodic Issue inserted successfully!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
 							connection.rollback();
-							e.printStackTrace();
+							// e.printStackTrace();
 							System.out.println("Operation Failed. Changes to database rolled back!");
 						}
 						finally {
 							connection.setAutoCommit(true);
 						}
-					} catch(SQLException e)
+					} catch(Exception e)
 					{
-						e.printStackTrace();
+						System.out.println("Some error occured. Try again!");
+						// e.printStackTrace();
 					}
 				}
 
@@ -556,8 +573,9 @@ public class Project {
 					if(prod.op2_display_OrderItems(pubId) == 0)
 						break;
 
-				} catch(SQLException e) {
-					e.printStackTrace();
+				} catch(Exception e) {
+					System.out.println("Some error occured. Try again!");
+					// e.printStackTrace();
 				}
 
 				System.out.println("Enter edition no./issue no. for update/delete action: ");
@@ -592,10 +610,10 @@ public class Project {
 						{
 							prod.op2_update_price(price, orderItemId, pubId);
 							System.out.println("Price updated!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -608,10 +626,10 @@ public class Project {
 						{
 							prod.op2_update_pubDate(pubDate, orderItemId, pubId);
 							System.out.println("Publication Date updated!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -626,10 +644,10 @@ public class Project {
 							{
 								prod.op2_update_isbn(isbn, orderItemId, pubId);
 								System.out.println("ISBN updated!");
-							} catch(SQLException e)
+							} catch(Exception e)
 							{
-								e.printStackTrace();
-								// System.out.println("Operation Failed. Try Again!");
+								// e.printStackTrace();
+								System.out.println("Operation Failed. Try Again!");
 							}
 						}
 						else
@@ -638,10 +656,10 @@ public class Project {
 							{
 								prod.op2_delete_edition_issue(orderItemId, pubId);
 								System.out.println("Issue deleted successfully!");
-							} catch(SQLException e)
+							} catch(Exception e)
 							{
-								e.printStackTrace();
-								// System.out.println("Operation Failed. Try Again!");
+								// e.printStackTrace();
+								System.out.println("Operation Failed. Try Again!");
 							}
 						}
 
@@ -652,10 +670,10 @@ public class Project {
 						{
 							prod.op2_delete_edition_issue(orderItemId, pubId);
 							System.out.println("Book Edition deleted successfully!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 						break;
 
@@ -686,8 +704,9 @@ public class Project {
 
 						try {
 							int temp = prod.op2_display_OrderItems(pubId);
-						} catch (SQLException e) {
+						} catch (Exception e) {
 							e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						System.out.println("Enter edition no. to which this chapter is linked: ");
@@ -722,10 +741,10 @@ public class Project {
 						{
 							prod.op3_enter_chapter(orderItemId, pubId, title, chapterText, chapterDate, topicList, authorList, topicEmpty, authorEmpty);
 							System.out.println("New Chapter entered successfully!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -738,8 +757,9 @@ public class Project {
 
 						try {
 							int temp = prod.op2_display_OrderItems(pubId);
-						} catch (SQLException e) {
-							e.printStackTrace();
+						} catch (Exception e) {
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						System.out.println("Enter issue no. to which this article is linked: ");
@@ -774,10 +794,10 @@ public class Project {
 						{
 							prod.op3_enter_article(orderItemId, pubId, title, articleText, articleDate, topicList, authorList, topicEmpty, authorEmpty);
 							System.out.println("New Article entered successfully!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -808,9 +828,10 @@ public class Project {
 							if(prod.op2_display_OrderItems(pubId) == 0)
 								break;
 						}
-						catch(SQLException e)
+						catch(Exception e)
 						{
-							e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
 						}
 
 						if(ch == 0) //chapter
@@ -823,9 +844,10 @@ public class Project {
 								if(prod.op2_display_Chapters(pubId, orderItemId) == 0)
 									break;
 							}
-							catch(SQLException e)
+							catch(Exception e)
 							{
-								e.printStackTrace();
+								System.out.println("Operation Failed. Try Again!");
+								// e.printStackTrace();
 							}
 
 							System.out.println("Enter title of the chapter which is to be updated: ");
@@ -841,9 +863,10 @@ public class Project {
 								if(prod.op2_display_Articles(pubId, orderItemId) == 0)
 									break;
 							}
-							catch(SQLException e)
+							catch(Exception e)
 							{
-								e.printStackTrace();
+								System.out.println("Operation Failed. Try Again!");
+								// e.printStackTrace();
 							}
 
 							System.out.println("Enter title of the article which is to be updated: ");
@@ -882,9 +905,10 @@ public class Project {
 									{
 										prod.op3_update_chapter_title(orderItemId, pubId, title, newTitle);
 										System.out.println("Chapter title updated!");
-									} catch(SQLException e)
+									} catch(Exception e)
 									{
-										e.printStackTrace();
+										System.out.println("Operation Failed. Try Again!");
+										// e.printStackTrace();
 									}
 								}
 								else //article
@@ -896,9 +920,10 @@ public class Project {
 									{
 										prod.op3_update_article_title(orderItemId, pubId, title, newTitle);
 										System.out.println("Article title updated!");
-									} catch(SQLException e)
+									} catch(Exception e)
 									{
-										e.printStackTrace();
+										System.out.println("Operation Failed. Try Again!");
+										// e.printStackTrace();
 									}
 								}
 
@@ -916,9 +941,10 @@ public class Project {
 										prod.op3_display_article_journalists(orderItemId, pubId, title);
 									}
 								}
-								catch(SQLException e)
+								catch(Exception e)
 								{
-									e.printStackTrace();
+									System.out.println("Operation Failed. Try Again!");
+									// e.printStackTrace();
 								}
 
 								System.out.println("\nSUB-MENU");
@@ -941,9 +967,10 @@ public class Project {
 											prod.op3_add_author_chapter(orderItemId,pubId,title,cmId);
 											System.out.println("Author added to chapter!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 									else if(ch == 1)
@@ -956,9 +983,10 @@ public class Project {
 											prod.op3_add_journalist_article(orderItemId,pubId,title,cmId);
 											System.out.println("Journalist added to article!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 								}
@@ -974,9 +1002,10 @@ public class Project {
 											prod.op3_remove_author_chapter(orderItemId,pubId,title,cmId);
 											System.out.println("Author removed from chapter!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 									else if(ch == 1)
@@ -989,9 +1018,10 @@ public class Project {
 											prod.op3_remove_journalist_article(orderItemId,pubId,title,cmId);
 											System.out.println("Journalist removed from article!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 								}
@@ -1014,9 +1044,10 @@ public class Project {
 										prod.op3_display_article_topics(orderItemId, pubId, title);
 									}
 								}
-								catch(SQLException e)
+								catch(Exception e)
 								{
-									e.printStackTrace();
+									System.out.println("Operation Failed. Try Again!");
+									// e.printStackTrace();
 								}
 
 								System.out.println("\nSUB-MENU");
@@ -1039,9 +1070,10 @@ public class Project {
 											prod.op3_add_topic_chapter(orderItemId,pubId,title,topicName);
 											System.out.println("Topic added to chapter!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 									else if(ch == 1)
@@ -1054,9 +1086,10 @@ public class Project {
 											prod.op3_add_topic_article(orderItemId,pubId,title,topicName);
 											System.out.println("Topic added to article!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 								}
@@ -1072,9 +1105,10 @@ public class Project {
 											prod.op3_remove_topic_chapter(orderItemId,pubId,title,topicName);
 											System.out.println("Topic removed from chapter!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 									else if(ch == 1)
@@ -1087,9 +1121,10 @@ public class Project {
 											prod.op3_remove_topic_article(orderItemId,pubId,title,topicName);
 											System.out.println("Topic removed from article!");
 										}
-										catch(SQLException e)
+										catch(Exception e)
 										{
-											e.printStackTrace();
+											System.out.println("Operation Failed. Try Again!");
+											// e.printStackTrace();
 										}
 									}
 								}
@@ -1109,9 +1144,10 @@ public class Project {
 									{
 										prod.op3_update_chapter_date(orderItemId, pubId, title, creationDate);
 										System.out.println("Chapter creation date updated!");
-									} catch(SQLException e)
+									} catch(Exception e)
 									{
-										e.printStackTrace();
+										System.out.println("Operation Failed. Try Again!");
+										// e.printStackTrace();
 									}
 								}
 								else if(ch == 1)
@@ -1123,9 +1159,10 @@ public class Project {
 									{
 										prod.op3_update_article_date(orderItemId, pubId, title, creationDate);
 										System.out.println("Article creation date updated!");
-									} catch(SQLException e)
+									} catch(Exception e)
 									{
-										e.printStackTrace();
+										System.out.println("Operation Failed. Try Again!");
+										// e.printStackTrace();
 									}
 								}
 
@@ -1157,9 +1194,10 @@ public class Project {
 					if(prod.op2_display_OrderItems(pubId) == 0)
 						break;
 				}
-				catch(SQLException e)
+				catch(Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 
 				System.out.println("Enter issue no. to which the article is linked: ");
@@ -1170,9 +1208,10 @@ public class Project {
 					if(prod.op2_display_Articles(pubId, orderItemId) == 0)
 						break;
 				}
-				catch(SQLException e)
+				catch(Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 
 				System.out.println("Enter title of the article whose text is to be updated: ");
@@ -1185,9 +1224,10 @@ public class Project {
 				{
 					prod.op4_update_text_article(title, orderItemId, pubId, articleText);
 					System.out.println("Article's text updated!");
-				} catch(SQLException e)
+				} catch(Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 
 				break;
@@ -1211,10 +1251,10 @@ public class Project {
 						try
 						{
 							prod.op5_find_topic(topicName);
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -1226,10 +1266,10 @@ public class Project {
 						try
 						{
 							prod.op5_find_pubDate(pubDate);
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -1241,10 +1281,10 @@ public class Project {
 						try
 						{
 							prod.op5_find_authorName(authorName);
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 						break;
 
@@ -1282,10 +1322,10 @@ public class Project {
 						{
 							prod.op6_insert_payment(cmId, amount, payDate);
 							System.out.println("Payment record entered!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -1309,10 +1349,10 @@ public class Project {
 						
 							prod.op6_claim_payment(payId, claimDate);
 							System.out.println("Payment record updated!");
-						} catch(SQLException e)
+						} catch(Exception e)
 						{
-							e.printStackTrace();
-							// System.out.println("Operation Failed. Try Again!");
+							// e.printStackTrace();
+							System.out.println("Operation Failed. Try Again!");
 						}
 
 						break;
@@ -1333,6 +1373,7 @@ public class Project {
 		}
 	}
 
+	// handler function for all operations in task 4
 	public static void execute_task4() {
 		// pass connection so the class can work on SQL queries
 		Reports report = new Reports(connection);
@@ -1356,30 +1397,30 @@ public class Project {
 				try
 				{
 					report.op1_get_monthly_reports();
-				} catch(SQLException e)
+				} catch(Exception e)
 				{
-					e.printStackTrace();
-					// System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
 				}
 				break;
 			case 2: // task 4 choice 2
 				try
 				{
 					report.op2_get_total_distributors();
-				} catch(SQLException e)
+				} catch(Exception e)
 				{
-					e.printStackTrace();
-					// System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
 				}
 				break;
 			case 3: // task 4 choice 3
 				try
 				{
 					report.op3_calculate_total_revenue();
-				} catch(SQLException e)
+				} catch(Exception e)
 				{
-					e.printStackTrace();
-					// System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
 				}
 				break;
 			case 4: // task 4 choice 4
@@ -1393,10 +1434,10 @@ public class Project {
 				try
 				{
 					report.op4_calculate_total_payments(beginDate, endDate);
-				} catch(SQLException e)
+				} catch(Exception e)
 				{
-					e.printStackTrace();
-					// System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
 				}
 				break;
 			case 0:
@@ -1409,6 +1450,7 @@ public class Project {
 
 	}
 
+	// handler function for all operations in task 3
 	public static void execute_task3()
 	{
 		System.out.println("	1. Add a Distributor");
@@ -1464,9 +1506,10 @@ public class Project {
 					System.out.println("Record Added successfully");
 
 				}
-				catch (SQLException e)
+				catch (Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -1481,9 +1524,10 @@ public class Project {
 						System.out.println("Record Updated successfully");
 					}
 				}
-				catch (SQLException e)
+				catch (Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -1497,9 +1541,10 @@ public class Project {
 					distributor.op3_delete_distributor(distID);
 					System.out.println("Record Updated successfully");
 				}
-				catch (SQLException e)
+				catch (Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 				break;
 
@@ -1520,9 +1565,10 @@ public class Project {
 					distributor.op4_input_order_Orders(orderId, shippingCost, orderDate, deliveryDate, locId);
 
 				}
-				catch (SQLException e)
+				catch (Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 				
 				int nn;
@@ -1538,9 +1584,10 @@ public class Project {
 					{
 						distributor.op4_input_order_OrderContains(orderId, orderItemId, pubId, quantity);
 					}
-					catch (SQLException e)
+					catch (Exception e)
 					{
-						e.printStackTrace();
+						System.out.println("Operation Failed. Try Again!");
+						// e.printStackTrace();
 					}
 					System.out.println("Press 1 to add new Item and 0 to complete order");
 					nn = intScanner.nextInt();
@@ -1575,7 +1622,7 @@ public class Project {
 						}
 						connection.commit();
 					}
-					catch (SQLException e)
+					catch (Exception e)
 					{
 						connection.rollback();
 						System.out.println("Operation Failed. Changes to database rolled back!");
@@ -1583,9 +1630,10 @@ public class Project {
 					finally{
 						connection.setAutoCommit(true);
 					}
-				} catch(SQLException e)
+				} catch(Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 
 
@@ -1603,9 +1651,10 @@ public class Project {
 					}
 
 				}
-				catch (SQLException e)
+				catch (Exception e)
 				{
-					e.printStackTrace();
+					System.out.println("Operation Failed. Try Again!");
+					// e.printStackTrace();
 				}
 
 
@@ -1620,27 +1669,32 @@ public class Project {
 		}
 	}
 
+	// reset database by dropping tables
 	public static void resetDatabase() {
 		try {
 			statement.executeUpdate("drop table OrderContains,OrderBillMappings,Orders,Bills,Locations,Distributors,ArticleWrittenBy,ArticleTopicMappings,Articles,ChapterWrittenBy,ChapterTopicMappings,Chapters,Issues,Editions,ItemEditedBy,OrderItems,Payrolls,Journalists,Authors,Editors,ContentManagers,PeriodicPublications,BookTopicMappings,Topics,Books,Publications");
 		}
-		catch (SQLException e) { }
+		catch (Exception e) { }
 
 		createTables();
 		populateTables();
 	}
 
+	// connect to database and reset it
 	private static void initialize() {
 		try {
 			connectToDatabase();
-//			resetDatabase();
+			resetDatabase();
 		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch(SQLException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("Operation Failed. Try Again!");
+		} catch(Exception e) {
+			System.out.println("Operation Failed. Try Again!");
+			// e.printStackTrace();
 		}
 	}
 
+	// create table schema
 	private static void createTables() {
 		try
 		{
@@ -1655,13 +1709,13 @@ public class Project {
 					statement.executeUpdate(line);
 				}
 			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+			System.out.println("Operation Failed. Try Again!");
+			// e.printStackTrace();
 		}
 	}
 
+	// populate data in tables
 	private static void populateTables() {
 		try
 		{
@@ -1676,40 +1730,43 @@ public class Project {
 					statement.executeUpdate(line);
 				}
 			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+			System.out.println("Operation Failed. Try Again!");
+			// e.printStackTrace();
 		}
 	}
 
-	private static void connectToDatabase() throws ClassNotFoundException, SQLException {
+	private static void connectToDatabase() throws ClassNotFoundException, Exception {
 		Class.forName("org.mariadb.jdbc.Driver");
 
 		connection = DriverManager.getConnection(jdbcURL, username, password);
 		statement = connection.createStatement();
 	}
 
+	// close all connections and streams upon exit
 	private static void close() {
 		if (connection != null) {
 			try {
 				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Operation Failed. Try Again!");
+				// e.printStackTrace();
 			}
 		}
 		if (statement != null) {
 			try {
 				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Operation Failed. Try Again!");
+				// e.printStackTrace();
 			}
 		}
 		if (result != null) {
 			try {
 				result.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Operation Failed. Try Again!");
+				// e.printStackTrace();
 			}
 		}
 	}

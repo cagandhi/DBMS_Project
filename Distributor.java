@@ -23,8 +23,9 @@ public class Distributor
 			lineScanner = new Scanner(System.in);
 			floatScanner = new Scanner(System.in);
 
-		} catch(SQLException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+			System.out.println("Some error occured. Try again!");
+			// e.printStackTrace();
 		}
 	}
 

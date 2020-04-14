@@ -13,8 +13,9 @@ public class Production
 		try
 		{
 			statement = connection.createStatement();
-		} catch(SQLException e) {
-			e.printStackTrace();
+		} catch(Exception e) {
+			System.out.println("Some error occured. Try again!");
+			// e.printStackTrace();
 		}
 	}
 
