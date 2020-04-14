@@ -134,19 +134,40 @@ public class Project {
 					System.out.println("Enter the ISBN: ");
 					ISBN = lineScanner.nextLine();
 
-					try {
-						edit.op1_insert_pub_book(pubTitle, pubId, edition, price, ISBN, pubDate, topicList, topicEmpty);
+					try{
+						try {
+							connection.setAutoCommit(false);
+							// The function 'op1_insert_pub_book' table performs following operations:
+								// 1. Insert into 'Publications' table
+								// 2. Insert into 'Books' table
+								// 3. Insert into 'OrderItems' table
+								// 4. Insert into 'Editions' table
+							edit.op1_insert_pub_book(pubTitle, pubId, edition, price, ISBN, pubDate, topicList, topicEmpty);
 
-						System.out.println("Book successfully inserted!");
-						System.out.println("Would you like to add chapters for this Book? y/n ");
-						String yn = lineScanner.nextLine();
-						while(yn.equalsIgnoreCase("y")){
-							edit.op1_insert_chapter(pubId, edition, pubDate);
-							System.out.println("Would you like to add more chapters? y/n ");
-							yn = lineScanner.nextLine();
+							System.out.println("Book successfully inserted!");
+							System.out.println("Would you like to add chapters for this Book? y/n ");
+							String yn = lineScanner.nextLine();
+							while(yn.equalsIgnoreCase("y")){
+								// The function 'op1_insert_chapter' internally calls 'op5_insert_chapter' function which performs following operations:
+									// 5. Insert into 'Topics' table
+									// 6. Insert into 'ChapterTopicMappings' table
+									// 7. Insert into 'ChapterWrittenBy' table
+								edit.op1_insert_chapter(pubId, edition, pubDate);
+								System.out.println("Would you like to add more chapters? y/n ");
+								yn = lineScanner.nextLine();
+							}
+							// so, using transactions here will ensure that all the above mentioned changes are done together in the database
+							connection.commit();
+						} catch (SQLException e) {
+							connection.rollback();
+							System.out.println("Operation Failed. Changes to database rolled back!");
 						}
-					} catch (SQLException e) {
-						e.printStackTrace();
+						finally{
+							connection.setAutoCommit(true);
+						}
+					}
+					catch(SQLException e){
+						System.out.println("Some error occured. Try again!");
 					}
 
 				}
@@ -1485,14 +1506,36 @@ public class Project {
 
 				try
 				{
-					if(distributor.op5_bill_distributor(distId, generationDate)==1){
-						System.out.println("Bill Generated successfully");
+					try
+					{	
+						connection.setAutoCommit(false);
+						// The function 'op5_bill_distributor' asks user to select all the orders for which distributor wants to generate the bill.
+						
+						// Now, that function internally calls another function named 'op5_bill_distributor_helper' which uses 2 insert statements (for each selected order) and one update statement to perform the functionality listed below. 
+
+							// 1. Insert record into 'Bills' table (for each selected order)
+							// 2. Insert record into 'OrderBillMappings' table (for each selected order)
+							// 3. Update balance of distributor with ID 'distId'
+						
+						// Using transaction for this functionality will ensure that all 3 changes are done together in the database. 
+						if(distributor.op5_bill_distributor(distId, generationDate)==1){
+							System.out.println("Bill Generated successfully");
+						}
+						connection.commit();
 					}
-				}
-				catch (SQLException e)
+					catch (SQLException e)
+					{
+						connection.rollback();
+						System.out.println("Operation Failed. Changes to database rolled back!");
+					}
+					finally{
+						connection.setAutoCommit(true);
+					}
+				} catch(SQLException e)
 				{
 					e.printStackTrace();
 				}
+
 
 				break;
 
