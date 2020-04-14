@@ -39,7 +39,7 @@ insert into Editions values (2, 1001, '12345');
 
 insert into Publications values (1002,"Healthy Diet");
 insert into PeriodicPublications values (1002,'magazine','monthly');
-insert into OrderItems values (1,1002,0,'2020-02-24');
+insert into OrderItems values (1,1002,30,'2020-02-24');
 insert into Issues values (1,1002,1);
 insert into Articles values ('Healthy diet', 1, 1002, 'ABC', '2020-02-24');
 insert into Topics values ('health');
@@ -47,7 +47,7 @@ insert into ArticleTopicMappings values ('Healthy diet', 1, 1002, 'health');
 
 insert into Publications values (1003,"Animal Science");
 insert into PeriodicPublications values (1003,'journal','monthly');
-insert into OrderItems values (1,1003,0,'2020-03-01');
+insert into OrderItems values (1,1003,10,'2020-03-01');
 insert into Issues values (1,1003,1);
 insert into Articles values ('Animal Science', 1, 1003, 'AAA', '2020-03-01');
 insert into Topics values ('science');

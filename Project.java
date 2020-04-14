@@ -11,8 +11,8 @@ import java.util.*;
  **/
 
 public class Project {
-	static final String username = "nshah25";
-	static final String password = "200304882";
+	static final String username = "cagandhi";
+	static final String password = "200315238";
 	static final String jdbcURL = "jdbc:mariadb://classdb2.csc.ncsu.edu:3306/"+username;
 	// Put your oracle ID and password here
 
@@ -336,7 +336,7 @@ public class Project {
 						System.out.println("Enter the issue no. to which article is to be added: ");
 						orderItemId = intScanner.nextInt();
 						System.out.println("Enter the Creation date of article (YYYY-MM-DD): ");
-						creationDate = lineScanner.nextLine();
+						String creationDate = lineScanner.nextLine();
 						edit.op1_insert_article(pubId, orderItemId, creationDate);
 						connection.commit();
 					} catch (SQLException e) {
@@ -1617,7 +1617,7 @@ public class Project {
 	private static void initialize() {
 		try {
 			connectToDatabase();
-			// resetDatabase();
+			resetDatabase();
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {
