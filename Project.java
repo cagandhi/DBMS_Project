@@ -109,6 +109,9 @@ public class Project {
 				System.out.println("1. Insert a new periodic publication");
 				System.out.println("Enter your choice: ");
 				int choice = intScanner.nextInt();
+				if(choice!=0 && choice!=1){
+				    break;
+                }
 				System.out.println("Enter the Publication ID: ");
 				pubId = intScanner.nextInt();
 				System.out.println("Enter the title of the Publication: ");
@@ -364,7 +367,13 @@ public class Project {
 				}
 				System.out.println("Enter the edition no. to which chapter is linked: ");
 				orderItemId = intScanner.nextInt();
-				System.out.println("Enter the title of the Chapter: ");
+                try {
+                    edit.show_chapter(orderItemId, pubId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Enter the title of the Chapter: ");
 				title = lineScanner.nextLine();
 
 				try {
@@ -385,7 +394,14 @@ public class Project {
 				}
 				System.out.println("Enter the issue no. to which article is linked: ");
 				orderItemId = intScanner.nextInt();
-				System.out.println("Enter the title of the Article: ");
+
+                try {
+                    edit.show_articles(orderItemId, pubId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Enter the title of the Article: ");
 				title = lineScanner.nextLine();
 				try {
 					edit.op5_delete_article(title, orderItemId, pubId);
@@ -1617,7 +1633,7 @@ public class Project {
 	private static void initialize() {
 		try {
 			connectToDatabase();
-			resetDatabase();
+//			resetDatabase();
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {
