@@ -404,7 +404,7 @@ public class Distributor
 		for (int i = 0; i < OrderIds.length; i++)
 		{
 			// calculating bill amount for one order
-			query = "Select OrderContains.quantity, OrderItems.price from OrderContains JOIN OrderItems ON OrderContains.orderItemId = OrderItems.orderItemId where OrderContains.orderId ="+OrderIds[i];
+			query = "select OrderContains.quantity, OrderItems.price from OrderContains natural join OrderItems where OrderContains.orderId="+OrderIds[i];
 			rs = statement.executeQuery(query);
 
 			while(rs.next())
